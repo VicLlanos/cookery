@@ -108,7 +108,7 @@
   .ceiling-lamp { position: absolute; top: 100%; width: 4px; height: 16px; background: #3a2418; transform: translateX(-50%); }
   .ceiling-lamp::after { content: ''; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 26px; height: 12px; background: linear-gradient(180deg, #8b5a3e 0%, #5c3a24 100%); border-radius: 50% 50% 0 0; box-shadow: 0 8px 25px rgba(255, 220, 140, 0.5); }
 
-  .shop-window { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 55%; max-width: 420px; height: 26%; border: 8px solid #5c3a24; border-radius: 6px; background: linear-gradient(180deg, #a8c8e0 0%, #c8d8e8 60%, #b8a898 100%); box-shadow: inset 0 0 40px rgba(0,0,0,0.3); overflow: hidden; z-index: 3; }
+  .shop-window { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 55%; max-width: 420px; height: 24%; border: 8px solid #5c3a24; border-radius: 6px; background: linear-gradient(180deg, #a8c8e0 0%, #c8d8e8 60%, #b8a898 100%); box-shadow: inset 0 0 40px rgba(0,0,0,0.3); overflow: hidden; z-index: 3; }
   .shop-window::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: #5c3a24; transform: translateY(-50%); }
   .shop-window::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #5c3a24; transform: translateX(-50%); }
   .window-time-badge { position: absolute; top: 6px; right: 10px; font-size: 0.7rem; font-weight: 700; color: #5c3a24; background: rgba(255,255,255,0.85); padding: 3px 8px; border-radius: 10px; z-index: 4; }
@@ -118,14 +118,14 @@
   .sky-tint.evening { background: linear-gradient(180deg, rgba(255,150,100,0.4), transparent); }
   .sky-tint.night { background: linear-gradient(180deg, rgba(40,60,120,0.6), transparent); }
 
-  /* Counter - bigger to hold serving trays */
-  .counter { position: absolute; bottom: 0; left: 0; right: 0; height: 45%; background: linear-gradient(180deg, #5c3a24 0%, #4a2e1c 4%, #d4a880 4%, #e8c8a0 8%, #c9a880 8%, #b89070 50%, #a07858 50%, #8b6a4c 100%); border-top: 4px solid #3a2418; z-index: 10; }
+  /* Counter */
+  .counter { position: absolute; bottom: 0; left: 0; right: 0; height: 42%; background: linear-gradient(180deg, #5c3a24 0%, #4a2e1c 4%, #d4a880 4%, #e8c8a0 8%, #c9a880 8%, #b89070 50%, #a07858 50%, #8b6a4c 100%); border-top: 4px solid #3a2418; z-index: 10; }
   .counter::before { content: ''; position: absolute; top: 8%; left: 0; right: 0; height: 42%; background: repeating-linear-gradient(90deg, transparent 0px, transparent 60px, rgba(90, 60, 40, 0.15) 60px, rgba(90, 60, 40, 0.15) 62px); }
   .counter::after { content: ''; position: absolute; top: 8%; left: 0; right: 0; height: 20%; background: linear-gradient(180deg, rgba(255, 240, 200, 0.15) 0%, transparent 100%); }
 
   /* Customer queue */
   .customers-area {
-    position: absolute; bottom: 45%; left: 0; right: 0; height: 38%;
+    position: absolute; bottom: 42%; left: 0; right: 0; height: 40%;
     z-index: 8; display: flex; justify-content: space-around;
     align-items: flex-end; padding: 0 6px 10px; pointer-events: none;
     flex-wrap: nowrap;
@@ -133,7 +133,7 @@
   .customer {
     position: relative; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
     transition: transform 0.3s ease, opacity 0.4s ease;
-    pointer-events: auto; cursor: grab; touch-action: none;
+    pointer-events: auto; touch-action: none;
     flex: 1; max-width: 90px; min-width: 0;
   }
   .customer.entering { animation: customerEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -142,7 +142,6 @@
   @keyframes customerImpatient { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
   .customer-body { font-size: 2.6rem; line-height: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.2s; }
 
-  /* Multi-item order bubble */
   .customer-bubble {
     position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
     background: #fdf6ee; border: 3px solid #3a2418; border-radius: 14px;
@@ -177,86 +176,69 @@
   .customer-patience-fill.warn { background: #e5a53c; }
   .customer-patience-fill.crit { background: #c9302c; }
 
-  /* Serving tray rack (on counter between customers and workstation) */
-  .serving-rack {
+  /* WORK TRAY (holds the item being served) */
+  .tray-holder {
     position: absolute;
-    bottom: 26%;
+    bottom: 32%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 14;
-    display: flex;
-    gap: 8px;
-    padding: 4px 8px;
+    pointer-events: none;
   }
-  .serving-tray {
-    width: 68px; height: 68px;
+  .tray {
     background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%);
-    border: 3px solid #3a2418;
-    border-radius: 50%;
-    box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3);
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-    gap: 0px; position: relative; overflow: hidden;
-    cursor: pointer; transition: all 0.15s;
+    border: 3px solid #3a2418; border-radius: 50px;
+    padding: 8px 18px; min-height: 60px; min-width: 220px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; box-shadow: 0 6px 0 #3a2418, 0 10px 20px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden; flex-wrap: nowrap;
+    pointer-events: auto;
+    cursor: grab; touch-action: none;
+    transition: transform 0.15s;
   }
-  .serving-tray:empty::before {
-    content: '';
-    position: absolute; inset: 8px;
-    border: 2px dashed #c9a890;
-    border-radius: 50%;
-  }
-  .serving-tray.drag-over {
-    transform: scale(1.1);
-    border-color: #8fb87d;
-    box-shadow: 0 4px 0 #5c3a24, 0 0 20px rgba(143, 184, 125, 0.9);
-  }
-  .serving-tray.ready {
-    border-color: #ffd54f;
-    box-shadow: 0 4px 0 #3a2418, 0 0 15px rgba(255, 213, 79, 0.7);
-    animation: trayReady 1.5s infinite;
-  }
-  @keyframes trayReady {
-    0%, 100% { box-shadow: 0 4px 0 #3a2418, 0 0 12px rgba(255, 213, 79, 0.6); }
-    50% { box-shadow: 0 4px 0 #3a2418, 0 0 22px rgba(255, 213, 79, 0.95); }
-  }
-  .serving-tray .tray-slot-emoji {
-    font-size: 1.4rem;
-    line-height: 1;
-    position: relative;
-  }
-  .serving-tray .tray-slot-emoji.small { font-size: 1.1rem; }
-  .serving-tray .tray-slot-emoji.smaller { font-size: 0.9rem; }
-  .serving-tray.drag-ready { cursor: grab; }
-  .serving-tray.dragging { opacity: 0.4; }
-
-  /* WORKSTATION */
-  .workstation { position: absolute; bottom: 0; left: 0; right: 0; z-index: 15; padding: 6px 8px 8px; display: flex; flex-direction: column; gap: 5px; }
-  .workstation-header { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-  .station-label { font-size: 0.62rem; font-weight: 700; color: #ffd54f; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; background: rgba(58, 36, 24, 0.7); padding: 4px 10px; border-radius: 10px; }
-  .header-btns { display: flex; gap: 6px; }
-  .recipe-book-btn, .shop-btn {
-    background: #ffd54f; color: #3a2418; border: 3px solid #3a2418; border-radius: 8px;
-    padding: 5px 10px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.65rem;
-    cursor: pointer; box-shadow: 0 3px 0 #3a2418; transition: all 0.1s;
-  }
-  .recipe-book-btn:active, .shop-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #3a2418; }
-  .shop-btn { background: #8fb87d; color: #fff; }
-
-  .tray { background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%); border: 3px solid #3a2418; border-radius: 10px; padding: 6px 10px; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); position: relative; overflow: hidden; flex-wrap: wrap; }
-  .tray-empty { color: #a88870; font-size: 0.72rem; font-style: italic; text-align: center; width: 100%; }
-  .tray-content { display: flex; align-items: center; gap: 6px; position: relative; cursor: grab; touch-action: none; padding: 2px 8px; border-radius: 8px; transition: transform 0.15s; }
-  .tray-content:active { transform: scale(0.95); }
-  .tray-item { font-size: 1.7rem; line-height: 1; animation: trayPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .tray.empty { cursor: default; }
+  .tray.drag-ready { border-color: #ffd54f; box-shadow: 0 6px 0 #3a2418, 0 10px 20px rgba(0,0,0,0.4), 0 0 15px rgba(255, 213, 79, 0.7); }
+  .tray:active.drag-ready { transform: scale(0.96); }
+  .tray-empty { color: #a88870; font-size: 0.72rem; font-style: italic; text-align: center; width: 100%; padding: 0 10px; }
+  .tray-item { font-size: 1.9rem; line-height: 1; animation: trayPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
   @keyframes trayPop { 0% { transform: scale(0); } 60% { transform: scale(1.3); } 100% { transform: scale(1); } }
-  .tray-drink-label { font-size: 0.62rem; font-weight: 700; color: #3a2418; background: rgba(255, 213, 79, 0.6); padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
-  .tray-clear { position: absolute; top: 2px; right: 2px; background: #c9302c; color: white; border: none; width: 22px; height: 22px; border-radius: 50%; font-size: 0.85rem; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+  .tray-drink-label { font-size: 0.65rem; font-weight: 700; color: #3a2418; background: rgba(255, 213, 79, 0.7); padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+  .tray-clear {
+    position: absolute; top: 6px; right: 8px;
+    background: #c9302c; color: white; border: none;
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: 0.85rem; cursor: pointer; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+    pointer-events: auto;
+  }
   .tray-clear:active { transform: scale(0.9); }
 
-  .ingredients { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; justify-content: center; flex-wrap: wrap; }
+  /* WORKSTATION - Ingredient station buttons on counter */
+  .workstation { position: absolute; bottom: 0; left: 0; right: 0; z-index: 15; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+  .workstation-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .station-label { font-size: 0.68rem; font-weight: 700; color: #ffd54f; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; background: rgba(58, 36, 24, 0.7); padding: 4px 10px; border-radius: 10px; }
+  .recipe-book-btn {
+    background: #ffd54f; color: #3a2418; border: 3px solid #3a2418; border-radius: 8px;
+    padding: 6px 12px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.7rem;
+    cursor: pointer; box-shadow: 0 3px 0 #3a2418; transition: all 0.1s;
+  }
+  .recipe-book-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #3a2418; }
+
+  .ingredients { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 3px; justify-content: center; flex-wrap: wrap; }
   .ingredients::-webkit-scrollbar { display: none; }
-  .ingredient-btn { flex-shrink: 0; width: 56px; height: 58px; background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%); border: 3px solid #3a2418; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3); transition: all 0.08s; position: relative; overflow: hidden; padding: 3px; }
+  .ingredient-btn {
+    flex-shrink: 0; width: 62px; height: 66px;
+    background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%);
+    border: 3px solid #3a2418; border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3);
+    transition: all 0.08s; position: relative; overflow: hidden; padding: 4px;
+  }
   .ingredient-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #3a2418, 0 3px 6px rgba(0,0,0,0.4); }
-  .ingredient-btn .ing-emoji { font-size: 1.55rem; line-height: 1; }
-  .ingredient-btn .ing-label { font-size: 0.45rem; font-weight: 700; color: #3a2418; margin-top: 1px; text-align: center; line-height: 1; }
+  .ingredient-btn .ing-emoji { font-size: 1.7rem; line-height: 1; }
+  .ingredient-btn .ing-label { font-size: 0.48rem; font-weight: 700; color: #3a2418; margin-top: 2px; text-align: center; line-height: 1; }
 
   /* Modals */
   .modal-book { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; padding: 20px; overflow-y: auto; }
@@ -291,8 +273,8 @@
   .shop-item .si-owned { color: #6b8b4a; font-weight: 700; font-size: 0.8rem; }
 
   /* Drag ghost */
-  .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; font-size: 2.2rem; line-height: 1; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); transform: translate(-50%, -50%) scale(1.15); display: flex; align-items: center; gap: 4px; }
-  .drag-ghost .ghost-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); background: #ffd54f; color: #3a2418; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; white-space: nowrap; }
+  .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; font-size: 2.4rem; line-height: 1; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); transform: translate(-50%, -50%) scale(1.15); display: flex; align-items: center; gap: 4px; }
+  .drag-ghost .ghost-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: #ffd54f; color: #3a2418; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; white-space: nowrap; }
   .customer.drag-over .customer-body { transform: scale(1.15); filter: drop-shadow(0 0 20px rgba(255, 213, 79, 0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
   .customer.drag-over.matching .customer-bubble { background: #e8f5dc; border-color: #8fb87d; box-shadow: 0 0 20px rgba(143, 184, 125, 0.7); }
   .customer.drag-over.non-matching .customer-bubble { background: #f5dcdc; border-color: #c9302c; }
@@ -366,13 +348,13 @@
     .customer-body { font-size: 2rem; }
     .customer-bubble { top: -52px; font-size: 0.85rem; padding: 3px 5px; min-width: 50px; }
     .order-item { font-size: 0.9rem; }
-    .ingredient-btn { width: 50px; height: 52px; }
-    .ingredient-btn .ing-emoji { font-size: 1.3rem; }
-    .ingredient-btn .ing-label { font-size: 0.4rem; }
-    .serving-tray { width: 58px; height: 58px; }
-    .tray-item { font-size: 1.5rem; }
-    .workstation { padding: 5px 5px 6px; }
-    .recipe-book-btn, .shop-btn { font-size: 0.58rem; padding: 5px 8px; }
+    .ingredient-btn { width: 56px; height: 58px; }
+    .ingredient-btn .ing-emoji { font-size: 1.5rem; }
+    .ingredient-btn .ing-label { font-size: 0.44rem; }
+    .tray { min-width: 180px; min-height: 52px; padding: 6px 14px; }
+    .tray-item { font-size: 1.6rem; }
+    .workstation { padding: 6px 6px 8px; }
+    .recipe-book-btn { font-size: 0.62rem; padding: 5px 10px; }
     .modal-card h2 { font-size: 1.1rem; }
     .select-header h1 { font-size: 1.15rem; }
     .stat-box { padding: 10px 12px; min-width: 80px; }
@@ -474,18 +456,17 @@
 
       <div class="counter"></div>
 
-      <!-- Serving tray rack (on counter, above workstation) -->
-      <div class="serving-rack" id="servingRack"></div>
+      <!-- Work tray - dragged to serve -->
+      <div class="tray-holder" id="trayHolder">
+        <div class="tray empty" id="tray">
+          <div class="tray-empty">Tap a station below to add ingredients</div>
+        </div>
+      </div>
 
       <div class="workstation">
         <div class="workstation-header">
           <div class="station-label" id="stationLabel">☕ COFFEE STATION</div>
-          <div class="header-btns">
-            <button class="recipe-book-btn" id="recipeBookBtn">📖 RECIPES</button>
-          </div>
-        </div>
-        <div class="tray" id="tray">
-          <div class="tray-empty">Tap ingredients below to start making something ☕</div>
+          <button class="recipe-book-btn" id="recipeBookBtn">📖 RECIPES</button>
         </div>
         <div class="ingredients" id="ingredients"></div>
       </div>
@@ -608,7 +589,6 @@ const SoundFX = {
   pour() { this.tone(300, 0.15, 'sine', 0.05); },
   brew() { this.tone(220, 0.3, 'sine', 0.05); this.tone(280, 0.4, 'sine', 0.04, 0.2); },
   ice() { this.tone(1200, 0.05, 'square', 0.05); this.tone(1400, 0.05, 'square', 0.04, 0.05); },
-  sizzle() { this.tone(180, 0.4, 'sawtooth', 0.04); },
   boil() { this.tone(340, 0.3, 'sine', 0.04); this.tone(380, 0.35, 'sine', 0.035, 0.2); },
   correct() { [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.09, i * 0.06)); },
   wrong() { this.tone(180, 0.3, 'sawtooth', 0.1); },
@@ -621,7 +601,7 @@ const SoundFX = {
 };
 
 /* ============================================================ */
-/* COFFEE RECIPES - all coffee variants                         */
+/* COFFEE RECIPES                                                */
 /* ============================================================ */
 const COFFEE_RECIPES = {
   espresso:          { name: 'Espresso',           emoji: '☕',  steps: ['brew'],                        points: 8 },
@@ -643,12 +623,10 @@ const COFFEE_RECIPES = {
 /* FOOD RECIPES - pastries & pasta                              */
 /* ============================================================ */
 const FOOD_RECIPES = {
-  // Pastries
   croissant:  { name: 'Croissant',  emoji: '🥐', steps: ['warmCroissant'],                 points: 8 },
   muffin:     { name: 'Muffin',     emoji: '🧁', steps: ['warmMuffin'],                    points: 8 },
   cookie:     { name: 'Cookie',     emoji: '🍪', steps: ['warmCookie'],                    points: 6 },
   danish:     { name: 'Danish',     emoji: '🥧', steps: ['warmDanish'],                    points: 10 },
-  // Pasta
   aglio:      { name: 'Aglio e Olio', emoji: '🍝', steps: ['boilPasta', 'garlic', 'oil'],        points: 16 },
   carbonara:  { name: 'Carbonara',    emoji: '🍝', steps: ['boilPasta', 'egg', 'cheese', 'bacon'], points: 22 },
   bolognese:  { name: 'Bolognese',    emoji: '🍝', steps: ['boilPasta', 'tomato', 'meat'],       points: 24 },
@@ -669,7 +647,6 @@ function getRecipeStation(recipeId) {
 /* INGREDIENTS                                                   */
 /* ============================================================ */
 const INGREDIENTS = {
-  // Coffee station
   brew:      { emoji: '☕', label: 'Brew',      station: 'koy', step: 'brew',      cost: 0,   desc: 'Fresh coffee shot' },
   water:     { emoji: '💧', label: 'Water',     station: 'koy', step: 'water',     cost: 0,   desc: 'Hot water' },
   milk:      { emoji: '🥛', label: 'Milk',      station: 'koy', step: 'milk',      cost: 0,   desc: 'Steamed milk' },
@@ -679,13 +656,11 @@ const INGREDIENTS = {
   caramel:   { emoji: '🍯', label: 'Caramel',   station: 'koy', step: 'caramel',   cost: 90,  desc: 'Sweet caramel drizzle' },
   matcha:    { emoji: '🍵', label: 'Matcha',    station: 'koy', step: 'matcha',    cost: 120, desc: 'Japanese green tea' },
 
-  // Kitchen station - pastries
   warmCroissant: { emoji: '🥐', label: 'Croissant', station: 'metz', step: 'warmCroissant', cost: 0,  desc: 'Fresh croissant' },
   warmCookie:    { emoji: '🍪', label: 'Cookie',    station: 'metz', step: 'warmCookie',    cost: 0,  desc: 'Chocolate chip cookie' },
   warmMuffin:    { emoji: '🧁', label: 'Muffin',    station: 'metz', step: 'warmMuffin',    cost: 0,  desc: 'Blueberry muffin' },
   warmDanish:    { emoji: '🥧', label: 'Danish',    station: 'metz', step: 'warmDanish',    cost: 40, desc: 'Fruit danish pastry' },
 
-  // Kitchen station - pasta
   boilPasta:  { emoji: '🍝', label: 'Boil Pasta', station: 'metz', step: 'boilPasta', cost: 30,  desc: 'Boiled spaghetti' },
   pastaSheet: { emoji: '🥟', label: 'Pasta Sheet',station: 'metz', step: 'pastaSheet',cost: 35,  desc: 'For lasagna' },
   garlic:     { emoji: '🧄', label: 'Garlic',     station: 'metz', step: 'garlic',    cost: 20,  desc: 'Minced garlic' },
@@ -703,7 +678,6 @@ const INGREDIENTS = {
 /* RECIPE REQUIREMENTS                                           */
 /* ============================================================ */
 const RECIPE_REQUIREMENTS = {
-  // Coffee
   espresso:          ['brew'],
   doubleEspresso:    ['brew'],
   americano:         ['brew', 'water'],
@@ -717,12 +691,10 @@ const RECIPE_REQUIREMENTS = {
   icedLatte:         ['ice', 'brew', 'milk'],
   icedAmericano:     ['ice', 'brew', 'water'],
   icedMocha:         ['ice', 'brew', 'milk', 'choco'],
-  // Pastries
   croissant:         ['warmCroissant'],
   muffin:            ['warmMuffin'],
   cookie:            ['warmCookie'],
   danish:            ['warmDanish'],
-  // Pasta
   aglio:             ['boilPasta', 'garlic', 'oil'],
   carbonara:         ['boilPasta', 'egg', 'cheese', 'bacon'],
   bolognese:         ['boilPasta', 'tomato', 'meat'],
@@ -734,7 +706,6 @@ const RECIPE_REQUIREMENTS = {
 /* ============================================================ */
 /* LEVELS                                                        */
 /* ============================================================ */
-// orderSize = [min, max] number of items customer might order (1-3)
 const LEVELS = [
   { id: 1, name: 'Opening Day', duration: 100, waveEvery: 8000, waveSize: [1, 1], orderSize: [1, 1], patience: 120,
     recipes: ['espresso', 'croissant', 'cookie'], starThresholds: [50, 100, 160] },
@@ -783,9 +754,8 @@ const game = {
   levelId: 1, level: null, running: false, timeRemaining: 0,
   score: 0, served: 0, lost: 0,
   customers: [],
-  tray: { koy: [], metz: [] },          // working tray (being made)
-  trayRecipe: { koy: null, metz: null },
-  servingTrays: { koy: [null, null, null], metz: [null, null, null] }, // 3 slots per station: each { recipeId, items: [] }
+  tray: { koy: [], metz: [] },           // items currently on the tray
+  trayRecipe: { koy: null, metz: null }, // matched recipe id (null if incomplete)
   timerInterval: null, spawnInterval: null, patienceInterval: null,
   nextCustomerId: 1
 };
@@ -867,10 +837,6 @@ function handlePeerMessage(msg) {
     case 'trayUpdate':
       game.tray[msg.role] = msg.tray;
       game.trayRecipe[msg.role] = msg.recipe;
-      break;
-    case 'servingTraysUpdate':
-      game.servingTrays[msg.role] = msg.servingTrays;
-      renderServingRack();
       break;
     case 'customerSpawn':
       addCustomerFromData(msg.customer);
@@ -1169,7 +1135,6 @@ function startLevel(levelId, fromRemote = false) {
   game.customers = [];
   game.tray = { koy: [], metz: [] };
   game.trayRecipe = { koy: null, metz: null };
-  game.servingTrays = { koy: [null, null, null], metz: [null, null, null] };
   game.nextCustomerId = 1;
 
   $('levelSelect').classList.remove('show');
@@ -1180,7 +1145,6 @@ function startLevel(levelId, fromRemote = false) {
   updateSkyTint(levelId);
   renderIngredients();
   renderTray();
-  renderServingRack();
   renderCustomers();
   updateHUD();
 
@@ -1242,7 +1206,6 @@ function buildCustomerOrder() {
   if (craftable.length === 0) return [{ recipeId: 'espresso', qty: 1 }];
   const [minSize, maxSize] = game.level.orderSize;
   const totalItems = Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize;
-  // Build a list of unique recipeIds with quantities
   const orderMap = {};
   for (let i = 0; i < totalItems; i++) {
     const rid = craftable[Math.floor(Math.random() * craftable.length)];
@@ -1335,7 +1298,6 @@ function renderCustomers() {
     if (payPct < 40) payClass = 'low';
     else if (payPct < 70) payClass = 'mid';
 
-    // Build order icons with quantity badges
     const orderHtml = c.order.map(o => {
       const r = ALL_RECIPES[o.recipeId];
       const qtyBadge = o.qty > 1 ? `<span class="qty">×${o.qty}</span>` : '';
@@ -1382,7 +1344,7 @@ function updatePatienceBars() {
 }
 
 /* ============================================================ */
-/* TRAY & INGREDIENTS                                            */
+/* INGREDIENTS & TRAY                                            */
 /* ============================================================ */
 function getMyStation() {
   if (soloMode) return currentStation;
@@ -1418,7 +1380,7 @@ function addIngredient(ingId) {
   if (ingId === 'ice') SoundFX.ice();
   else if (ingId === 'brew') SoundFX.brew();
   else if (ingId === 'boilPasta') SoundFX.boil();
-  else if (ingId === 'milk' || ingId === 'milkFoam') SoundFX.pour();
+  else if (ingId === 'milk' || ingId === 'milkFoam' || ingId === 'cream') SoundFX.pour();
   else SoundFX.add();
 
   tray.push(ingId);
@@ -1461,93 +1423,97 @@ function renderTray() {
   const tray = game.tray[station] || [];
   const matched = game.trayRecipe[station];
   trayEl.innerHTML = '';
+
   if (tray.length === 0) {
-    trayEl.innerHTML = '<div class="tray-empty">Tap ingredients → finish a recipe → drag it to a serving tray</div>';
+    trayEl.classList.add('empty');
+    trayEl.classList.remove('drag-ready');
+    trayEl.innerHTML = '<div class="tray-empty">Tap a station below to add ingredients</div>';
+    // Remove any drag listeners by cloning
+    const fresh = trayEl.cloneNode(true);
+    trayEl.parentNode.replaceChild(fresh, trayEl);
+    $('tray').id = 'tray';
+    // Re-bind clear button (none)
     return;
   }
-  const content = document.createElement('div');
-  content.className = 'tray-content drag-ready';
+
+  trayEl.classList.remove('empty');
+
   tray.forEach((ingId, i) => {
     const ing = INGREDIENTS[ingId];
     const span = document.createElement('span');
     span.className = 'tray-item';
     span.textContent = ing.emoji;
     span.style.animationDelay = (i * 0.05) + 's';
-    content.appendChild(span);
+    trayEl.appendChild(span);
   });
+
   if (matched) {
     const label = document.createElement('span');
     label.className = 'tray-drink-label';
     label.textContent = '✓ ' + ALL_RECIPES[matched].name;
-    content.appendChild(label);
+    trayEl.appendChild(label);
+    trayEl.classList.add('drag-ready');
+    // Make draggable
+    makeTrayDraggable(trayEl);
   } else {
     const label = document.createElement('span');
     label.className = 'tray-drink-label';
     label.style.background = 'rgba(201, 48, 44, 0.3)';
     label.style.color = '#fff';
     label.textContent = 'In progress...';
-    content.appendChild(label);
+    trayEl.appendChild(label);
+    trayEl.classList.remove('drag-ready');
   }
-  makeWorkTrayDraggable(content);
-  trayEl.appendChild(content);
+
+  // Clear button
   const clearBtn = document.createElement('button');
   clearBtn.className = 'tray-clear';
   clearBtn.textContent = '×';
+  clearBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
   clearBtn.addEventListener('click', (e) => { e.stopPropagation(); clearTray(); });
   trayEl.appendChild(clearBtn);
 }
 
 /* ============================================================ */
-/* SERVING RACK - 3 trays on counter                             */
+/* DRAG TRAY → CUSTOMER                                          */
 /* ============================================================ */
-function renderServingRack() {
-  const rack = $('servingRack');
-  rack.innerHTML = '';
-  const station = getMyStation();
-  const trays = game.servingTrays[station];
-  trays.forEach((trayData, idx) => {
-    const tray = document.createElement('div');
-    tray.className = 'serving-tray';
-    tray.dataset.trayIdx = idx;
-    if (trayData) {
-      // trayData: { recipeId, items: [recipeId, recipeId, ...] }
-      tray.classList.add('drag-ready');
-      const items = trayData.items || [];
-      const count = items.length;
-      items.forEach((rid, i) => {
-        const r = ALL_RECIPES[rid];
-        const span = document.createElement('span');
-        span.className = 'tray-slot-emoji' + (count >= 3 ? ' smaller' : count >= 2 ? ' small' : '');
-        span.textContent = r.emoji;
-        tray.appendChild(span);
-      });
-      // Add drag start for serving tray
-      makeServingTrayDraggable(tray, idx);
-    }
-    rack.appendChild(tray);
-  });
-}
+let trayDragBound = false;
+function makeTrayDraggable(el) {
+  // el is the tray itself. Bind pointer events once (they persist).
+  if (el.dataset.dragBound === '1') return;
+  el.dataset.dragBound = '1';
 
-function makeServingTrayDraggable(el, idx) {
   let dragging = false;
   let ghost = null;
   let hoveredCustomer = null;
-  const station = getMyStation();
-  const trayData = game.servingTrays[station][idx];
-  if (!trayData) return;
 
-  function startDrag(x, y) {
-    dragging = true;
+  function buildGhost(x, y) {
     ghost = document.createElement('div');
     ghost.className = 'drag-ghost';
-    const items = trayData.items || [];
+    const station = getMyStation();
+    const tray = game.tray[station] || [];
+    const matched = game.trayRecipe[station];
     let html = '';
-    items.forEach(rid => { html += ALL_RECIPES[rid].emoji; });
+    tray.forEach(ingId => { html += INGREDIENTS[ingId].emoji; });
     ghost.innerHTML = html;
+    if (matched) {
+      const lbl = document.createElement('div');
+      lbl.className = 'ghost-label';
+      lbl.textContent = ALL_RECIPES[matched].name;
+      ghost.appendChild(lbl);
+    }
     ghost.style.left = x + 'px';
     ghost.style.top = y + 'px';
     document.body.appendChild(ghost);
-    el.classList.add('dragging');
+  }
+
+  function startDrag(x, y) {
+    const station = getMyStation();
+    const matched = game.trayRecipe[station];
+    if (!matched) return; // Can't drag incomplete
+    dragging = true;
+    buildGhost(x, y);
+    el.style.opacity = '0.35';
     SoundFX.tap();
   }
 
@@ -1559,7 +1525,7 @@ function makeServingTrayDraggable(el, idx) {
     let newHover = null;
     customers.forEach(c => {
       const r = c.getBoundingClientRect();
-      const pad = 20;
+      const pad = 25;
       if (x >= r.left - pad && x <= r.right + pad && y >= r.top - pad && y <= r.bottom + pad) newHover = c;
     });
     if (newHover !== hoveredCustomer) {
@@ -1569,7 +1535,7 @@ function makeServingTrayDraggable(el, idx) {
         hoveredCustomer.classList.add('drag-over');
         const cid = hoveredCustomer.dataset.customerId;
         const customer = game.customers.find(c => c.id === cid);
-        if (customer && traysMatchCustomer(trayData, customer)) {
+        if (customer && trayMatchesCustomer(customer)) {
           hoveredCustomer.classList.add('matching');
         } else {
           hoveredCustomer.classList.add('non-matching');
@@ -1582,18 +1548,22 @@ function makeServingTrayDraggable(el, idx) {
     if (!dragging) return;
     dragging = false;
     if (ghost) { ghost.remove(); ghost = null; }
-    el.classList.remove('dragging');
+    el.style.opacity = '1';
     if (hoveredCustomer) {
       const cid = hoveredCustomer.dataset.customerId;
       const customer = game.customers.find(c => c.id === cid);
       hoveredCustomer.classList.remove('drag-over', 'matching', 'non-matching');
       hoveredCustomer = null;
-      if (customer) attemptServe(customer, idx);
+      if (customer) attemptServe(customer);
     }
   }
 
   el.addEventListener('pointerdown', (e) => {
     if (e.button && e.button !== 0) return;
+    const station = getMyStation();
+    const matched = game.trayRecipe[station];
+    if (!matched) return;
+    if (e.target.classList.contains('tray-clear')) return;
     e.preventDefault();
     el.setPointerCapture(e.pointerId);
     startDrag(e.clientX, e.clientY);
@@ -1611,147 +1581,28 @@ function makeServingTrayDraggable(el, idx) {
   el.addEventListener('pointercancel', () => { endDrag(); });
 }
 
-function traysMatchCustomer(trayData, customer) {
-  if (!trayData || !trayData.items) return false;
-  const station = getMyStation();
-  // Every customer item must be from our station
-  for (const o of customer.order) {
-    if (getRecipeStation(o.recipeId) !== station) return false;
-  }
-  // Build expected multiset from customer order
-  const expected = {};
-  customer.order.forEach(o => { expected[o.recipeId] = (expected[o.recipeId] || 0) + o.qty; });
-  // Count tray items
-  const got = {};
-  trayData.items.forEach(rid => { got[rid] = (got[rid] || 0) + 1; });
-  const keys = new Set([...Object.keys(expected), ...Object.keys(got)]);
-  for (const k of keys) {
-    if ((expected[k] || 0) !== (got[k] || 0)) return false;
-  }
-  return true;
-}
-
-/* ============================================================ */
-/* WORK TRAY → SERVING TRAY DRAG                                 */
-/* ============================================================ */
-function makeWorkTrayDraggable(el) {
-  let dragging = false;
-  let ghost = null;
-  let hoveredTrayEl = null;
+function trayMatchesCustomer(customer) {
   const station = getMyStation();
   const matched = game.trayRecipe[station];
-
-  function startDrag(x, y) {
-    if (!matched) return; // Can't drag incomplete
-    dragging = true;
-    ghost = document.createElement('div');
-    ghost.className = 'drag-ghost';
-    const tray = game.tray[station] || [];
-    let html = '';
-    tray.forEach(ingId => { html += INGREDIENTS[ingId].emoji; });
-    ghost.innerHTML = html;
-    const lbl = document.createElement('div');
-    lbl.className = 'ghost-label';
-    lbl.textContent = ALL_RECIPES[matched].name;
-    ghost.appendChild(lbl);
-    ghost.style.left = x + 'px';
-    ghost.style.top = y + 'px';
-    document.body.appendChild(ghost);
-    el.style.opacity = '0.3';
-    SoundFX.tap();
-  }
-
-  function moveDrag(x, y) {
-    if (!dragging || !ghost) return;
-    ghost.style.left = x + 'px';
-    ghost.style.top = y + 'px';
-    const trays = document.querySelectorAll('.serving-tray');
-    let newHover = null;
-    trays.forEach(t => {
-      const r = t.getBoundingClientRect();
-      const pad = 15;
-      if (x >= r.left - pad && x <= r.right + pad && y >= r.top - pad && y <= r.bottom + pad) newHover = t;
-    });
-    if (newHover !== hoveredTrayEl) {
-      if (hoveredTrayEl) hoveredTrayEl.classList.remove('drag-over');
-      hoveredTrayEl = newHover;
-      if (hoveredTrayEl) hoveredTrayEl.classList.add('drag-over');
-    }
-  }
-
-  function endDrag() {
-    if (!dragging) return;
-    dragging = false;
-    if (ghost) { ghost.remove(); ghost = null; }
-    el.style.opacity = '1';
-    if (hoveredTrayEl) {
-      const idx = parseInt(hoveredTrayEl.dataset.trayIdx);
-      hoveredTrayEl.classList.remove('drag-over');
-      hoveredTrayEl = null;
-      placeInServingTray(idx);
-    }
-  }
-
-  el.addEventListener('pointerdown', (e) => {
-    if (e.button && e.button !== 0) return;
-    e.preventDefault();
-    if (!matched) { showToast('Finish the recipe first!'); return; }
-    el.setPointerCapture(e.pointerId);
-    startDrag(e.clientX, e.clientY);
-  });
-  el.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    e.preventDefault();
-    moveDrag(e.clientX, e.clientY);
-  });
-  el.addEventListener('pointerup', (e) => {
-    if (!dragging) return;
-    e.preventDefault();
-    endDrag();
-  });
-  el.addEventListener('pointercancel', () => { endDrag(); });
-}
-
-function placeInServingTray(idx) {
-  const station = getMyStation();
-  const matched = game.trayRecipe[station];
-  if (!matched) return;
-  const trays = game.servingTrays[station];
-  const existing = trays[idx];
-  if (!existing) {
-    // Empty slot — place the item
-    trays[idx] = { recipeId: matched, items: [matched] };
-  } else if (existing.recipeId === matched) {
-    // Same recipe — stack
-    if (existing.items.length >= 4) { showToast('Tray full!'); SoundFX.wrong(); return; }
-    existing.items.push(matched);
-  } else {
-    // Different recipe — refuse
-    showToast('Finish this tray first!');
-    SoundFX.wrong();
-    return;
-  }
-  // Clear work tray
-  game.tray[station] = [];
-  game.trayRecipe[station] = null;
-  renderTray();
-  renderServingRack();
-  if (!soloMode) {
-    sendPeer({ type: 'trayUpdate', role: station, tray: [], recipe: null });
-    sendPeer({ type: 'servingTraysUpdate', role: station, servingTrays: game.servingTrays[station] });
-  }
+  if (!matched) return false;
+  // Our tray has exactly ONE recipe. Customer must order exactly 1 of that recipe.
+  if (customer.order.length !== 1) return false;
+  const order = customer.order[0];
+  if (order.qty !== 1) return false;
+  if (getRecipeStation(order.recipeId) !== station) return false;
+  return order.recipeId === matched;
 }
 
 /* ============================================================ */
 /* SERVING                                                       */
 /* ============================================================ */
-function attemptServe(customer, trayIdx) {
+function attemptServe(customer) {
   if (!game.running) return;
   const station = getMyStation();
-  const trayData = game.servingTrays[station][trayIdx];
-  if (!trayData) return;
+  const matched = game.trayRecipe[station];
+  if (!matched) return;
 
-  if (!traysMatchCustomer(trayData, customer)) {
+  if (!trayMatchesCustomer(customer)) {
     showToast('Wrong order!');
     SoundFX.wrong();
     floatScore('-3', '#e57373');
@@ -1761,14 +1612,13 @@ function attemptServe(customer, trayIdx) {
   }
 
   const points = calculatePay(customer);
-
-  // Remove tray
-  game.servingTrays[station][trayIdx] = null;
+  game.tray[station] = [];
+  game.trayRecipe[station] = null;
   removeCustomer(customer.id);
   game.score += points;
   game.served += 1;
   updateHUD();
-  renderServingRack();
+  renderTray();
 
   const base = getCustomerTotalPoints(customer);
   const maxPay = base + Math.round(base * 0.5);
@@ -1786,7 +1636,7 @@ function attemptServe(customer, trayIdx) {
   }
 
   if (!soloMode) {
-    sendPeer({ type: 'servingTraysUpdate', role: station, servingTrays: game.servingTrays[station] });
+    sendPeer({ type: 'trayUpdate', role: station, tray: [], recipe: null });
     sendPeer({ type: 'customerServed', customerId: customer.id, points });
   }
 }
@@ -1956,7 +1806,6 @@ document.querySelectorAll('.station-tab').forEach(tab => {
     currentStation = tab.dataset.station;
     renderIngredients();
     renderTray();
-    renderServingRack();
   });
 });
 
