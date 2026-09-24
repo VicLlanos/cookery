@@ -133,11 +133,29 @@
   .customer-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #3a2418; }
   .customer-bubble::before { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #fdf6ee; z-index: 1; }
   .customer-bubble .order-emoji { font-size: 1.3rem; line-height: 1; }
+  /* Payment indicator — shows current tip % */
+  .customer-pay-badge {
+    position: absolute;
+    top: -18px;
+    right: -6px;
+    background: #ffd54f;
+    color: #3a2418;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 8px;
+    border: 2px solid #3a2418;
+    z-index: 3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: background 0.3s;
+  }
+  .customer-pay-badge.mid { background: #f0a84c; }
+  .customer-pay-badge.low { background: #e57373; color: white; }
+
   .customer-patience { width: 70%; height: 5px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow: hidden; margin-top: 4px; border: 1px solid #3a2418; }
   .customer-patience-fill { height: 100%; background: #6b8b4a; transition: width 0.3s linear, background 0.5s; }
   .customer-patience-fill.warn { background: #e5a53c; }
-  .customer-patience-fill.crit { background: #c9302c; animation: patiencePulse 0.5s infinite; }
-  @keyframes patiencePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .customer-patience-fill.crit { background: #c9302c; }
 
   /* WORKSTATION */
   .workstation { position: absolute; bottom: 0; left: 0; right: 0; z-index: 15; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
@@ -167,64 +185,23 @@
   .ingredient-btn .ing-emoji { font-size: 1.8rem; line-height: 1; }
   .ingredient-btn .ing-label { font-size: 0.52rem; font-weight: 700; color: #3a2418; margin-top: 2px; text-align: center; line-height: 1; }
 
-  /* RECIPE BOOK MODAL */
-  .recipe-book {
-    position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.88);
-    backdrop-filter: blur(6px);
-    display: none;
-    padding: 20px;
-    overflow-y: auto;
-  }
+  /* RECIPE BOOK */
+  .recipe-book { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; padding: 20px; overflow-y: auto; }
   .recipe-book.show { display: block; }
-  .recipe-book-inner {
-    background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 14px;
-    padding: 20px 16px; max-width: 500px; margin: 0 auto;
-    color: #3a2418; box-shadow: 0 10px 0 #5c3a24;
-  }
-  .recipe-book h2 {
-    text-align: center; font-size: 1.3rem; color: #8b5a3e; margin-bottom: 4px;
-  }
-  .recipe-book .rb-sub {
-    text-align: center; font-size: 0.8rem; color: #a88870; margin-bottom: 16px;
-  }
-  .recipe-section-title {
-    font-size: 0.85rem; font-weight: 700; color: #8b5a3e;
-    border-bottom: 2px dashed #c9a890; padding-bottom: 4px; margin: 12px 0 8px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .recipe-grid {
-    display: grid; grid-template-columns: 1fr; gap: 8px;
-  }
-  .recipe-card {
-    background: #fffdf9; border: 3px solid #c9a890; border-radius: 10px;
-    padding: 10px 12px; display: flex; align-items: center; gap: 10px;
-  }
+  .recipe-book-inner { background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 14px; padding: 20px 16px; max-width: 500px; margin: 0 auto; color: #3a2418; box-shadow: 0 10px 0 #5c3a24; }
+  .recipe-book h2 { text-align: center; font-size: 1.3rem; color: #8b5a3e; margin-bottom: 4px; }
+  .recipe-book .rb-sub { text-align: center; font-size: 0.8rem; color: #a88870; margin-bottom: 16px; }
+  .recipe-section-title { font-size: 0.85rem; font-weight: 700; color: #8b5a3e; border-bottom: 2px dashed #c9a890; padding-bottom: 4px; margin: 12px 0 8px; display: flex; align-items: center; gap: 6px; }
+  .recipe-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .recipe-card { background: #fffdf9; border: 3px solid #c9a890; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
   .recipe-card .rc-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
   .recipe-card .rc-info { flex: 1; min-width: 0; }
-  .recipe-card .rc-name {
-    font-weight: 700; font-size: 0.9rem; color: #3a2418; margin-bottom: 4px;
-  }
-  .recipe-card .rc-steps {
-    display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
-  }
-  .recipe-card .rc-step {
-    background: #f4d9c8; border: 2px solid #8b5a3e; border-radius: 6px;
-    padding: 2px 6px; font-size: 0.75rem; font-weight: 700; color: #3a2418;
-    display: flex; align-items: center; gap: 3px;
-  }
+  .recipe-card .rc-name { font-weight: 700; font-size: 0.9rem; color: #3a2418; margin-bottom: 4px; }
+  .recipe-card .rc-steps { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .recipe-card .rc-step { background: #f4d9c8; border: 2px solid #8b5a3e; border-radius: 6px; padding: 2px 6px; font-size: 0.75rem; font-weight: 700; color: #3a2418; display: flex; align-items: center; gap: 3px; }
   .recipe-card .rc-arrow { color: #a88870; font-weight: 700; font-size: 0.8rem; }
-  .recipe-card .rc-points {
-    font-size: 0.7rem; font-weight: 700; color: #6b8b4a;
-    background: rgba(107, 139, 74, 0.15); padding: 2px 6px; border-radius: 6px;
-    margin-left: 4px;
-  }
-  .recipe-close {
-    width: 100%; padding: 14px; margin-top: 16px;
-    background: #8b5a3e; color: white; border: none; border-radius: 8px;
-    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95rem;
-    cursor: pointer; box-shadow: 0 4px 0 #5c3a24;
-  }
+  .recipe-card .rc-points { font-size: 0.7rem; font-weight: 700; color: #6b8b4a; background: rgba(107, 139, 74, 0.15); padding: 2px 6px; border-radius: 6px; margin-left: 4px; }
+  .recipe-close { width: 100%; padding: 14px; margin-top: 16px; background: #8b5a3e; color: white; border: none; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 0 #5c3a24; }
   .recipe-close:active { transform: translateY(3px); box-shadow: 0 1px 0 #5c3a24; }
 
   /* DRAG GHOST */
@@ -510,7 +487,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 /* ============================================================ */
-/* AUDIO - FULLY DEFINED                                        */
+/* AUDIO                                                         */
 /* ============================================================ */
 const SoundFX = {
   ctx: null,
@@ -532,7 +509,6 @@ const SoundFX = {
     osc.connect(gain); gain.connect(this.ctx.destination);
     osc.start(t); osc.stop(t + duration);
   },
-  // These MUST exist because addIngredient calls them
   add() { this.tone(700, 0.08, 'sine', 0.07); },
   tap() { this.tone(600, 0.06, 'square', 0.05); },
   pour() { this.tone(300, 0.15, 'sine', 0.05); },
@@ -601,30 +577,31 @@ const INGREDIENTS = {
 };
 
 /* ============================================================ */
-/* LEVELS                                                        */
+/* LEVELS - patience now much more generous                     */
 /* ============================================================ */
+// patience = seconds until payout starts dropping (they never leave)
 const LEVELS = [
-  { id: 1, name: 'Opening Day', duration: 90, spawnEvery: 6500, patience: 50,
+  { id: 1, name: 'Opening Day', duration: 90, spawnEvery: 6500, patience: 120,
     recipes: ['espresso', 'croissant', 'cookie'], starThresholds: [40, 80, 130] },
-  { id: 2, name: 'Morning Rush', duration: 100, spawnEvery: 5500, patience: 45,
+  { id: 2, name: 'Morning Rush', duration: 100, spawnEvery: 5500, patience: 120,
     recipes: ['espresso', 'latte', 'croissant', 'muffin'], starThresholds: [70, 130, 200] },
-  { id: 3, name: 'Coffee Break', duration: 110, spawnEvery: 5000, patience: 42,
+  { id: 3, name: 'Coffee Break', duration: 110, spawnEvery: 5000, patience: 110,
     recipes: ['latte', 'cappuccino', 'croissant', 'muffin', 'cookie'], starThresholds: [110, 190, 280] },
-  { id: 4, name: 'Lunch Hour', duration: 120, spawnEvery: 4500, patience: 40,
+  { id: 4, name: 'Lunch Hour', duration: 120, spawnEvery: 4500, patience: 110,
     recipes: ['latte', 'cappuccino', 'sandwich', 'toastie', 'muffin'], starThresholds: [150, 260, 380] },
-  { id: 5, name: 'Iced Afternoon', duration: 130, spawnEvery: 4200, patience: 38,
+  { id: 5, name: 'Iced Afternoon', duration: 130, spawnEvery: 4200, patience: 100,
     recipes: ['mocha', 'icedLatte', 'matchaLatte', 'toastie', 'bagel', 'cookie'], starThresholds: [190, 320, 460] },
-  { id: 6, name: 'Happy Hour', duration: 130, spawnEvery: 3800, patience: 36,
+  { id: 6, name: 'Happy Hour', duration: 130, spawnEvery: 3800, patience: 100,
     recipes: ['mocha', 'caramelMacchiato', 'icedLatte', 'icedAmericano', 'sandwich', 'croissant'], starThresholds: [230, 390, 550] },
-  { id: 7, name: 'Evening Crowd', duration: 140, spawnEvery: 3400, patience: 34,
+  { id: 7, name: 'Evening Crowd', duration: 140, spawnEvery: 3400, patience: 90,
     recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'toastie', 'muffin', 'cookie']),
     starThresholds: [280, 460, 650] },
-  { id: 8, name: 'Date Night', duration: 150, spawnEvery: 3200, patience: 32,
+  { id: 8, name: 'Date Night', duration: 150, spawnEvery: 3200, patience: 90,
     recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'bagel', 'croissant', 'muffin']),
     starThresholds: [330, 540, 760] },
-  { id: 9, name: 'Grand Rush', duration: 150, spawnEvery: 2800, patience: 30,
+  { id: 9, name: 'Grand Rush', duration: 150, spawnEvery: 2800, patience: 80,
     recipes: Object.keys(ALL_RECIPES), starThresholds: [390, 630, 890] },
-  { id: 10, name: 'Grand Opening', duration: 180, spawnEvery: 2400, patience: 28,
+  { id: 10, name: 'Grand Opening', duration: 180, spawnEvery: 2400, patience: 80,
     recipes: Object.keys(ALL_RECIPES), starThresholds: [460, 730, 1030] }
 ];
 
@@ -738,12 +715,6 @@ function handlePeerMessage(msg) {
       game.served += 1;
       updateHUD();
       SoundFX.correct(); SoundFX.coin();
-      break;
-    case 'customerLost':
-      removeCustomer(msg.customerId);
-      game.lost += 1;
-      updateHUD();
-      SoundFX.customerLeave();
       break;
     case 'startLevel':
       if (!isHost) startLevel(msg.levelId, true);
@@ -989,28 +960,23 @@ function startLevel(levelId, fromRemote = false) {
     setTimeout(spawnCustomer, 700);
   }
 
+  // Patience ticker — updates the visual bar and the pay multiplier
+  // Customers NEVER leave from patience. They just pay less.
   game.patienceInterval = setInterval(() => {
     if (!game.running) return;
     const now = Date.now();
-    let changed = false;
-    for (let i = game.customers.length - 1; i >= 0; i--) {
-      const c = game.customers[i];
+    let needsUpdate = false;
+    game.customers.forEach(c => {
       const elapsed = (now - c.enteredAt) / 1000;
+      // patienceLeft is 1.0 at start, decreasing to 0 when elapsed >= patienceMax
       const pct = Math.max(0, 1 - elapsed / c.patienceMax);
+      // Below 0 means they've waited past patience. Track that separately for pay reduction.
+      const overshoot = Math.max(0, (elapsed - c.patienceMax) / c.patienceMax);
       c.patienceLeft = pct;
-      if (pct <= 0) {
-        if (isHost) {
-          removeCustomer(c.id);
-          game.lost += 1;
-          updateHUD();
-          SoundFX.customerLeave();
-          if (!soloMode) sendPeer({ type: 'customerLost', customerId: c.id });
-        }
-        changed = true;
-      }
-    }
-    if (changed) renderCustomers();
-    else updatePatienceBars();
+      c.overshoot = overshoot;
+      needsUpdate = true;
+    });
+    if (needsUpdate) updatePatienceBars();
   }, 500);
 
   showToast('Level ' + levelId + ' · ' + level.name);
@@ -1039,14 +1005,24 @@ function spawnCustomer() {
     recipeId,
     patienceMax: game.level.patience,
     patienceLeft: 1,
+    overshoot: 0,
     enteredAt: Date.now()
   };
   game.customers.push(customer);
+  // Cap at 4 concurrent customers. When the 5th would arrive, the OLDEST one
+  // pays out at their current reduced rate and leaves (they've been waiting longest).
   if (game.customers.length > 4) {
     const oldest = game.customers.shift();
-    game.lost += 1;
+    const leftoverPay = calculatePay(oldest);
+    game.score += leftoverPay;
+    game.served += 1;
     updateHUD();
-    if (!soloMode) sendPeer({ type: 'customerLost', customerId: oldest.id });
+    if (leftoverPay > 0) {
+      floatScore('+' + leftoverPay + ' 💰', '#8fd87d');
+    }
+    if (!soloMode) {
+      sendPeer({ type: 'customerServed', customerId: oldest.id, points: leftoverPay });
+    }
   }
   renderCustomers();
   SoundFX.customerEnter();
@@ -1055,7 +1031,12 @@ function spawnCustomer() {
 
 function addCustomerFromData(customer) {
   if (game.customers.some(c => c.id === customer.id)) return;
-  game.customers.push({ ...customer, patienceLeft: 1, enteredAt: Date.now() });
+  game.customers.push({
+    ...customer,
+    patienceLeft: 1,
+    overshoot: 0,
+    enteredAt: Date.now()
+  });
   renderCustomers();
   SoundFX.customerEnter();
 }
@@ -1063,6 +1044,32 @@ function addCustomerFromData(customer) {
 function removeCustomer(customerId) {
   game.customers = game.customers.filter(c => c.id !== customerId);
   renderCustomers();
+}
+
+function calculatePay(customer) {
+  const recipe = ALL_RECIPES[customer.recipeId];
+  if (!recipe) return 0;
+  const base = recipe.points;
+
+  // Within patience window: full pay + tip based on how fast
+  if (customer.patienceLeft > 0) {
+    const tipBonus = Math.round(base * customer.patienceLeft * 0.5);
+    return base + tipBonus;
+  }
+
+  // Past patience: pay drops over time. At 100% overshoot = 50% pay.
+  // At 200% overshoot = 25%. At 300% overshoot = 12.5%. Etc.
+  const overshoot = customer.overshoot || 0;
+  const multiplier = Math.max(0.1, Math.pow(0.5, overshoot));
+  return Math.max(1, Math.round(base * multiplier));
+}
+
+function getPayPercentage(customer) {
+  const recipe = ALL_RECIPES[customer.recipeId];
+  const base = recipe.points;
+  const currentPay = calculatePay(customer);
+  const maxPay = base + Math.round(base * 1 * 0.5); // max possible (served instantly)
+  return Math.min(100, Math.round((currentPay / maxPay) * 100));
 }
 
 function renderCustomers() {
@@ -1073,13 +1080,21 @@ function renderCustomers() {
     const el = document.createElement('div');
     el.className = 'customer entering';
     el.dataset.customerId = c.id;
+
     const patiencePct = Math.max(0, c.patienceLeft) * 100;
     let pClass = '';
-    if (patiencePct < 25) pClass = 'crit';
-    else if (patiencePct < 55) pClass = 'warn';
+    if (c.patienceLeft <= 0) pClass = 'crit';
+    else if (patiencePct < 30) pClass = 'warn';
+
+    const payPct = getPayPercentage(c);
+    let payClass = '';
+    if (payPct < 40) payClass = 'low';
+    else if (payPct < 70) payClass = 'mid';
+
     el.innerHTML = `
       <div class="customer-bubble">
         <span class="order-emoji">${recipe.emoji}</span>
+        <span class="customer-pay-badge ${payClass}" data-pay>${payPct}%</span>
       </div>
       <div class="customer-body">🧑</div>
       <div class="customer-patience">
@@ -1096,13 +1111,22 @@ function updatePatienceBars() {
     const el = area.querySelector(`[data-customer-id="${c.id}"]`);
     if (!el) return;
     const fill = el.querySelector('.customer-patience-fill');
-    if (!fill) return;
-    const pct = Math.max(0, c.patienceLeft) * 100;
-    fill.style.width = pct + '%';
-    fill.classList.remove('warn', 'crit');
-    if (pct < 25) fill.classList.add('crit');
-    else if (pct < 55) fill.classList.add('warn');
-    if (pct < 25) el.classList.add('impatient');
+    if (fill) {
+      const pct = Math.max(0, c.patienceLeft) * 100;
+      fill.style.width = pct + '%';
+      fill.classList.remove('warn', 'crit');
+      if (c.patienceLeft <= 0) fill.classList.add('crit');
+      else if (pct < 30) fill.classList.add('warn');
+    }
+    const badge = el.querySelector('[data-pay]');
+    if (badge) {
+      const payPct = getPayPercentage(c);
+      badge.textContent = payPct + '%';
+      badge.classList.remove('mid', 'low');
+      if (payPct < 40) badge.classList.add('low');
+      else if (payPct < 70) badge.classList.add('mid');
+    }
+    if (c.patienceLeft <= 0) el.classList.add('impatient');
     else el.classList.remove('impatient');
   });
 }
@@ -1240,12 +1264,10 @@ function renderTray() {
 function makeTrayDraggable(el) {
   let dragging = false;
   let ghost = null;
-  let pointerId = null;
   let hoveredCustomer = null;
 
   function startDrag(x, y) {
     dragging = true;
-    const rect = el.getBoundingClientRect();
     ghost = document.createElement('div');
     ghost.className = 'drag-ghost';
     const station = getMyStation();
@@ -1361,9 +1383,8 @@ function attemptServe(customer) {
   }
 
   if (matchedRecipe === customer.recipeId) {
-    const recipe = ALL_RECIPES[customer.recipeId];
-    const bonus = Math.round(recipe.points * customer.patienceLeft * 0.5);
-    const points = recipe.points + bonus;
+    // Calculate pay based on how long they waited
+    const points = calculatePay(customer);
 
     game.tray[station] = [];
     game.trayRecipe[station] = null;
@@ -1373,7 +1394,14 @@ function attemptServe(customer) {
     updateHUD();
     renderTray();
 
-    floatScore('+' + points + ' 💰', '#8fd87d');
+    // Positive feedback color based on tip
+    const recipe = ALL_RECIPES[customer.recipeId];
+    const maxPay = recipe.points + Math.round(recipe.points * 0.5);
+    const pct = points / maxPay;
+    const color = pct > 0.7 ? '#8fd87d' : pct > 0.4 ? '#ffd54f' : '#e57373';
+    const label = pct > 0.7 ? 'Perfect!' : pct > 0.4 ? 'Good' : 'Late';
+    floatScore(label + ' +' + points + ' 💰', color);
+
     SoundFX.correct(); SoundFX.coin();
 
     const custEl = document.querySelector(`[data-customer-id="${customer.id}"]`);
@@ -1394,15 +1422,15 @@ function attemptServe(customer) {
     floatScore('-3', '#e57373');
     game.score = Math.max(0, game.score - 3);
     updateHUD();
-    customer.patienceLeft = Math.max(0, customer.patienceLeft - 0.2);
   }
 }
 
 function floatScore(text, color) {
   const el = document.createElement('div');
-  el.className = 'float-score ' + (color === '#8fd87d' ? 'positive' : 'negative');
+  el.className = 'float-score ' + (color === '#8fd87d' ? 'positive' : color === '#e57373' ? 'negative' : '');
   el.textContent = text;
-  el.style.left = (window.innerWidth / 2 - 40) + 'px';
+  el.style.color = color;
+  el.style.left = (window.innerWidth / 2 - 60) + 'px';
   el.style.top = (window.innerHeight / 2) + 'px';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1400);
@@ -1446,6 +1474,15 @@ function endLevel() {
   if (game.timerInterval) clearInterval(game.timerInterval);
   if (game.spawnInterval) clearInterval(game.spawnInterval);
   if (game.patienceInterval) clearInterval(game.patienceInterval);
+
+  // Auto-pay any customers still waiting (they leave peacefully with reduced pay)
+  game.customers.forEach(c => {
+    const points = calculatePay(c);
+    game.score += points;
+    game.served += 1;
+  });
+  game.customers = [];
+  updateHUD();
 
   const score = game.score;
   const thresholds = game.level.starThresholds;
