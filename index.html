@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2a1f1a">
+  <title>Our Kitchen 🍳 - Koy & Metz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Fredoka', sans-serif;
+      background: #1a1210;
+      color: #f0e5d8;
+      touch-action: none;
+    }
+
+    /* ============================================================ */
+    /* APP LAYOUT                                                    */
+    /* ============================================================ */
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ============================================================ */
+    /* LOGIN SCREEN                                                  */
+    /* ============================================================ */
+    #loginScreen {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(180deg, #2a1f1a 0%, #3a2a20 50%, #4a3025 100%);
+      overflow-y: auto;
+    }
+
+    .login-card {
+      background: #fdf6ee;
+      border: 4px solid #8b6f5e;
+      border-radius: 12px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 8px 0 #6b4f3e, 0 12px 30px rgba(0,0,0,0.5);
+      color: #4a3f3a;
+    }
+
+    .login-card h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1rem;
+      color: #8b6f5e;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .login-card .subtitle {
+      font-size: 0.85rem;
+      color: #a89080;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .login-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+      animation: bob 2.4s ease-in-out infinite;
+      display: inline-block;
+      filter: drop-shadow(0 6px 6px rgba(0,0,0,0.15));
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    .name-input, .pin-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      text-align: center;
+      border: 3px solid #c9b0a0;
+      background: #fffdf9;
+      color: #4a3f3a;
+      outline: none;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      transition: border-color 0.15s;
+    }
+    .name-input:focus, .pin-input:focus { border-color: #8b6f5e; }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      background: #8b6f5e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #6b4f3e;
+      transition: all 0.1s;
+      margin-bottom: 10px;
+    }
+    .login-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4f3e; }
+    .login-btn.secondary { background: #a89080; box-shadow: 0 4px 0 #8b6f5e; }
+    .login-btn.secondary:active { box-shadow: 0 1px 0 #8b6f5e; }
+
+    .host-info {
+      background: #f4e9de;
+      border: 2px dashed #c9b0a0;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .host-id {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      color: #8b6f5e;
+      word-break: break-all;
+      background: #fffdf9;
+      padding: 8px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid #c9b0a0;
+    }
+
+    .login-hint {
+      font-size: 0.7rem;
+      color: #a89080;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    /* ============================================================ */
+    /* GAME VIEW                                                     */
+    /* ============================================================ */
+    #gameView {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      background: #2a1f1a;
+    }
+
+    /* ---------- TOP HUD ---------- */
+    .hud {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #1a1210;
+      border-bottom: 3px solid #6b4f3e;
+      padding: 8px 12px;
+      gap: 8px;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .hud-left, .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .hud-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .hud-btn {
+      background: #4a3025;
+      border: 2px solid #8b6f5e;
+      color: #f0e5d8;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      cursor: pointer;
+      transition: all 0.1s;
+      white-space: nowrap;
+    }
+    .hud-btn:active { transform: translateY(1px); background: #6b4f3e; }
+
+    .hud-stat {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: #f0e5d8;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hud-stat .value { color: #ffd54f; }
+
+    .level-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      color: #ffd54f;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .order-strip {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 2px 0;
+      max-width: 100%;
+      scrollbar-width: none;
+    }
+    .order-strip::-webkit-scrollbar { display: none; }
+
+    .order-ticket {
+      background: #fdf6ee;
+      border: 2px solid #8b6f5e;
+      border-radius: 4px;
+      padding: 3px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      min-width: 42px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .order-ticket.urgent {
+      border-color: #c9302c;
+      animation: urgentPulse 0.6s infinite;
+    }
+    @keyframes urgentPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,48,44,0.6); }
+      50% { box-shadow: 0 0 0 6px rgba(201,48,44,0); }
+    }
+    .order-ticket .order-emoji { font-size: 0.95rem; line-height: 1; }
+    .order-ticket .order-timer {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.4rem;
+      color: #8b6f5e;
+    }
+    .order-ticket .order-timer-bar {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      background: #8fb87d;
+      transition: width 0.3s linear;
+    }
+    .order-ticket.urgent .order-timer-bar { background: #c9302c; }
+
+    .timer-bar-container {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: #2a1f1a;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid #6b4f3e;
+      margin-top: 3px;
+    }
+    .timer-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8fb87d, #4caf50);
+      transition: width 0.3s linear, background 0.5s;
+    }
+    .timer-bar-fill.warning { background: linear-gradient(90deg, #f0a84c, #e58945); }
+    .timer-bar-fill.critical {
+      background: linear-gradient(90deg, #e57373, #c9302c);
+      animation: barPulse 0.7s infinite;
+    }
+    @keyframes barPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ---------- GAME STAGE ---------- */
+    .stage-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #2a1f1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gameCanvas {
+      display: block;
+      image-rendering: pixelated;
+      touch-action: none;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* ---------- ONSCREEN CONTROLS ---------- */
+    .controls-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .joystick-zone {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      width: 130px;
+      height: 130px;
+      pointer-events: auto;
+      touch-action: none;
+    }
+    .joystick-zone.right { left: auto; right: 15px; }
+
+    .joystick-base {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(139, 111, 94, 0.25);
+      border: 3px solid rgba(139, 111, 94, 0.5);
+    }
+    .joystick-knob {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      left: 50%;
+      top: 50%;
+      margin: -28px 0 0 -28px;
+      border-radius: 50%;
+      background: rgba(255, 213, 79, 0.85);
+      border: 3px solid #8b6f5e;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    }
+
+    .action-btn-round {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(255, 213, 79, 0.9);
+      border: 4px solid #8b6f5e;
+      color: #4a3f3a;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      cursor: pointer;
+      pointer-events: auto;
+      touch-action: none;
+      box-shadow: 0 5px 0 rgba(107, 79, 62, 0.9);
+      transition: transform 0.06s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-btn-round:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(107, 79, 62, 0.9); }
+
+    /* ---------- PROMPT / MESSAGES ---------- */
+    .center-toast {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      background: #fdf6ee;
+      color: #4a3f3a;
+      padding: 14px 22px;
+      border: 4px solid #8b6f5e;
+      border-radius: 8px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      text-align: center;
+      line-height: 1.6;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 85%;
+      box-shadow: 0 8px 0 #6b4f3e;
+    }
+    .center-toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .player-tag {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      color: #fff;
+      background: rgba(0,0,0,0.6);
+      padding: 3px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* ---------- LEVEL COMPLETE MODAL ---------- */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s;
+    }
+    .modal-bg.show { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: #fdf6ee;
+      border: 4px solid #8b6f5e;
+      border-radius: 12px;
+      padding: 24px 22px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      color: #4a3f3a;
+      box-shadow: 0 10px 0 #6b4f3e, 0 20px 60px rgba(0,0,0,0.6);
+      animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.9rem;
+      color: #8b6f5e;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .modal-card .modal-sub {
+      font-size: 0.85rem;
+      color: #a89080;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .stars-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .star {
+      font-size: 2.5rem;
+      opacity: 0.25;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: grayscale(1);
+    }
+    .star.filled {
+      opacity: 1;
+      filter: none;
+      animation: starPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(1.1);
+    }
+    @keyframes starPop {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.4); }
+      100% { transform: scale(1.1); }
+    }
+
+    .modal-score {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      color: #6b4f3e;
+      margin-bottom: 6px;
+    }
+    .modal-score .highlight {
+      color: #ffd54f;
+      background: #4a3f3a;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .modal-btn {
+      padding: 14px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: #8b6f5e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #6b4f3e;
+      transition: all 0.1s;
+    }
+    .modal-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4f3e; }
+    .modal-btn.secondary { background: #a89080; box-shadow: 0 4px 0 #8b6f5e; }
+
+    /* ---------- PAUSE MENU ---------- */
+    #pauseMenu {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 150;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #pauseMenu.show { display: flex; }
+
+    /* ---------- TOASTS ---------- */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: #8b6f5e;
+      color: white;
+      padding: 12px 20px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      border-radius: 6px;
+      z-index: 300;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 90vw;
+      text-align: center;
+      line-height: 1.6;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ---------- LEVEL SELECT ---------- */
+    #levelSelect {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #2a1f1a 0%, #3a2a20 100%);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 20px 16px;
+    }
+    #levelSelect.show { display: flex; }
+
+    .select-header {
+      text-align: center;
+      padding: 10px 0 20px;
+    }
+    .select-header h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.1rem;
+      color: #ffd54f;
+      margin-bottom: 8px;
+    }
+    .select-header .sub {
+      font-size: 0.85rem;
+      color: #a89080;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      background: #4a3025;
+      border: 3px solid #8b6f5e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: center;
+      min-width: 90px;
+    }
+    .stat-box .stat-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.45rem;
+      color: #a89080;
+      margin-bottom: 4px;
+    }
+    .stat-box .stat-value {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.9rem;
+      color: #ffd54f;
+    }
+
+    .levels-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: 30px;
+    }
+
+    .level-card {
+      background: #fdf6ee;
+      border: 4px solid #8b6f5e;
+      border-radius: 12px;
+      padding: 14px 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: #4a3f3a;
+      position: relative;
+      box-shadow: 0 4px 0 #6b4f3e;
+      overflow: hidden;
+    }
+    .level-card:active { transform: translateY(2px); box-shadow: 0 2px 0 #6b4f3e; }
+    .level-card.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+    .level-card.locked:active { transform: none; box-shadow: 0 4px 0 #6b4f3e; }
+
+    .level-number {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      color: #8b6f5e;
+      margin-bottom: 6px;
+    }
+    .level-name {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #4a3f3a;
+      margin-bottom: 8px;
+      min-height: 22px;
+    }
+    .level-stars {
+      display: flex;
+      gap: 3px;
+      font-size: 1rem;
+    }
+    .level-stars .star-icon {
+      opacity: 0.2;
+      filter: grayscale(1);
+    }
+    .level-stars .star-icon.earned {
+      opacity: 1;
+      filter: none;
+    }
+    .level-best {
+      font-size: 0.7rem;
+      color: #a89080;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .back-to-login {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .back-btn {
+      background: #4a3025;
+      border: 3px solid #8b6f5e;
+      color: #f0e5d8;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #2a1f1a;
+    }
+    .back-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2a1f1a; }
+
+    /* ---------- WAITING ROOM ---------- */
+    #waitingRoom {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #2a1f1a 0%, #3a2a20 100%);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+    #waitingRoom.show { display: flex; }
+
+    .waiting-emoji {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      animation: bob 2s ease-in-out infinite;
+    }
+    .waiting-text {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      color: #ffd54f;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    /* ---------- MOBILE DETECTION ---------- */
+    .mobile-only { display: none; }
+    body.touch-mode .mobile-only { display: flex; }
+    body.touch-mode .desktop-hint { display: none; }
+
+    @media (max-width: 500px) {
+      .login-card h1 { font-size: 0.85rem; }
+      .level-title { font-size: 0.55rem; }
+      .order-ticket { min-width: 36px; padding: 2px 4px; }
+      .order-ticket .order-emoji { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- ==================== LOGIN ==================== -->
+    <div id="loginScreen">
+      <div class="login-card">
+        <div class="login-emoji" id="loginEmoji">🍳</div>
+        <h1>OUR KITCHEN</h1>
+        <p class="subtitle">A co-op cooking adventure for Koy & Metz</p>
+
+        <div class="role-pick" style="display:flex; gap:8px; margin-bottom:12px;">
+          <button class="login-btn secondary role-btn" data-role="koy" style="flex:1; margin:0;">🌿 Koy</button>
+          <button class="login-btn secondary role-btn" data-role="metz" style="flex:1; margin:0;">🌸 Metz</button>
+        </div>
+
+        <button class="login-btn" id="hostBtn">🏠 HOST A KITCHEN</button>
+        <div class="host-info" id="hostInfo">
+          <p style="font-size:0.7rem;color:#a89080;margin-bottom:6px;">Share this ID with your partner:</p>
+          <div class="host-id" id="hostId">---</div>
+        </div>
+
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <input type="text" class="name-input" id="joinId" placeholder="Paste partner's ID" style="margin:0;flex:1;" autocomplete="off">
+          <button class="login-btn secondary" id="joinBtn" style="margin:0;padding:14px 16px;flex-shrink:0;">JOIN</button>
+        </div>
+
+        <p class="login-hint">
+          One of you hosts, the other joins.<br>
+          You'll both cook together on separate devices.
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================== WAITING ROOM ==================== -->
+    <div id="waitingRoom">
+      <div class="waiting-emoji" id="waitingEmoji">⏳</div>
+      <div class="waiting-text" id="waitingText">Waiting for your partner...</div>
+      <div class="host-info" style="display:none;" id="waitingHostInfo">
+        <p style="font-size:0.7rem;color:#a89080;margin-bottom:6px;">Share this ID:</p>
+        <div class="host-id" id="waitingHostId">---</div>
+      </div>
+    </div>
+
+    <!-- ==================== LEVEL SELECT ==================== -->
+    <div id="levelSelect">
+      <div class="select-header">
+        <h1>🍳 OUR KITCHEN</h1>
+        <p class="sub">Cook together. Beat the timer. Earn stars.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-label">TOTAL STARS</div>
+          <div class="stat-value" id="totalStars">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">HIGH SCORE</div>
+          <div class="stat-value" id="totalScore">0</div>
+        </div>
+      </div>
+
+      <div class="levels-grid" id="levelsGrid"></div>
+
+      <div class="back-to-login">
+        <button class="back-btn" id="backToLoginBtn">← BACK TO LOGIN</button>
+      </div>
+    </div>
+
+    <!-- ==================== GAME VIEW ==================== -->
+    <div id="gameView">
+
+      <!-- HUD -->
+      <div class="hud">
+        <div class="hud-left">
+          <button class="hud-btn" id="pauseBtn">⏸</button>
+          <div class="hud-stat">⭐ <span class="value" id="hudScore">0</span></div>
+        </div>
+        <div class="hud-center">
+          <div class="level-title" id="hudLevelName">Level 1</div>
+          <div class="order-strip" id="orderStrip"></div>
+          <div class="timer-bar-container">
+            <div class="timer-bar-fill" id="timerBar" style="width:100%"></div>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-stat">🍽 <span class="value" id="hudServed">0</span></div>
+        </div>
+      </div>
+
+      <!-- Stage -->
+      <div class="stage-wrap" id="stageWrap">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+      </div>
+
+      <!-- Controls layer (mobile) -->
+      <div class="controls-layer">
+        <div class="joystick-zone mobile-only" id="joystickZone">
+          <div class="joystick-base"></div>
+          <div class="joystick-knob" id="joystickKnob"></div>
+        </div>
+        <button class="action-btn-round mobile-only" id="actionBtnRound">ACT</button>
+      </div>
+
+      <div class="center-toast" id="centerToast"></div>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+    <div class="modal-bg" id="levelCompleteModal">
+      <div class="modal-card">
+        <h2 id="completeTitle">LEVEL COMPLETE!</h2>
+        <p class="modal-sub" id="completeSub">You two are on fire 🔥</p>
+
+        <div class="stars-row" id="starsRow">
+          <div class="star" data-idx="0">⭐</div>
+          <div class="star" data-idx="1">⭐</div>
+          <div class="star" data-idx="2">⭐</div>
+        </div>
+
+        <div class="modal-score">
+          SCORE: <span class="highlight" id="modalScore">0</span>
+        </div>
+        <div class="modal-score">
+          DISHES SERVED: <span class="highlight" id="modalServed">0</span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-btn" id="nextLevelBtn">NEXT LEVEL →</button>
+          <button class="modal-btn secondary" id="replayBtn">PLAY AGAIN</button>
+          <button class="modal-btn secondary" id="levelSelectBtn">LEVEL SELECT</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-bg" id="levelFailedModal">
+      <div class="modal-card">
+        <h2>TIME'S UP!</h2>
+        <p class="modal-sub" id="failedSub">Not enough dishes served</p>
+
+        <div class="modal-score">
+          SCORE: <span class="highlight" id="failedScore">0</span>
+        </div>
+        <div class="modal-score">
+          DISHES SERVED: <span class="highlight" id="failedServed">0</span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-btn" id="retryBtn">TRY AGAIN</button>
+          <button class="modal-btn secondary" id="failedLevelSelect">LEVEL SELECT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu">
+      <div class="modal-card">
+        <h2>PAUSED</h2>
+        <p class="modal-sub">Take a breath ☕</p>
+        <div class="modal-actions">
+          <button class="modal-btn" id="resumeBtn">RESUME</button>
+          <button class="modal-btn secondary" id="quitBtn">QUIT TO LEVELS</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+  /* ============================================================ */
+  /* FIREBASE - progression persistence                            */
+  /* ============================================================ */
+  const firebaseConfig = {
+    apiKey: "AIzaSyCpxlMZiAcJwI2RuNTJ14jSaHhV-nBcW7A",
+    authDomain: "mochigotchi.firebaseapp.com",
+    databaseURL: "https://mochigotchi-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "mochigotchi",
+    storageBucket: "mochigotchi.firebasestorage.app",
+    messagingSenderId: "441429859962",
+    appId: "1:441429859962:web:d0a5e1af080bb394a725c3"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  /* ============================================================ */
+  /* AUDIO (synthesized, no external files)                        */
+  /* ============================================================ */
+  const SoundFX = {
+    ctx: null,
+    init() {
+      if (!this.ctx) {
+        try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+      }
+      if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+    },
+    tone(freq, duration, type = 'sine', volume = 0.08, delay = 0) {
+      this.init(); if (!this.ctx) return;
+      const t = this.ctx.currentTime + delay;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(volume, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+      osc.connect(gain); gain.connect(this.ctx.destination);
+      osc.start(t); osc.stop(t + duration);
+    },
+    pickup() { this.tone(880, 0.08, 'square', 0.06); },
+    drop() { this.tone(440, 0.08, 'square', 0.05); },
+    chop() { this.tone(220, 0.06, 'triangle', 0.08); },
+    cook() { this.tone(330, 0.15, 'sine', 0.06); },
+    serve() {
+      [523.25, 659.25, 783.99].forEach((f, i) => this.tone(f, 0.15, 'triangle', 0.08, i * 0.06));
+    },
+    orderNew() { this.tone(660, 0.12, 'sine', 0.06); },
+    orderComplete() {
+      [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.08, i * 0.05));
+    },
+    orderFailed() { this.tone(200, 0.3, 'sawtooth', 0.1); },
+    star() {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone(f, 0.2, 'triangle', 0.1, i * 0.12));
+    },
+    fail() { this.tone(180, 0.6, 'sawtooth', 0.12); },
+    walk() { this.tone(160, 0.03, 'square', 0.02); }
+  };
+
+  /* ============================================================ */
+  /* RECIPES & INGREDIENTS                                         */
+  /* ============================================================ */
+  const INGREDIENTS = {
+    lettuce: { emoji: '🥬', color: '#7db85c', name: 'Lettuce' },
+    tomato: { emoji: '🍅', color: '#c9302c', name: 'Tomato' },
+    bun: { emoji: '🍞', color: '#d4a56a', name: 'Bun' },
+    patty: { emoji: '🥩', color: '#8b3a2a', name: 'Patty' },
+    dough: { emoji: '🥖', color: '#e8d4a0', name: 'Dough' },
+    cheese: { emoji: '🧀', color: '#f0c840', name: 'Cheese' },
+    sauce: { emoji: '🥫', color: '#c9302c', name: 'Sauce' },
+    noodles: { emoji: '🍜', color: '#f0d896', name: 'Noodles' },
+    egg: { emoji: '🥚', color: '#fdf6ee', name: 'Egg' },
+    rice: { emoji: '🍚', color: '#fdf6ee', name: 'Rice' },
+    fish: { emoji: '🐟', color: '#6da8c9', name: 'Fish' },
+    flour: { emoji: '🌾', color: '#d4b896', name: 'Flour' },
+    sugar: { emoji: '🍬', color: '#f0a8c9', name: 'Sugar' },
+    egg_yolk: { emoji: '🥚', color: '#f0c840', name: 'Egg Yolk' }
+  };
+
+  // Recipes: sequence of steps. Each step is either:
+  //  { type: 'chop', from: 'lettuce', to: 'lettuce_chopped' }
+  //  { type: 'cook', from: 'patty', to: 'patty_cooked' }
+  //  { type: 'combine', ingredients: [...] } — everything on plate
+  // We simplify: each recipe is a chain of transformations + plate assembly.
+
+  const RECIPES = {
+    salad: {
+      name: 'Salad',
+      emoji: '🥗',
+      steps: [
+        { station: 'chop', input: 'lettuce', output: 'lettuce_chopped' },
+        { station: 'plate', combine: ['lettuce_chopped', 'tomato'] }
+      ],
+      points: 10
+    },
+    burger: {
+      name: 'Burger',
+      emoji: '🍔',
+      steps: [
+        { station: 'cook', input: 'patty', output: 'patty_cooked' },
+        { station: 'plate', combine: ['bun', 'patty_cooked'] }
+      ],
+      points: 15
+    },
+    pizza: {
+      name: 'Pizza',
+      emoji: '🍕',
+      steps: [
+        { station: 'chop', input: 'tomato', output: 'tomato_chopped' },
+        { station: 'combine', input: ['dough', 'sauce'], output: 'pizza_base' },
+        { station: 'cook', input: 'pizza_base', output: 'pizza_cooked' },
+        { station: 'plate', combine: ['pizza_cooked'] }
+      ],
+      points: 20
+    },
+    ramen: {
+      name: 'Ramen',
+      emoji: '🍜',
+      steps: [
+        { station: 'chop', input: 'egg', output: 'egg_chopped' },
+        { station: 'cook', input: 'noodles', output: 'noodles_cooked' },
+        { station: 'plate', combine: ['noodles_cooked', 'egg_chopped'] }
+      ],
+      points: 18
+    },
+    sushi: {
+      name: 'Sushi',
+      emoji: '🍣',
+      steps: [
+        { station: 'chop', input: 'fish', output: 'fish_sliced' },
+        { station: 'plate', combine: ['rice', 'fish_sliced'] }
+      ],
+      points: 18
+    },
+    cake: {
+      name: 'Cake',
+      emoji: '🍰',
+      steps: [
+        { station: 'combine', input: ['flour', 'sugar', 'egg'], output: 'cake_batter' },
+        { station: 'cook', input: 'cake_batter', output: 'cake_baked' },
+        { station: 'plate', combine: ['cake_baked'] }
+      ],
+      points: 25
+    }
+  };
+
+  // Derived ingredient info for transformed items
+  const TRANSFORMED = {
+    lettuce_chopped: { emoji: '🥬', color: '#5c9c3c', name: 'Chopped Lettuce' },
+    tomato_chopped: { emoji: '🍅', color: '#a02020', name: 'Chopped Tomato' },
+    patty_cooked: { emoji: '🍖', color: '#6b2a1a', name: 'Cooked Patty' },
+    noodles_cooked: { emoji: '🍜', color: '#e8c076', name: 'Cooked Noodles' },
+    egg_chopped: { emoji: '🥚', color: '#f0c840', name: 'Chopped Egg' },
+    fish_sliced: { emoji: '🐟', color: '#5c98b9', name: 'Sliced Fish' },
+    pizza_base: { emoji: '🫓', color: '#e8c896', name: 'Pizza Base' },
+    pizza_cooked: { emoji: '🍕', color: '#d4a056', name: 'Pizza' },
+    cake_batter: { emoji: '🥣', color: '#f0c896', name: 'Cake Batter' },
+    cake_baked: { emoji: '🍰', color: '#d4a896', name: 'Baked Cake' }
+  };
+
+  function getItemInfo(id) {
+    if (INGREDIENTS[id]) return INGREDIENTS[id];
+    if (TRANSFORMED[id]) return TRANSFORMED[id];
+    return { emoji: '❓', color: '#888', name: '???' };
+  }
+
+  /* ============================================================ */
+  /* LEVELS                                                        */
+  /* ============================================================ */
+  // Grid-based kitchen. Each cell has a type:
+  //  'floor' — walkable
+  //  'crate:lettuce' — ingredient crate
+  //  'chop' — cutting board
+  //  'stove' — cook station
+  //  'plate' — plate dispenser
+  //  'serve' — serving window
+  //  'block' — wall
+  //  'bin' — trash
+  // Each level: 16 x 12 grid (scaled to canvas)
+
+  const LEVELS = [
+    {
+      id: 1, name: 'First Day',
+      duration: 90, // seconds
+      grid: makeGrid(['lettuce'], ['salad']),
+      starThresholds: [30, 60, 90]
+    },
+    {
+      id: 2, name: 'Getting Warm',
+      duration: 100,
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['lettuce', 'bun', 'patty'], ['burger']),
+      starThresholds: [50, 90, 130]
+    },
+    {
+      id: 3, name: 'Full Menu',
+      duration: 120,
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza']),
+      starThresholds: [70, 130, 190]
+    },
+    {
+      id: 4, name: 'Split Kitchen',
+      duration: 120,
+      grid: splitKitchen(['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [80, 150, 220]
+    },
+    {
+      id: 5, name: 'Ramen Rush',
+      duration: 130,
+      grid: makeGrid(['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [100, 180, 260]
+    },
+    {
+      id: 6, name: 'Shifting Floors',
+      duration: 140,
+      chaotic: 'shifting',
+      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [120, 210, 300]
+    },
+    {
+      id: 7, name: 'Sushi Night',
+      duration: 140,
+      grid: makeGrid(['rice', 'fish'], ['sushi'], ['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger']),
+      starThresholds: [130, 230, 330]
+    },
+    {
+      id: 8, name: 'Cake Emergency',
+      duration: 150,
+      chaotic: 'shifting',
+      grid: makeGrid(['flour', 'sugar', 'egg'], ['cake'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
+      starThresholds: [150, 260, 380]
+    },
+    {
+      id: 9, name: 'Chaos Kitchen',
+      duration: 150,
+      chaotic: 'rotating',
+      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
+      starThresholds: [170, 300, 430]
+    },
+    {
+      id: 10, name: 'Final Service',
+      duration: 180,
+      chaotic: 'rotating',
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['noodles', 'egg'], ['ramen'], ['rice', 'fish'], ['sushi'], ['flour', 'sugar', 'egg'], ['cake']),
+      starThresholds: [220, 380, 550]
+    }
+  ];
+
+  // Build a standard 16x12 kitchen grid with given groups of recipes
+  function makeGrid(...recipeGroups) {
+    // 16 wide, 12 tall. Layout:
+    // Row 0: top wall with crates and serve window
+    // Rows 1-2: walkable walkway
+    // Row 3: counters (chop, stove, plate, etc)
+    // Rows 4-5: main walkway
+    // Rows 6-7: more counters
+    // Rows 8-9: bottom walkway
+    // Row 10-11: bottom wall with crates
+
+    const W = 16, H = 12;
+    const grid = [];
+    for (let y = 0; y < H; y++) {
+      const row = [];
+      for (let x = 0; x < W; x++) {
+        row.push('floor');
+      }
+      grid.push(row);
+    }
+
+    // Top wall
+    for (let x = 0; x < W; x++) grid[0][x] = 'block';
+
+    // Serving window in the top middle
+    grid[0][7] = 'serve';
+    grid[0][8] = 'serve';
+
+    // Bottom wall
+    for (let x = 0; x < W; x++) grid[H-1][x] = 'block';
+
+    // Left and right walls
+    for (let y = 0; y < H; y++) {
+      grid[y][0] = 'block';
+      grid[y][W-1] = 'block';
+    }
+
+    // Central counters — split the kitchen with stations
+    // Row 4 (y=4) mid counters
+    for (let x = 2; x < W - 2; x++) grid[4][x] = 'counter';
+    // Row 7 (y=7) mid counters
+    for (let x = 2; x < W - 2; x++) grid[7][x] = 'counter';
+
+    // Place chop, stove, plate on these counters
+    // Alternating along the middle counters
+    let chopCount = 2;
+    let stoveCount = 2;
+    grid[4][3] = 'chop';
+    grid[4][6] = 'stove';
+    grid[4][9] = 'chop';
+    grid[4][12] = 'stove';
+
+    grid[7][3] = 'plate';
+    grid[7][6] = 'plate';
+    grid[7][9] = 'bin'; // trash
+    grid[7][12] = 'plate';
+
+    // Crates along the bottom row inside the wall (walkable from above)
+    const crates = [];
+    recipeGroups.forEach(group => group[0].forEach(ing => crates.push(ing)));
+    // unique crates
+    const uniqueCrates = [...new Set(crates)];
+    const crateCount = uniqueCrates.length;
+    for (let i = 0; i < crateCount; i++) {
+      const x = Math.floor((i + 1) * (W - 2) / (crateCount + 1)) + 1;
+      grid[10][x] = 'crate:' + uniqueCrates[i];
+    }
+
+    return grid;
+  }
+
+  function splitKitchen(groupA, recipesA, groupB, recipesB) {
+    // Split kitchen: left half is one setup, right half is another
+    const W = 16, H = 12;
+    const grid = [];
+    for (let y = 0; y < H; y++) {
+      const row = [];
+      for (let x = 0; x < W; x++) row.push('floor');
+      grid.push(row);
+    }
+
+    // Walls
+    for (let x = 0; x < W; x++) { grid[0][x] = 'block'; grid[H-1][x] = 'block'; }
+    for (let y = 0; y < H; y++) { grid[y][0] = 'block'; grid[y][W-1] = 'block'; }
+
+    // Divider wall in the middle with a gap
+    for (let y = 1; y < H-1; y++) {
+      if (y !== 5 && y !== 6) grid[y][7] = 'block';
+    }
+
+    // Serve windows (both halves)
+    grid[0][3] = 'serve';
+    grid[0][12] = 'serve';
+
+    // Counters
+    for (let x = 2; x < 7; x++) grid[4][x] = 'counter';
+    for (let x = 9; x < 14; x++) grid[4][x] = 'counter';
+    for (let x = 2; x < 7; x++) grid[7][x] = 'counter';
+    for (let x = 9; x < 14; x++) grid[7][x] = 'counter';
+
+    // Stations on left
+    grid[4][3] = 'chop';
+    grid[4][5] = 'stove';
+    grid[7][4] = 'plate';
+
+    // Stations on right
+    grid[4][10] = 'chop';
+    grid[4][12] = 'stove';
+    grid[7][11] = 'plate';
+
+    // Crates on left half
+    const cratesA = [...new Set(groupA)];
+    cratesA.forEach((ing, i) => {
+      const x = Math.floor((i + 1) * 6 / (cratesA.length + 1)) + 1;
+      grid[10][x] = 'crate:' + ing;
+    });
+    // Crates on right half
+    const cratesB = [...new Set(groupB)];
+    cratesB.forEach((ing, i) => {
+      const x = Math.floor((i + 1) * 6 / (cratesB.length + 1)) + 8;
+      grid[10][x] = 'crate:' + ing;
+    });
+
+    return grid;
+  }
+
+  /* ============================================================ */
+  /* GAME STATE                                                    */
+  /* ============================================================ */
+  let me = 'koy';
+  let partnerName = 'Metz';
+  let myPeerId = null;
+  let remotePeerId = null;
+  let isHost = false;
+
+  const peerState = {
+    peer: null,
+    conn: null,
+    connected: false,
+    pendingMsgs: []
+  };
+
+  // Persistent progression (synced via Firebase)
+  let progression = {
+    unlockedLevels: 1,
+    bestScores: {},
+    bestStars: {},
+    totalScore: 0
+  };
+
+  // Active game state (per session, synced via PeerJS)
+  const game = {
+    levelId: 1,
+    level: null,
+    grid: null,
+    cellSize: 40,
+    offsetX: 0,
+    offsetY: 0,
+    players: {
+      koy: { x: 1, y: 1, vx: 0, vy: 0, facing: 'down', carrying: null, moving: false, animFrame: 0 },
+      metz: { x: 14, y: 10, vx: 0, vy: 0, facing: 'up', carrying: null, moving: false, animFrame: 0 }
+    },
+    stations: {}, // key "x,y" -> { type, item, progress, cooking, etc }
+    orders: [],   // [{ id, recipe, emoji, timeCreated, duration }]
+    score: 0,
+    served: 0,
+    failed: 0,
+    timeRemaining: 0,
+    timerInterval: null,
+    orderInterval: null,
+    spawnInterval: null,
+    running: false,
+    completed: false,
+    failedLevel: false,
+    chaotic: null,
+    chaosTimer: 0
+  };
+
+  // Input
+  const input = {
+    keys: {},
+    joystick: { active: false, dx: 0, dy: 0, touchId: null },
+    actionPressed: false
+  };
+
+  /* ============================================================ */
+  /* DOM REFERENCES                                                */
+  /* ============================================================ */
+  const $ = id => document.getElementById(id);
+  const canvas = $('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  /* ============================================================ */
+  /* TOAST                                                         */
+  /* ============================================================ */
+  let toastT;
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function showCenterToast(msg, duration = 1500) {
+    const t = $('centerToast');
+    t.innerHTML = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  /* ============================================================ */
+  /* LOGIN - role pick                                             */
+  /* ============================================================ */
+  let selectedRole = null;
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.role-btn').forEach(b => {
+        b.style.background = '#a89080';
+        b.style.boxShadow = '0 4px 0 #8b6f5e';
+      });
+      btn.style.background = '#8b6f5e';
+      btn.style.boxShadow = '0 4px 0 #6b4f3e';
+      selectedRole = btn.dataset.role;
+      $('loginEmoji').textContent = selectedRole === 'koy' ? '🌿' : '🌸';
+      $('loginEmoji').textContent = selectedRole === 'koy' ? '🌿' : '🌸';
+    });
+  });
+
+  /* ============================================================ */
+  /* PEER JS - CONNECTION                                          */
+  /* ============================================================ */
+  function initPeer() {
+    const id = 'kitchen-' + Math.random().toString(36).substring(2, 8);
+    myPeerId = id;
+    peerState.peer = new Peer(id, {
+      debug: 0,
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:global.stun.twilio.com:3478' }
+        ]
+      }
+    });
+
+    peerState.peer.on('open', () => {
+      $('hostId').textContent = id;
+      $('waitingHostId').textContent = id;
+    });
+
+    peerState.peer.on('connection', (conn) => {
+      setupConnection(conn);
+      isHost = true;
+    });
+
+    peerState.peer.on('error', (err) => {
+      console.error('Peer error:', err);
+      if (err.type === 'peer-unavailable') {
+        showToast('Partner not found. Check the ID.');
+      }
+    });
+  }
+
+  function setupConnection(conn) {
+    peerState.conn = conn;
+    conn.on('open', () => {
+      peerState.connected = true;
+      remotePeerId = conn.peer;
+      showToast('Connected! 💫');
+      // Flush pending
+      peerState.pendingMsgs.forEach(m => conn.send(m));
+      peerState.pendingMsgs = [];
+      // Move both into waiting room then level select
+      $('loginScreen').style.display = 'none';
+      $('waitingRoom').classList.add('show');
+      $('waitingEmoji').textContent = '🎉';
+      $('waitingText').textContent = 'Ready! Loading levels...';
+      setTimeout(() => {
+        $('waitingRoom').classList.remove('show');
+        showLevelSelect();
+      }, 800);
+    });
+
+    conn.on('data', (data) => {
+      handlePeerMessage(data);
+    });
+
+    conn.on('close', () => {
+      peerState.connected = false;
+      showToast('Partner disconnected 😢');
+      // Return to level select quietly
+      if (game.running) quitToLevels();
+    });
+  }
+
+  function sendPeer(msg) {
+    if (peerState.connected && peerState.conn) {
+      try { peerState.conn.send(msg); } catch(e) {}
+    } else {
+      peerState.pendingMsgs.push(msg);
+    }
+  }
+
+  function handlePeerMessage(msg) {
+    switch (msg.type) {
+      case 'position':
+        if (msg.role !== me) {
+          const p = game.players[msg.role];
+          if (p) {
+            p.x = msg.x; p.y = msg.y;
+            p.facing = msg.facing;
+            p.moving = msg.moving;
+            p.carrying = msg.carrying;
+          }
+        }
+        break;
+      case 'stationUpdate':
+        game.stations[msg.key] = msg.data;
+        break;
+      case 'orderSpawn':
+        game.orders.push(msg.order);
+        SoundFX.orderNew();
+        updateOrderStrip();
+        break;
+      case 'orderComplete':
+        game.orders = game.orders.filter(o => o.id !== msg.orderId);
+        game.score += msg.points;
+        game.served += 1;
+        SoundFX.orderComplete();
+        updateHUD();
+        updateOrderStrip();
+        break;
+      case 'orderFailed':
+        game.orders = game.orders.filter(o => o.id !== msg.orderId);
+        game.score = Math.max(0, game.score - 5);
+        SoundFX.orderFailed();
+        updateHUD();
+        updateOrderStrip();
+        break;
+      case 'levelComplete':
+        if (!isHost) {
+          handleLevelComplete(msg);
+        }
+        break;
+      case 'levelFailed':
+        if (!isHost) {
+          handleLevelFailed();
+        }
+        break;
+      case 'startLevel':
+        if (!isHost) {
+          startLevel(msg.levelId, true);
+        }
+        break;
+      case 'quit':
+        if (game.running) quitToLevels();
+        break;
+    }
+  }
+
+  /* ============================================================ */
+  /* LOGIN BUTTONS                                                 */
+  /* ============================================================ */
+  $('hostBtn').addEventListener('click', () => {
+    if (!selectedRole) return showToast('Pick who you are first 🌿');
+    me = selectedRole;
+    initPeer();
+    $('hostBtn').style.display = 'none';
+    $('joinId').style.display = 'none';
+    $('joinBtn').style.display = 'none';
+    $('hostInfo').style.display = 'block';
+    showToast('Share the ID with your partner!');
+  });
+
+  $('joinBtn').addEventListener('click', () => {
+    if (!selectedRole) return showToast('Pick who you are first 🌿');
+    me = selectedRole;
+    const hostId = $('joinId').value.trim();
+    if (!hostId) return showToast('Paste the host ID first');
+    initPeer();
+    setTimeout(() => {
+      const conn = peerState.peer.connect(hostId, { reliable: true });
+      setupConnection(conn);
+      $('loginScreen').style.display = 'none';
+      $('waitingRoom').classList.add('show');
+      $('waitingEmoji').textContent = '⏳';
+      $('waitingText').textContent = 'Connecting...';
+    }, 800);
+  });
+
+  $('hostId').addEventListener('click', () => {
+    const id = $('hostId').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(id).then(() => showToast('ID copied! 💫'));
+    }
+  });
+
+  /* ============================================================ */
+  /* LEVEL SELECT                                                  */
+  /* ============================================================ */
+  function showLevelSelect() {
+    $('levelSelect').classList.add('show');
+    renderLevels();
+    loadProgression();
+  }
+
+  function renderLevels() {
+    const grid = $('levelsGrid');
+    grid.innerHTML = '';
+    LEVELS.forEach((lvl, idx) => {
+      const unlocked = (idx + 1) <= progression.unlockedLevels;
+      const stars = progression.bestStars[lvl.id] || 0;
+      const best = progression.bestScores[lvl.id] || 0;
+
+      const card = document.createElement('div');
+      card.className = 'level-card' + (unlocked ? '' : ' locked');
+      card.innerHTML = `
+        <div class="level-number">LEVEL ${lvl.id}</div>
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-stars">
+          <span class="star-icon ${stars >= 1 ? 'earned' : ''}">⭐</span>
+          <span class="star-icon ${stars >= 2 ? 'earned' : ''}">⭐</span>
+          <span class="star-icon ${stars >= 3 ? 'earned' : ''}">⭐</span>
+        </div>
+        <div class="level-best">${best > 0 ? 'Best: ' + best : 'Not played'}</div>
+      `;
+      if (unlocked) {
+        card.addEventListener('click', () => startLevel(lvl.id));
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  async function loadProgression() {
+    try {
+      const snap = await db.ref('kitchen_progression').once('value');
+      if (snap.exists()) {
+        const data = snap.val();
+        progression.unlockedLevels = data.unlockedLevels || 1;
+        progression.bestScores = data.bestScores || {};
+        progression.bestStars = data.bestStars || {};
+        progression.totalScore = data.totalScore || 0;
+      }
+      updateProgressionUI();
+    } catch(e) { console.error(e); }
+  }
+
+  function updateProgressionUI() {
+    let stars = 0;
+    Object.values(progression.bestStars).forEach(s => stars += s);
+    $('totalStars').textContent = stars;
+    $('totalScore').textContent = progression.totalScore || 0;
+  }
+
+  async function saveProgression() {
+    try {
+      await db.ref('kitchen_progression').set(progression);
+    } catch(e) { console.error(e); }
+  }
+
+  $('backToLoginBtn').addEventListener('click', () => {
+    if (peerState.connected) {
+      sendPeer({ type: 'quit' });
+    }
+    location.reload();
+  });
+
+  /* ============================================================ */
+  /* LEVEL START/STOP                                              */
+  /* ============================================================ */
+  function startLevel(levelId, fromRemote = false) {
+    const level = LEVELS.find(l => l.id === levelId);
+    if (!level) return;
+
+    // Send to remote if we're host
+    if (!fromRemote && !isHost) {
+      sendPeer({ type: 'startLevel', levelId });
+    }
+    if (!fromRemote && isHost) {
+      sendPeer({ type: 'startLevel', levelId });
+    }
+
+    // If host uses progression check
+    // Build game state
+    game.levelId = levelId;
+    game.level = level;
+    game.grid = level.grid.map(row => row.slice());
+    game.stations = {};
+    game.orders = [];
+    game.score = 0;
+    game.served = 0;
+    game.failed = 0;
+    game.timeRemaining = level.duration;
+    game.running = true;
+    game.completed = false;
+    game.failedLevel = false;
+    game.chaotic = level.chaotic || null;
+    game.chaosTimer = 0;
+
+    // Reset players - place them in starting positions based on floor tiles
+    game.players.koy = { x: 2, y: 2, vx: 0, vy: 0, facing: 'down', carrying: null, moving: false, animFrame: 0 };
+    game.players.metz = { x: 13, y: 9, vx: 0, vy: 0, facing: 'up', carrying: null, moving: false, animFrame: 0 };
+
+    // Build stations from grid
+    for (let y = 0; y < game.grid.length; y++) {
+      for (let x = 0; x < game.grid[y].length; x++) {
+        const cell = game.grid[y][x];
+        const key = x + ',' + y;
+        if (cell === 'chop') game.stations[key] = { type: 'chop', item: null, progress: 0 };
+        else if (cell === 'stove') game.stations[key] = { type: 'stove', item: null, progress: 0 };
+        else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null, isPlateDispenser: true };
+        else if (cell === 'serve') game.stations[key] = { type: 'serve' };
+        else if (cell === 'bin') game.stations[key] = { type: 'bin' };
+        else if (cell.startsWith('crate:')) game.stations[key] = { type: 'crate', ingredient: cell.split(':')[1] };
+      }
+    }
+
+    // Show game view
+    $('levelSelect').classList.remove('show');
+    $('gameView').style.display = 'flex';
+    $('hudLevelName').textContent = 'Level ' + levelId + ' · ' + level.name;
+
+    // Resize canvas to fit
+    resizeCanvas();
+
+    // Start loops
+    startGameLoops();
+
+    // Show intro
+    showCenterToast('Level ' + levelId + '<br>' + level.name, 1800);
+    SoundFX.orderComplete();
+
+    // Host runs the order spawner + timer
+    if (isHost) {
+      game.orderInterval = setInterval(hostSpawnOrder, 4500);
+      setTimeout(hostSpawnOrder, 800);
+    }
+
+    updateHUD();
+    updateOrderStrip();
+  }
+
+  function startGameLoops() {
+    if (game.timerInterval) clearInterval(game.timerInterval);
+    game.timerInterval = setInterval(() => {
+      if (!game.running) return;
+      game.timeRemaining -= 1;
+      updateHUD();
+
+      if (game.timeRemaining <= 0) {
+        endLevel(false);
+      }
+    }, 1000);
+
+    if (game.spawnInterval) clearInterval(game.spawnInterval);
+    game.spawnInterval = setInterval(() => {
+      if (!game.running) return;
+      game.chaosTimer++;
+      if (game.chaotic === 'shifting' && game.chaosTimer % 15 === 0) {
+        shiftCounters();
+      } else if (game.chaotic === 'rotating' && game.chaosTimer % 12 === 0) {
+        rotateStations();
+      }
+    }, 1000);
+  }
+
+  function shiftCounters() {
+    // Swap some counter tiles around to disorient players
+    if (!isHost) return;
+    const counterPositions = [];
+    for (let y = 0; y < game.grid.length; y++) {
+      for (let x = 0; x < game.grid[y].length; x++) {
+        if (game.grid[y][x] === 'counter' || game.grid[y][x] === 'chop' || game.grid[y][x] === 'stove') {
+          counterPositions.push({ x, y, cell: game.grid[y][x] });
+        }
+      }
+    }
+    if (counterPositions.length < 4) return;
+    // Pick 2 random and swap their station type
+    const a = counterPositions[Math.floor(Math.random() * counterPositions.length)];
+    const b = counterPositions[Math.floor(Math.random() * counterPositions.length)];
+    if (a === b) return;
+    const cellA = a.cell, cellB = b.cell;
+    game.grid[a.y][a.x] = cellB;
+    game.grid[b.y][b.x] = cellA;
+    // Rebuild stations for those two cells
+    rebuildStation(a.x, a.y);
+    rebuildStation(b.x, b.y);
+    syncFullGrid();
+    showCenterToast('⚡ The kitchen is shifting!', 1200);
+  }
+
+  function rotateStations() {
+    // Rotate serving window position
+    if (!isHost) return;
+    // Find serve tiles and shift them right by 1
+    const serveTiles = [];
+    for (let y = 0; y < game.grid.length; y++) {
+      for (let x = 0; x < game.grid[y].length; x++) {
+        if (game.grid[y][x] === 'serve') serveTiles.push({ x, y });
+      }
+    }
+    if (serveTiles.length === 0) return;
+    // Clear old
+    serveTiles.forEach(t => {
+      game.grid[t.y][t.x] = 'block';
+      delete game.stations[t.x + ',' + t.y];
+    });
+    // Place new serves with a shift
+    serveTiles.forEach((t, i) => {
+      const nx = (t.x + 2) % game.grid[0].length;
+      // Ensure it's on wall row (y=0)
+      if (newx_valid(nx)) {
+        game.grid[0][nx] = 'serve';
+        game.stations[nx + ',0'] = { type: 'serve' };
+      }
+    });
+    function newx_valid(nx) { return nx > 0 && nx < game.grid[0].length - 1; }
+    syncFullGrid();
+    showCenterToast('🔀 Order window moved!', 1200);
+  }
+
+  function rebuildStation(x, y) {
+    const cell = game.grid[y][x];
+    const key = x + ',' + y;
+    if (cell === 'chop') game.stations[key] = { type: 'chop', item: null, progress: 0 };
+    else if (cell === 'stove') game.stations[key] = { type: 'stove', item: null, progress: 0 };
+    else if (cell === 'counter') game.stations[key] = { type: 'counter' };
+    else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null, isPlateDispenser: true };
+    else if (cell === 'serve') game.stations[key] = { type: 'serve' };
+    else delete game.stations[key];
+  }
+
+  function syncFullGrid() {
+    sendPeer({ type: 'gridSync', grid: game.grid, stations: game.stations });
+  }
+
+  /* ============================================================ */
+  /* ORDER SPAWNING                                                */
+  /* ============================================================ */
+  function hostSpawnOrder() {
+    if (!game.running || !isHost) return;
+    // Pick a recipe that's included in this level
+    const recipesInLevel = getRecipesInLevel();
+    if (recipesInLevel.length === 0) return;
+    const recipeId = recipesInLevel[Math.floor(Math.random() * recipesInLevel.length)];
+    const recipe = RECIPES[recipeId];
+    const order = {
+      id: 'o_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5),
+      recipeId,
+      emoji: recipe.emoji,
+      name: recipe.name,
+      timeCreated: Date.now(),
+      duration: 40000 + Math.random() * 20000, // 40-60 seconds
+      points: recipe.points
+    };
+    game.orders.push(order);
+    sendPeer({ type: 'orderSpawn', order });
+    SoundFX.orderNew();
+    updateOrderStrip();
+    // Cap at 6 concurrent orders
+    if (game.orders.length > 6) {
+      const oldest = game.orders[0];
+      game.orders.shift();
+      game.score = Math.max(0, game.score - 5);
+      sendPeer({ type: 'orderFailed', orderId: oldest.id });
+      updateOrderStrip();
+    }
+  }
+
+  function getRecipesInLevel() {
+    // Check which crates exist in this level
+    const crates = new Set();
+    for (let y = 0; y < game.grid.length; y++) {
+      for (let x = 0; x < game.grid[y].length; x++) {
+        const c = game.grid[y][x];
+        if (typeof c === 'string' && c.startsWith('crate:')) {
+          crates.add(c.split(':')[1]);
+        }
+      }
+    }
+    // Which recipes can be made with these ingredients?
+    const recipes = [];
+    for (const [id, r] of Object.entries(RECIPES)) {
+      const needed = new Set();
+      r.steps.forEach(s => {
+        if (s.input && typeof s.input === 'string') needed.add(s.input);
+        if (s.combine) s.combine.forEach(c => {
+          // Check if it's a transformed item or raw
+          if (INGREDIENTS[c]) needed.add(c);
+          else {
+            // Find raw ingredient that transforms into it
+            for (const step of r.steps) {
+              if (step.output === c && step.input) needed.add(step.input);
+            }
+          }
+        });
+        if (s.input && Array.isArray(s.input)) s.input.forEach(i => needed.add(i));
+      });
+      let canMake = true;
+      needed.forEach(n => { if (!crates.has(n)) canMake = false; });
+      if (canMake) recipes.push(id);
+    }
+    // If no recipe found, return salad fallback
+    return recipes.length > 0 ? recipes : ['salad'];
+  }
+
+  /* ============================================================ */
+  /* MAIN GAME LOOP                                                */
+  /* ============================================================ */
+  let lastFrame = 0;
+  function gameLoop(ts) {
+    requestAnimationFrame(gameLoop);
+    if (!game.running && !$('gameView').style.display === 'flex') return;
+    if (!game.level) return;
+
+    const dt = Math.min((ts - lastFrame) / 1000, 0.05);
+    lastFrame = ts;
+
+    updatePlayers(dt);
+    updateStations(dt);
+    updateOrders();
+
+    render();
+  }
+
+  function updatePlayers(dt) {
+    // Local player input
+    const local = game.players[me];
+    if (!local) return;
+
+    let dx = 0, dy = 0;
+    if (input.joystick.active) {
+      dx = input.joystick.dx;
+      dy = input.joystick.dy;
+    } else {
+      if (input.keys['ArrowLeft'] || input.keys['a'] || input.keys['A']) dx -= 1;
+      if (input.keys['ArrowRight'] || input.keys['d'] || input.keys['D']) dx += 1;
+      if (input.keys['ArrowUp'] || input.keys['w'] || input.keys['W']) dy -= 1;
+      if (input.keys['ArrowDown'] || input.keys['s'] || input.keys['S']) dy += 1;
+    }
+
+    // Normalize diagonal
+    if (dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
+
+    const speed = 4.5; // tiles per second
+    const moveX = dx * speed * dt;
+    const moveY = dy * speed * dt;
+
+    // Try to move
+    const newX = local.x + moveX;
+    const newY = local.y + moveY;
+
+    // Collision check — allow walking on floor, crates, stations (not blocks)
+    // Player occupies a small circle around (x, y)
+    const radius = 0.35;
+
+    if (canWalkTo(newX, local.y, radius)) local.x = newX;
+    if (canWalkTo(local.x, newY, radius)) local.y = newY;
+
+    // Clamp to grid
+    local.x = Math.max(1, Math.min(game.grid[0].length - 2, local.x));
+    local.y = Math.max(1, Math.min(game.grid.length - 2, local.y));
+
+    // Update facing and animation
+    if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+      if (Math.abs(dx) > Math.abs(dy)) local.facing = dx > 0 ? 'right' : 'left';
+      else local.facing = dy > 0 ? 'down' : 'up';
+      local.moving = true;
+      local.animFrame += dt * 8;
+      if (Math.floor(local.animFrame) !== Math.floor(local.animFrame - dt * 8)) SoundFX.walk();
+    } else {
+      local.moving = false;
+      local.animFrame = 0;
+    }
+
+    // Send position to partner (throttled)
+    if (peerState.connected) {
+      const now = Date.now();
+      if (!updatePlayers.lastSend || now - updatePlayers.lastSend > 60) {
+        updatePlayers.lastSend = now;
+        sendPeer({
+          type: 'position',
+          role: me,
+          x: local.x, y: local.y,
+          facing: local.facing,
+          moving: local.moving,
+          carrying: local.carrying
+        });
+      }
+    }
+  }
+
+  function canWalkTo(x, y, radius) {
+    // Check a few points around the target
+    const points = [
+      [x, y],
+      [x - radius, y],
+      [x + radius, y],
+      [x, y - radius],
+      [x, y + radius]
+    ];
+    for (const [px, py] of points) {
+      const cx = Math.floor(px);
+      const cy = Math.floor(py);
+      if (cy < 0 || cy >= game.grid.length || cx < 0 || cx >= game.grid[0].length) return false;
+      const cell = game.grid[cy][cx];
+      if (cell === 'block') return false;
+    }
+    return true;
+  }
+
+  function updateStations(dt) {
+    // Update cooking progress
+    for (const key of Object.keys(game.stations)) {
+      const st = game.stations[key];
+      if (st.type === 'stove' && st.item && st.cooking) {
+        st.progress = (st.progress || 0) + dt;
+        if (st.progress >= 3) { // 3 seconds to cook
+          // Transform item
+          const next = cookTransform(st.item);
+          if (next) {
+            st.item = next;
+            st.progress = 0;
+            st.cooking = false;
+            SoundFX.cook();
+            sendPeer({ type: 'stationUpdate', key, data: st });
+          } else {
+            // Burnt!
+            st.item = 'burnt';
+            st.cooking = false;
+            SoundFX.orderFailed();
+            sendPeer({ type: 'stationUpdate', key, data: st });
+          }
+        } else if (st.progress % 0.5 < dt) {
+          // Sound tick
+          sendPeer({ type: 'stationUpdate', key, data: st });
+        }
+      }
+      if (st.type === 'chop' && st.item && st.chopping) {
+        st.progress = (st.progress || 0) + dt;
+        if (st.progress >= 1.5) {
+          const next = chopTransform(st.item);
+          if (next) {
+            st.item = next;
+            st.progress = 0;
+            st.chopping = false;
+            SoundFX.chop();
+            sendPeer({ type: 'stationUpdate', key, data: st });
+          }
+        }
+      }
+    }
+  }
+
+  function cookTransform(item) {
+    const map = {
+      patty: 'patty_cooked',
+      noodles: 'noodles_cooked',
+      pizza_base: 'pizza_cooked',
+      cake_batter: 'cake_baked'
+    };
+    return map[item] || null;
+  }
+  function chopTransform(item) {
+    const map = {
+      lettuce: 'lettuce_chopped',
+      tomato: 'tomato_chopped',
+      egg: 'egg_chopped',
+      fish: 'fish_sliced'
+    };
+    return map[item] || null;
+  }
+
+  function updateOrders() {
+    // Remove expired orders
+    const now = Date.now();
+    let changed = false;
+    for (let i = game.orders.length - 1; i >= 0; i--) {
+      const o = game.orders[i];
+      if (now - o.timeCreated > o.duration) {
+        game.orders.splice(i, 1);
+        game.score = Math.max(0, game.score - 5);
+        game.failed += 1;
+        SoundFX.orderFailed();
+        changed = true;
+        if (isHost) sendPeer({ type: 'orderFailed', orderId: o.id });
+      }
+    }
+    if (changed) {
+      updateOrderStrip();
+      updateHUD();
+    }
+  }
+
+  /* ============================================================ */
+  /* INTERACTIONS                                                  */
+  /* ============================================================ */
+  function tryAction() {
+    if (!game.running) return;
+    const player = game.players[me];
+    if (!player) return;
+
+    // Find the closest interactable station
+    // Priority: the station the player is facing (in front of them)
+    const facing = player.facing;
+    let targetX = Math.floor(player.x);
+    let targetY = Math.floor(player.y);
+    if (facing === 'up') targetY -= 1;
+    if (facing === 'down') targetY += 1;
+    if (facing === 'left') targetX -= 1;
+    if (facing === 'right') targetX += 1;
+
+    // Fallback: check adjacent tiles
+    const checkOrder = [[targetX, targetY]];
+    const allAdj = [[targetX, targetY], [Math.floor(player.x) - 1, Math.floor(player.y)], [Math.floor(player.x) + 1, Math.floor(player.y)], [Math.floor(player.x), Math.floor(player.y) - 1], [Math.floor(player.x), Math.floor(player.y) + 1]];
+    for (const [ax, ay] of allAdj) {
+      const cell = game.grid[ay] && game.grid[ay][ax];
+      if (cell && cell !== 'block' && cell !== 'floor' && cell !== 'counter') {
+        checkOrder.push([ax, ay]);
+      }
+    }
+
+    let station = null, stationKey = null;
+    for (const [tx, ty] of checkOrder) {
+      const key = tx + ',' + ty;
+      if (game.stations[key]) {
+        station = game.stations[key];
+        stationKey = key;
+        break;
+      }
+    }
+
+    if (!station) {
+      // Try dropping on empty counter or floor
+      return;
+    }
+
+    // Handle based on station type
+    const cell = game.grid[tyFor(stationKey)] && game.grid[tyFor(stationKey)][txFor(stationKey)];
+    switch (station.type) {
+      case 'crate': {
+        if (!player.carrying) {
+          player.carrying = station.ingredient;
+          SoundFX.pickup();
+          sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: false, carrying: player.carrying });
+        } else if (player.carrying === station.ingredient) {
+          // Already have one — do nothing
+        } else {
+          // Swap? No — just ignore
+        }
+        break;
+      }
+      case 'chop': {
+        if (!station.item && player.carrying) {
+          // Place
+          station.item = player.carrying;
+          player.carrying = null;
+          station.progress = 0;
+          SoundFX.drop();
+        } else if (station.item && !player.carrying) {
+          if (!station.chopping && chopTransform(station.item)) {
+            // Start chopping
+            station.chopping = true;
+            station.progress = 0;
+            SoundFX.chop();
+          } else if (station.item) {
+            // Pick up (chopping or not)
+            if (!station.chopping) {
+              player.carrying = station.item;
+              station.item = null;
+              station.progress = 0;
+              SoundFX.pickup();
+            }
+          }
+        } else if (station.item && player.carrying && station.item !== player.carrying) {
+          // Swap
+          const temp = player.carrying;
+          player.carrying = station.item;
+          station.item = temp;
+          SoundFX.pickup();
+        }
+        break;
+      }
+      case 'stove': {
+        if (!station.item && player.carrying) {
+          station.item = player.carrying;
+          player.carrying = null;
+          station.cooking = true;
+          station.progress = 0;
+          SoundFX.drop();
+        } else if (station.item && !player.carrying && !station.cooking) {
+          player.carrying = station.item;
+          station.item = null;
+          station.progress = 0;
+          station.cooking = false;
+          SoundFX.pickup();
+        }
+        break;
+      }
+      case 'plate': {
+        // Plate dispenser gives you a plate
+        if (!player.carrying) {
+          player.carrying = 'plate';
+          SoundFX.pickup();
+        } else {
+          // Drop item on plate = assemble
+          // If station has no item and we have a plate, drop plate
+          // Simplified: just rotate. Actually we need plate-holding logic.
+        }
+        break;
+      }
+      case 'serve': {
+        if (player.carrying) {
+          // Is it a finished dish?
+          const dish = findDishFor(player.carrying);
+          if (dish) {
+            // Find matching order
+            const matching = game.orders.find(o => o.recipeId === dish);
+            if (matching) {
+              // Complete!
+              if (isHost) {
+                game.orders = game.orders.filter(o => o.id !== matching.id);
+                game.score += matching.points;
+                game.served += 1;
+                sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
+                SoundFX.orderComplete();
+                updateOrderStrip();
+                updateHUD();
+              } else {
+                // Non-host sends action to host
+                sendPeer({ type: 'serveRequest', dish: dish, role: me });
+              }
+              player.carrying = null;
+              showCenterToast('DISH SERVED! +' + matching.points, 900);
+            } else {
+              // No matching order — penalty
+              player.carrying = null;
+              SoundFX.orderFailed();
+              showCenterToast('No order for that!', 900);
+            }
+          } else {
+            // Not a dish — drop it back
+            player.carrying = null;
+          }
+        }
+        break;
+      }
+      case 'bin': {
+        if (player.carrying) {
+          player.carrying = null;
+          SoundFX.drop();
+        }
+        break;
+      }
+    }
+
+    // Sync station
+    if (stationKey) {
+      sendPeer({ type: 'stationUpdate', key: stationKey, data: station });
+    }
+    // Sync player carrying
+    sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
+  }
+
+  function txFor(key) { return parseInt(key.split(',')[0]); }
+  function tyFor(key) { return parseInt(key.split(',')[1]); }
+
+  function findDishFor(item) {
+    // Check if item is a completed recipe dish (its plate representation)
+    // We represent dishes as 'dish_<recipeId>'
+    if (typeof item === 'string' && item.startsWith('dish_')) return item.replace('dish_', '');
+    return null;
+  }
+
+  /* ============================================================ */
+  /* RENDER                                                        */
+  /* ============================================================ */
+  function render() {
+    if (!game.level) return;
+    const W = canvas.width;
+    const H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const cols = game.grid[0].length;
+    const rows = game.grid.length;
+    const cellW = W / cols;
+    const cellH = H / rows;
+    const cell = Math.min(cellW, cellH);
+    const offX = (W - cell * cols) / 2;
+    const offY = (H - cell * rows) / 2;
+    game.cellSize = cell;
+    game.offsetX = offX;
+    game.offsetY = offY;
+
+    // Floor
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const px = offX + x * cell;
+        const py = offY + y * cell;
+        const c = game.grid[y][x];
+
+        if (c === 'block') {
+          ctx.fillStyle = '#3a2a20';
+          ctx.fillRect(px, py, cell, cell);
+          // brick pattern
+          ctx.fillStyle = '#2a1f1a';
+          ctx.fillRect(px, py, cell, cell * 0.08);
+          ctx.fillRect(px, py + cell * 0.5, cell, cell * 0.08);
+        } else {
+          // Floor
+          ctx.fillStyle = (x + y) % 2 === 0 ? '#5c4438' : '#4e3a2e';
+          ctx.fillRect(px, py, cell, cell);
+          // Tile grid
+          ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px + 0.5, py + 0.5, cell - 1, cell - 1);
+        }
+      }
+    }
+
+    // Stations
+    for (const key of Object.keys(game.stations)) {
+      const [xs, ys] = key.split(',');
+      const x = parseInt(xs), y = parseInt(ys);
+      const st = game.stations[key];
+      const px = offX + x * cell;
+      const py = offY + y * cell;
+      drawStation(st, px, py, cell);
+    }
+
+    // Orders time bars — draw timers in a subtle way
+    // Players
+    for (const role of ['koy', 'metz']) {
+      const p = game.players[role];
+      if (p) drawPlayer(p, offX + p.x * cell, offY + p.y * cell, cell, role);
+    }
+  }
+
+  function drawStation(st, px, py, cell) {
+    switch (st.type) {
+      case 'counter':
+        ctx.fillStyle = '#8b6f5e';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#6b4f3e';
+        ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
+        break;
+      case 'crate': {
+        const info = getItemInfo(st.ingredient);
+        ctx.fillStyle = '#5c4438';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#3a2a20';
+        ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
+        ctx.font = (cell * 0.55) + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
+        break;
+      }
+      case 'chop': {
+        ctx.fillStyle = '#c9a47e';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#8b6f5e';
+        ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
+        // Knife mark
+        ctx.strokeStyle = '#6b4f3e';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(px + cell * 0.3, py + cell * 0.3);
+        ctx.lineTo(px + cell * 0.7, py + cell * 0.7);
+        ctx.stroke();
+        if (st.item) {
+          const info = getItemInfo(st.item);
+          ctx.font = (cell * 0.55) + 'px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
+          if (st.chopping) {
+            // Progress ring
+            const pct = Math.min(1, st.progress / 1.5);
+            ctx.strokeStyle = '#8fb87d';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(px + cell / 2, py + cell / 2, cell * 0.4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+            ctx.stroke();
+          }
+        }
+        break;
+      }
+      case 'stove': {
+        ctx.fillStyle = '#4a3f3a';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#2a1f1a';
+        ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
+        // Flame
+        if (st.cooking && st.item) {
+          const flameSize = cell * 0.15 + Math.sin(Date.now() / 100) * 3;
+          ctx.fillStyle = '#f0a84c';
+          ctx.beginPath();
+          ctx.arc(px + cell / 2, py + cell * 0.8, flameSize, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#c9302c';
+          ctx.beginPath();
+          ctx.arc(px + cell / 2, py + cell * 0.8, flameSize * 0.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (st.item) {
+          const info = getItemInfo(st.item);
+          ctx.font = (cell * 0.55) + 'px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
+          if (st.cooking) {
+            const pct = Math.min(1, st.progress / 3);
+            ctx.strokeStyle = '#ffd54f';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(px + cell / 2, py + cell / 2, cell * 0.4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+            ctx.stroke();
+          }
+        }
+        break;
+      }
+      case 'plate': {
+        ctx.fillStyle = '#e8e8e8';
+        ctx.beginPath();
+        ctx.arc(px + cell / 2, py + cell / 2, cell * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#a8a8a8';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        if (st.item) {
+          const info = getItemInfo(st.item);
+          ctx.font = (cell * 0.5) + 'px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
+        }
+        break;
+      }
+      case 'serve': {
+        ctx.fillStyle = '#f0d896';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#d4b896';
+        ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
+        ctx.font = (cell * 0.55) + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🍽️', px + cell / 2, py + cell / 2);
+        break;
+      }
+      case 'bin': {
+        ctx.fillStyle = '#4a3f3a';
+        ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
+        ctx.fillStyle = '#2a1f1a';
+        ctx.beginPath();
+        ctx.arc(px + cell / 2, py + cell / 2, cell * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.font = (cell * 0.4) + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🗑️', px + cell / 2, py + cell / 2);
+        break;
+      }
+    }
+  }
+
+  function drawPlayer(p, px, py, cell, role) {
+    const cx = px + cell / 2;
+    const cy = py + cell / 2;
+    const size = cell * 0.42;
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + cell * 0.3, size * 0.7, size * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Bobbing while moving
+    const bob = p.moving ? Math.abs(Math.sin(p.animFrame)) * cell * 0.05 : Math.sin(Date.now() / 400 + (role === 'koy' ? 0 : 1.5)) * cell * 0.02;
+    const bodyY = cy - bob;
+
+    // Legs (animated when moving)
+    const legOffset = p.moving ? Math.sin(p.animFrame * 2) * cell * 0.08 : 0;
+    ctx.fillStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
+    ctx.fillRect(cx - size * 0.5 + legOffset, bodyY + size * 0.6, size * 0.35, size * 0.4);
+    ctx.fillRect(cx + size * 0.15 - legOffset, bodyY + size * 0.6, size * 0.35, size * 0.4);
+
+    // Body (chef uniform)
+    ctx.fillStyle = '#fdf6ee';
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size, size * 0.3) : ctx.rect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size);
+    ctx.fill();
+    ctx.strokeStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Head
+    ctx.fillStyle = role === 'koy' ? '#f0c896' : '#f8d8a8';
+    ctx.beginPath();
+    ctx.arc(cx, bodyY - size * 0.35, size * 0.55, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Chef hat
+    ctx.fillStyle = '#fdf6ee';
+    ctx.beginPath();
+    ctx.arc(cx, bodyY - size * 0.85, size * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#c9b0a0';
+    ctx.stroke();
+    // Hat band
+    ctx.fillStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
+    ctx.fillRect(cx - size * 0.5, bodyY - size * 0.55, size, size * 0.15);
+
+    // Eyes (facing direction)
+    const eyeOffset = { up: -size * 0.15, down: size * 0.15, left: -size * 0.15, right: size * 0.15 };
+    const eo = eyeOffset[p.facing] || 0;
+    ctx.fillStyle = '#3a2e28';
+    const eyeSpacing = size * 0.18;
+    if (p.facing === 'left' || p.facing === 'right') {
+      ctx.fillRect(cx - size * 0.05 + eo, bodyY - size * 0.4, size * 0.08, size * 0.12);
+    } else {
+      ctx.fillRect(cx - eyeSpacing - size * 0.04, bodyY - size * 0.4 + eo * 0.3, size * 0.08, size * 0.12);
+      ctx.fillRect(cx + eyeSpacing - size * 0.04, bodyY - size * 0.4 + eo * 0.3, size * 0.08, size * 0.12);
+    }
+
+    // Carrying item
+    if (p.carrying) {
+      const info = getItemInfo(p.carrying);
+      ctx.font = (cell * 0.5) + 'px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(info.emoji, cx, bodyY - size * 1.1);
+    }
+
+    // Player name tag
+    ctx.fillStyle = role === me ? '#ffd54f' : '#a8d4e8';
+    ctx.font = 'bold ' + Math.max(10, cell * 0.25) + 'px Fredoka, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(role === 'koy' ? 'Koy' : 'Metz', cx, cy - cell * 0.55);
+  }
+
+  /* ============================================================ */
+  /* HUD UPDATES                                                   */
+  /* ============================================================ */
+  function updateHUD() {
+    $('hudScore').textContent = game.score;
+    $('hudServed').textContent = game.served;
+    const total = game.level ? game.level.duration : 1;
+    const pct = Math.max(0, game.timeRemaining / total) * 100;
+    const bar = $('timerBar');
+    bar.style.width = pct + '%';
+    bar.classList.remove('warning', 'critical');
+    if (pct < 30) bar.classList.add('critical');
+    else if (pct < 60) bar.classList.add('warning');
+  }
+
+  function updateOrderStrip() {
+    const strip = $('orderStrip');
+    strip.innerHTML = '';
+    game.orders.forEach(o => {
+      const elapsed = Date.now() - o.timeCreated;
+      const pct = Math.max(0, 1 - elapsed / o.duration);
+      const urgent = pct < 0.3;
+      const t = document.createElement('div');
+      t.className = 'order-ticket' + (urgent ? ' urgent' : '');
+      t.innerHTML = `
+        <div class="order-emoji">${o.emoji}</div>
+        <div class="order-timer-bar" style="width:${pct * 100}%"></div>
+      `;
+      strip.appendChild(t);
+    });
+  }
+
+  // Continuous update of order strip visuals
+  setInterval(() => {
+    if (game.running) {
+      updateOrderStrip();
+    }
+  }, 500);
+
+  /* ============================================================ */
+  /* INPUT HANDLERS                                                */
+  /* ============================================================ */
+  document.addEventListener('keydown', (e) => {
+    input.keys[e.key] = true;
+    if (e.key === ' ' || e.key === 'Enter' || e.key === 'e' || e.key === 'E') {
+      e.preventDefault();
+      tryAction();
+    }
+    if (e.key === 'p' || e.key === 'P') {
+      togglePause();
+    }
+  });
+  document.addEventListener('keyup', (e) => { input.keys[e.key] = false; });
+
+  // Joystick
+  const joystickZone = $('joystickZone');
+  const joystickKnob = $('joystickKnob');
+  if (joystickZone) {
+    joystickZone.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const t = e.changedTouches[0];
+      input.joystick.active = true;
+      input.joystick.touchId = t.identifier;
+      handleJoystickMove(t);
+    }, { passive: false });
+
+    joystickZone.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const t = Array.from(e.changedTouches).find(t => t.identifier === input.joystick.touchId);
+      if (t) handleJoystickMove(t);
+    }, { passive: false });
+
+    joystickZone.addEventListener('touchend', (e) => {
+      const t = Array.from(e.changedTouches).find(t => t.identifier === input.joystick.touchId);
+      if (t) {
+        input.joystick.active = false;
+        input.joystick.dx = 0;
+        input.joystick.dy = 0;
+        input.joystick.touchId = null;
+        joystickKnob.style.transform = 'translate(0, 0)';
+      }
+    });
+
+    joystickZone.addEventListener('touchcancel', () => {
+      input.joystick.active = false;
+      input.joystick.dx = 0;
+      input.joystick.dy = 0;
+      joystickKnob.style.transform = 'translate(0, 0)';
+    });
+  }
+
+  function handleJoystickMove(t) {
+    const rect = joystickZone.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    let dx = t.clientX - cx;
+    let dy = t.clientY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const maxDist = rect.width / 2;
+    if (dist > maxDist) {
+      dx = (dx / dist) * maxDist;
+      dy = (dy / dist) * maxDist;
+    }
+    input.joystick.dx = dx / maxDist;
+    input.joystick.dy = dy / maxDist;
+    joystickKnob.style.transform = `translate(${dx}px, ${dy}px)`;
+  }
+
+  // Action button
+  const actionBtn = $('actionBtnRound');
+  if (actionBtn) {
+    actionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); tryAction(); }, { passive: false });
+    actionBtn.addEventListener('click', (e) => { e.preventDefault(); tryAction(); });
+  }
+
+  // Detect touch mode
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    document.body.classList.add('touch-mode');
+  }
+
+  /* ============================================================ */
+  /* LEVEL END                                                     */
+  /* ============================================================ */
+  function endLevel(success) {
+    if (!game.running) return;
+    game.running = false;
+    if (game.timerInterval) clearInterval(game.timerInterval);
+    if (game.orderInterval) clearInterval(game.orderInterval);
+    if (game.spawnInterval) clearInterval(game.spawnInterval);
+
+    if (success) {
+      handleLevelComplete({ score: game.score, served: game.served });
+      if (isHost) {
+        sendPeer({ type: 'levelComplete', score: game.score, served: game.served });
+      }
+    } else {
+      handleLevelFailed();
+      if (isHost) {
+        sendPeer({ type: 'levelFailed' });
+      }
+    }
+  }
+
+  function handleLevelComplete(data) {
+    const score = data.score || game.score;
+    const thresholds = game.level.starThresholds;
+    let stars = 0;
+    if (score >= thresholds[0]) stars = 1;
+    if (score >= thresholds[1]) stars = 2;
+    if (score >= thresholds[2]) stars = 3;
+
+    // Save progression
+    if (stars > (progression.bestStars[game.levelId] || 0)) {
+      progression.bestStars[game.levelId] = stars;
+    }
+    if (score > (progression.bestScores[game.levelId] || 0)) {
+      progression.bestScores[game.levelId] = score;
+    }
+    if (game.levelId >= progression.unlockedLevels && stars > 0) {
+      progression.unlockedLevels = Math.min(LEVELS.length, game.levelId + 1);
+    }
+    progression.totalScore = (progression.totalScore || 0) + score;
+    saveProgression();
+
+    // Show modal
+    $('modalScore').textContent = score;
+    $('modalServed').textContent = game.served;
+    const starsRow = $('starsRow');
+    starsRow.querySelectorAll('.star').forEach((el, idx) => {
+      el.classList.remove('filled');
+      if (idx < stars) {
+        setTimeout(() => { el.classList.add('filled'); SoundFX.star(); }, idx * 300 + 400);
+      }
+    });
+    const isLastLevel = game.levelId >= LEVELS.length;
+    $('nextLevelBtn').style.display = (isLastLevel) ? 'none' : 'block';
+    $('completeTitle').textContent = isLastLevel ? 'ALL LEVELS CLEARED! 🏆' : 'LEVEL COMPLETE!';
+    $('completeSub').textContent = isLastLevel ? 'You two are incredible 👑' : 'You two are on fire 🔥';
+    $('levelCompleteModal').classList.add('show');
+    SoundFX.star();
+  }
+
+  function handleLevelFailed() {
+    $('failedScore').textContent = game.score;
+    $('failedServed').textContent = game.served;
+    $('failedSub').textContent = game.served < 3 ? 'Serve more dishes next time!' : 'So close!';
+    $('levelFailedModal').classList.add('show');
+    SoundFX.fail();
+  }
+
+  $('nextLevelBtn').addEventListener('click', () => {
+    $('levelCompleteModal').classList.remove('show');
+    const nextId = Math.min(LEVELS.length, game.levelId + 1);
+    if (isHost) sendPeer({ type: 'startLevel', levelId: nextId });
+    startLevel(nextId);
+  });
+
+  $('replayBtn').addEventListener('click', () => {
+    $('levelCompleteModal').classList.remove('show');
+    if (isHost) sendPeer({ type: 'startLevel', levelId: game.levelId });
+    startLevel(game.levelId);
+  });
+
+  $('levelSelectBtn').addEventListener('click', () => {
+    $('levelCompleteModal').classList.remove('show');
+    quitToLevels();
+  });
+
+  $('retryBtn').addEventListener('click', () => {
+    $('levelFailedModal').classList.remove('show');
+    if (isHost) sendPeer({ type: 'startLevel', levelId: game.levelId });
+    startLevel(game.levelId);
+  });
+
+  $('failedLevelSelect').addEventListener('click', () => {
+    $('levelFailedModal').classList.remove('show');
+    quitToLevels();
+  });
+
+  function quitToLevels() {
+    game.running = false;
+    if (game.timerInterval) clearInterval(game.timerInterval);
+    if (game.orderInterval) clearInterval(game.orderInterval);
+    if (game.spawnInterval) clearInterval(game.spawnInterval);
+    $('gameView').style.display = 'none';
+    $('levelSelect').classList.add('show');
+    if (isHost) sendPeer({ type: 'quit' });
+    loadProgression();
+  }
+
+  /* ============================================================ */
+  /* PAUSE                                                         */
+  /* ============================================================ */
+  let paused = false;
+  function togglePause() {
+    if (!game.running) return;
+    paused = !paused;
+    if (paused) {
+      $('pauseMenu').classList.add('show');
+      game.running = false;
+    } else {
+      $('pauseMenu').classList.remove('show');
+      game.running = true;
+    }
+  }
+
+  $('pauseBtn').addEventListener('click', togglePause);
+  $('resumeBtn').addEventListener('click', togglePause);
+  $('quitBtn').addEventListener('click', () => {
+    $('pauseMenu').classList.remove('show');
+    paused = false;
+    quitToLevels();
+  });
+
+  /* ============================================================ */
+  /* CANVAS RESIZE                                                 */
+  /* ============================================================ */
+  function resizeCanvas() {
+    const wrap = $('stageWrap');
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    if (!w || !h) return;
+    const cols = game.grid ? game.grid[0].length : 16;
+    const rows = game.grid ? game.grid.length : 12;
+    const aspect = cols / rows;
+    let cw = w;
+    let ch = w / aspect;
+    if (ch > h) { ch = h; cw = h * aspect; }
+    canvas.style.width = cw + 'px';
+    canvas.style.height = ch + 'px';
+    canvas.width = Math.min(1600, Math.floor(cw * 2));
+    canvas.height = Math.min(1200, Math.floor(ch * 2));
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  /* ============================================================ */
+  /* PEER MESSAGE ROUTER (extend existing)                         */
+  /* ============================================================ */
+  const origHandle = handlePeerMessage;
+  handlePeerMessage = function(msg) {
+    switch (msg.type) {
+      case 'gridSync':
+        game.grid = msg.grid;
+        game.stations = msg.stations;
+        break;
+      case 'serveRequest':
+        // Host validates serve request
+        if (isHost && game.running) {
+          // Simplified: trust and complete
+          const matching = game.orders.find(o => o.recipeId === msg.dish);
+          if (matching) {
+            game.orders = game.orders.filter(o => o.id !== matching.id);
+            game.score += matching.points;
+            game.served += 1;
+            sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
+            SoundFX.orderComplete();
+            updateOrderStrip();
+            updateHUD();
+          }
+        }
+        break;
+      default:
+        origHandle(msg);
+    }
+  };
+
+  /* ============================================================ */
+  /* INIT                                                          */
+  /* ============================================================ */
+  requestAnimationFrame(gameLoop);
+  // Auto load progression on start
+  loadProgression();
+
+  </script>
+</body>
+</html>
