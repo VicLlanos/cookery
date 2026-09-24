@@ -25,7 +25,6 @@
       overflow: hidden;
     }
 
-    /* LOGIN */
     #loginScreen {
       position: absolute;
       inset: 0;
@@ -92,7 +91,6 @@
       outline: none;
       border-radius: 6px;
       margin-bottom: 10px;
-      transition: border-color 0.15s;
     }
     .name-input:focus, .pin-input:focus { border-color: #8b6f5e; }
 
@@ -114,6 +112,8 @@
     .login-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4f3e; }
     .login-btn.secondary { background: #a89080; box-shadow: 0 4px 0 #8b6f5e; }
     .login-btn.secondary:active { box-shadow: 0 1px 0 #8b6f5e; }
+    .login-btn.solo { background: #7a9c5c; box-shadow: 0 4px 0 #5c7c3c; }
+    .login-btn.solo:active { box-shadow: 0 1px 0 #5c7c3c; }
 
     .host-info {
       background: #f4e9de;
@@ -144,7 +144,23 @@
       margin-top: 12px;
     }
 
-    /* GAME VIEW */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      color: #a89080;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: #e8d9c8;
+      border-radius: 2px;
+    }
+
     #gameView {
       display: none;
       flex-direction: column;
@@ -560,6 +576,19 @@
       color: #a89080;
     }
 
+    .session-badge {
+      display: inline-block;
+      background: #4a3025;
+      border: 2px solid #8b6f5e;
+      color: #f0e5d8;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+    .session-badge.solo { background: #4a5c2a; border-color: #7a9c5c; color: #e8f0d8; }
+
     .stats-row {
       display: flex;
       justify-content: center;
@@ -654,6 +683,10 @@
     .back-to-login {
       text-align: center;
       padding: 20px 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
     .back-btn {
       background: #4a3025;
@@ -722,7 +755,7 @@
           <button class="login-btn secondary role-btn" data-role="metz" style="flex:1; margin:0;">🌸 Metz</button>
         </div>
 
-        <button class="login-btn" id="hostBtn">🏠 HOST A KITCHEN</button>
+        <button class="login-btn" id="hostBtn">🏠 HOST CO-OP</button>
         <div class="host-info" id="hostInfo">
           <p style="font-size:0.7rem;color:#a89080;margin-bottom:6px;">Share this ID with your partner:</p>
           <div class="host-id" id="hostId">---</div>
@@ -733,9 +766,14 @@
           <button class="login-btn secondary" id="joinBtn" style="margin:0;padding:14px 16px;flex-shrink:0;">JOIN</button>
         </div>
 
+        <div class="divider">OR</div>
+
+        <button class="login-btn solo" id="soloBtn">👤 PLAY SOLO (Practice)</button>
+
         <p class="login-hint">
-          One of you hosts, the other joins.<br>
-          You'll both cook together on separate devices.
+          <strong>Solo:</strong> Play by yourself to test levels.<br>
+          <strong>Co-op:</strong> One of you hosts, the other joins.<br>
+          Progression is shared across both modes.
         </p>
       </div>
     </div>
@@ -753,6 +791,7 @@
       <div class="select-header">
         <h1>🍳 OUR KITCHEN</h1>
         <p class="sub">Cook together. Beat the timer. Earn stars.</p>
+        <div class="session-badge" id="sessionBadge">👥 CO-OP SESSION</div>
       </div>
 
       <div class="stats-row">
@@ -946,42 +985,12 @@
   };
 
   const RECIPES = {
-    salad: {
-      name: 'Salad',
-      emoji: '🥗',
-      needs: ['lettuce_chopped', 'tomato'],
-      points: 10
-    },
-    burger: {
-      name: 'Burger',
-      emoji: '🍔',
-      needs: ['bun', 'patty_cooked'],
-      points: 15
-    },
-    pizza: {
-      name: 'Pizza',
-      emoji: '🍕',
-      needs: ['pizza_cooked'],
-      points: 20
-    },
-    ramen: {
-      name: 'Ramen',
-      emoji: '🍜',
-      needs: ['noodles_cooked', 'egg_chopped'],
-      points: 18
-    },
-    sushi: {
-      name: 'Sushi',
-      emoji: '🍣',
-      needs: ['rice', 'fish_sliced'],
-      points: 18
-    },
-    cake: {
-      name: 'Cake',
-      emoji: '🍰',
-      needs: ['cake_baked'],
-      points: 25
-    }
+    salad: { name: 'Salad', emoji: '🥗', needs: ['lettuce_chopped', 'tomato'], points: 10 },
+    burger: { name: 'Burger', emoji: '🍔', needs: ['bun', 'patty_cooked'], points: 15 },
+    pizza: { name: 'Pizza', emoji: '🍕', needs: ['pizza_cooked'], points: 20 },
+    ramen: { name: 'Ramen', emoji: '🍜', needs: ['noodles_cooked', 'egg_chopped'], points: 18 },
+    sushi: { name: 'Sushi', emoji: '🍣', needs: ['rice', 'fish_sliced'], points: 18 },
+    cake: { name: 'Cake', emoji: '🍰', needs: ['cake_baked'], points: 25 }
   };
 
   const TRANSFORMED = {
@@ -1004,7 +1013,7 @@
   }
 
   /* ============================================================ */
-  /* GRID BUILDERS - FIXED                                         */
+  /* GRID BUILDERS                                                 */
   /* ============================================================ */
   function makeGrid(...recipeGroups) {
     const W = 16, H = 12;
@@ -1014,7 +1023,6 @@
       for (let x = 0; x < W; x++) row.push('floor');
       grid.push(row);
     }
-
     for (let x = 0; x < W; x++) { grid[0][x] = 'block'; grid[H-1][x] = 'block'; }
     for (let y = 0; y < H; y++) { grid[y][0] = 'block'; grid[y][W-1] = 'block'; }
 
@@ -1033,7 +1041,6 @@
     grid[7][9] = 'bin';
     grid[7][12] = 'plate';
 
-    // Extract unique ingredients (first element of each pair)
     const ingredientSet = new Set();
     recipeGroups.forEach(pair => {
       if (Array.isArray(pair) && Array.isArray(pair[0])) {
@@ -1060,7 +1067,6 @@
       for (let x = 0; x < W; x++) row.push('floor');
       grid.push(row);
     }
-
     for (let x = 0; x < W; x++) { grid[0][x] = 'block'; grid[H-1][x] = 'block'; }
     for (let y = 0; y < H; y++) { grid[y][0] = 'block'; grid[y][W-1] = 'block'; }
 
@@ -1139,6 +1145,7 @@
   let me = 'koy';
   let myPeerId = null;
   let isHost = false;
+  let soloMode = false; // <-- NEW: true when playing alone
 
   const peerState = {
     peer: null,
@@ -1285,6 +1292,7 @@
   }
 
   function sendPeer(msg) {
+    if (soloMode) return; // Solo mode doesn't send anything
     if (peerState.connected && peerState.conn) {
       try { peerState.conn.send(msg); } catch(e) {}
     } else {
@@ -1367,10 +1375,12 @@
   $('hostBtn').addEventListener('click', () => {
     if (!selectedRole) return showToast('Pick who you are first 🌿');
     me = selectedRole;
+    soloMode = false;
     initPeer();
     $('hostBtn').style.display = 'none';
     $('joinId').style.display = 'none';
     $('joinBtn').style.display = 'none';
+    $('soloBtn').style.display = 'none';
     $('hostInfo').style.display = 'block';
     showToast('Share the ID with your partner!');
   });
@@ -1378,6 +1388,7 @@
   $('joinBtn').addEventListener('click', () => {
     if (!selectedRole) return showToast('Pick who you are first 🌿');
     me = selectedRole;
+    soloMode = false;
     const hostId = $('joinId').value.trim();
     if (!hostId) return showToast('Paste the host ID first');
     initPeer();
@@ -1389,6 +1400,17 @@
       $('waitingEmoji').textContent = '⏳';
       $('waitingText').textContent = 'Connecting...';
     }, 800);
+  });
+
+  // SOLO MODE BUTTON
+  $('soloBtn').addEventListener('click', () => {
+    if (!selectedRole) return showToast('Pick who you are first 🌿');
+    me = selectedRole;
+    soloMode = true;
+    isHost = true; // Solo acts as host (controls orders, chaos, etc.)
+    $('loginScreen').style.display = 'none';
+    showToast('Solo practice mode — good luck!');
+    setTimeout(() => showLevelSelect(), 300);
   });
 
   $('hostId').addEventListener('click', () => {
@@ -1403,6 +1425,15 @@
   /* ============================================================ */
   function showLevelSelect() {
     $('levelSelect').classList.add('show');
+    // Update session badge
+    const badge = $('sessionBadge');
+    if (soloMode) {
+      badge.textContent = '👤 SOLO PRACTICE';
+      badge.classList.add('solo');
+    } else {
+      badge.textContent = '👥 CO-OP SESSION';
+      badge.classList.remove('solo');
+    }
     renderLevels();
     loadProgression();
   }
@@ -1462,7 +1493,7 @@
   }
 
   $('backToLoginBtn').addEventListener('click', () => {
-    if (peerState.connected) sendPeer({ type: 'quit' });
+    if (!soloMode && peerState.connected) sendPeer({ type: 'quit' });
     location.reload();
   });
 
@@ -1473,7 +1504,7 @@
     const level = LEVELS.find(l => l.id === levelId);
     if (!level) return;
 
-    if (!fromRemote && peerState.connected) {
+    if (!fromRemote && !soloMode && peerState.connected) {
       sendPeer({ type: 'startLevel', levelId });
     }
 
@@ -1493,7 +1524,6 @@
     game.players.koy = { x: 2, y: 2, facing: 'down', carrying: null, moving: false, animFrame: 0 };
     game.players.metz = { x: 13, y: 9, facing: 'up', carrying: null, moving: false, animFrame: 0 };
 
-    // Build stations from grid
     for (let y = 0; y < game.grid.length; y++) {
       for (let x = 0; x < game.grid[y].length; x++) {
         const cell = game.grid[y][x];
@@ -1509,7 +1539,7 @@
 
     $('levelSelect').classList.remove('show');
     $('gameView').style.display = 'flex';
-    $('hudLevelName').textContent = 'Level ' + levelId + ' · ' + level.name;
+    $('hudLevelName').textContent = 'Level ' + levelId + ' · ' + level.name + (soloMode ? ' (SOLO)' : '');
 
     resizeCanvas();
     startGameLoops();
@@ -1646,21 +1676,14 @@
     }
     const recipes = [];
     for (const [id, r] of Object.entries(RECIPES)) {
-      // Check if we have the needed ingredients for this recipe
       let canMake = true;
-      // Simple check: each recipe's needs must be producible from available crates
-      // salad needs lettuce_chopped (chop lettuce) and tomato (crate tomato)
-      // Very simple: check if any two of the primary ingredients are available
       const allIngredients = Object.keys(INGREDIENTS);
       r.needs.forEach(n => {
-        // Check if n is a raw ingredient we have
         if (INGREDIENTS[n] && crates.has(n)) return;
-        // Check if n is transformed from a raw ingredient we have
-        const transformed = n;
         let found = false;
         for (const raw of allIngredients) {
-          if (chopTransform(raw) === transformed && crates.has(raw)) { found = true; break; }
-          if (cookTransform(raw) === transformed && crates.has(raw)) { found = true; break; }
+          if (chopTransform(raw) === n && crates.has(raw)) { found = true; break; }
+          if (cookTransform(raw) === n && crates.has(raw)) { found = true; break; }
         }
         if (!found) canMake = false;
       });
@@ -1725,7 +1748,7 @@
       local.animFrame = 0;
     }
 
-    if (peerState.connected) {
+    if (!soloMode && peerState.connected) {
       const now = Date.now();
       if (!updatePlayers.lastSend || now - updatePlayers.lastSend > 60) {
         updatePlayers.lastSend = now;
@@ -1793,7 +1816,7 @@
         }
       }
     }
-    if (isHost && dirty.length > 0) {
+    if (isHost && !soloMode && dirty.length > 0) {
       dirty.forEach(key => {
         sendPeer({ type: 'stationUpdate', key, data: game.stations[key] });
       });
@@ -1830,7 +1853,7 @@
         game.failed += 1;
         SoundFX.orderFailed();
         changed = true;
-        if (isHost) sendPeer({ type: 'orderFailed', orderId: o.id });
+        if (isHost && !soloMode) sendPeer({ type: 'orderFailed', orderId: o.id });
       }
     }
     if (changed) {
@@ -1851,7 +1874,6 @@
     const px = Math.floor(player.x);
     const py = Math.floor(player.y);
 
-    // Priority: the tile the player is facing
     let targetX = px, targetY = py;
     if (facing === 'up') targetY -= 1;
     if (facing === 'down') targetY += 1;
@@ -1877,11 +1899,10 @@
     }
 
     if (!station) {
-      // Drop item on the floor
       if (player.carrying) {
         player.carrying = null;
         SoundFX.drop();
-        sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
+        if (!soloMode) sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
       }
       return;
     }
@@ -1935,12 +1956,10 @@
           player.carrying = 'plate';
           SoundFX.pickup();
         } else if (player.carrying === 'plate' && station.item) {
-          // Deliver item onto plate
           player.carrying = station.item;
           station.item = null;
           SoundFX.pickup();
         } else if (player.carrying !== 'plate' && !station.item) {
-          // Place item on plate
           station.item = player.carrying;
           player.carrying = null;
           SoundFX.drop();
@@ -1949,7 +1968,6 @@
       }
       case 'serve': {
         if (player.carrying) {
-          // Is it a finished dish?
           const dish = findDishFor(player.carrying);
           if (dish) {
             const matching = game.orders.find(o => o.recipeId === dish);
@@ -1958,7 +1976,7 @@
                 game.orders = game.orders.filter(o => o.id !== matching.id);
                 game.score += matching.points;
                 game.served += 1;
-                sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
+                if (!soloMode) sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
                 SoundFX.orderComplete();
                 updateOrderStrip();
                 updateHUD();
@@ -1988,15 +2006,14 @@
       }
     }
 
-    if (stationKey) {
+    if (stationKey && !soloMode) {
       sendPeer({ type: 'stationUpdate', key: stationKey, data: station });
     }
-    sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
+    if (!soloMode) sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
   }
 
   function findDishFor(item) {
     if (typeof item === 'string' && item.startsWith('dish_')) return item.replace('dish_', '');
-    // Also check if item matches a recipe's final needs (very simple matching)
     for (const [id, r] of Object.entries(RECIPES)) {
       if (r.needs.length === 1 && r.needs[0] === item) return id;
     }
@@ -2054,6 +2071,8 @@
 
     for (const role of ['koy', 'metz']) {
       const p = game.players[role];
+      // In solo mode, hide the idle other player
+      if (soloMode && role !== me) continue;
       if (p) drawPlayer(p, offX + p.x * cell, offY + p.y * cell, cell, role);
     }
   }
@@ -2375,10 +2394,10 @@
 
     if (success) {
       handleLevelComplete({ score: game.score, served: game.served });
-      if (isHost) sendPeer({ type: 'levelComplete', score: game.score, served: game.served });
+      if (isHost && !soloMode) sendPeer({ type: 'levelComplete', score: game.score, served: game.served });
     } else {
       handleLevelFailed();
-      if (isHost) sendPeer({ type: 'levelFailed' });
+      if (isHost && !soloMode) sendPeer({ type: 'levelFailed' });
     }
   }
 
@@ -2430,13 +2449,13 @@
   $('nextLevelBtn').addEventListener('click', () => {
     $('levelCompleteModal').classList.remove('show');
     const nextId = Math.min(LEVELS.length, game.levelId + 1);
-    if (isHost) sendPeer({ type: 'startLevel', levelId: nextId });
+    if (isHost && !soloMode) sendPeer({ type: 'startLevel', levelId: nextId });
     startLevel(nextId);
   });
 
   $('replayBtn').addEventListener('click', () => {
     $('levelCompleteModal').classList.remove('show');
-    if (isHost) sendPeer({ type: 'startLevel', levelId: game.levelId });
+    if (isHost && !soloMode) sendPeer({ type: 'startLevel', levelId: game.levelId });
     startLevel(game.levelId);
   });
 
@@ -2447,7 +2466,7 @@
 
   $('retryBtn').addEventListener('click', () => {
     $('levelFailedModal').classList.remove('show');
-    if (isHost) sendPeer({ type: 'startLevel', levelId: game.levelId });
+    if (isHost && !soloMode) sendPeer({ type: 'startLevel', levelId: game.levelId });
     startLevel(game.levelId);
   });
 
@@ -2463,7 +2482,7 @@
     if (game.chaosInterval) clearInterval(game.chaosInterval);
     $('gameView').style.display = 'none';
     $('levelSelect').classList.add('show');
-    if (isHost) sendPeer({ type: 'quit' });
+    if (isHost && !soloMode) sendPeer({ type: 'quit' });
     loadProgression();
   }
 
