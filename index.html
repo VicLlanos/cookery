@@ -122,37 +122,46 @@
   .counter::before { content: ''; position: absolute; top: 10%; left: 0; right: 0; height: 45%; background: repeating-linear-gradient(90deg, transparent 0px, transparent 60px, rgba(90, 60, 40, 0.15) 60px, rgba(90, 60, 40, 0.15) 62px); }
   .counter::after { content: ''; position: absolute; top: 10%; left: 0; right: 0; height: 20%; background: linear-gradient(180deg, rgba(255, 240, 200, 0.15) 0%, transparent 100%); }
 
-  .customers-area { position: absolute; bottom: 42%; left: 0; right: 0; height: 38%; z-index: 8; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 12px 12px; pointer-events: none; }
-  .customer { position: relative; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; transition: transform 0.3s ease, opacity 0.4s ease; pointer-events: auto; cursor: grab; touch-action: none; max-width: 90px; }
+  /* Queue rows: up to 5 in first row, more wrap to a second smaller row */
+  .customers-area {
+    position: absolute; bottom: 42%; left: 0; right: 0; height: 38%;
+    z-index: 8; display: flex; justify-content: space-around;
+    align-items: flex-end; padding: 0 6px 12px; pointer-events: none;
+    flex-wrap: nowrap;
+  }
+  .customer {
+    position: relative; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s ease, opacity 0.4s ease;
+    pointer-events: auto; cursor: grab; touch-action: none;
+    flex: 1; max-width: 90px; min-width: 0;
+  }
   .customer.entering { animation: customerEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
   @keyframes customerEnter { 0% { transform: translateY(30px) scale(0.6); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
   .customer.impatient { animation: customerImpatient 0.5s ease-in-out infinite; }
   @keyframes customerImpatient { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  .customer-body { font-size: 3.2rem; line-height: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.2s; }
-  .customer-bubble { position: absolute; top: -62px; left: 50%; transform: translateX(-50%); background: #fdf6ee; border: 3px solid #3a2418; border-radius: 14px; padding: 4px 8px; min-width: 60px; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.25); white-space: nowrap; z-index: 2; }
+  .customer-body { font-size: 2.8rem; line-height: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.2s; }
+  .customer-bubble {
+    position: absolute; top: -58px; left: 50%; transform: translateX(-50%);
+    background: #fdf6ee; border: 3px solid #3a2418; border-radius: 14px;
+    padding: 3px 6px; min-width: 50px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    white-space: nowrap; z-index: 2;
+  }
   .customer-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #3a2418; }
   .customer-bubble::before { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #fdf6ee; z-index: 1; }
-  .customer-bubble .order-emoji { font-size: 1.3rem; line-height: 1; }
-  /* Payment indicator — shows current tip % */
+  .customer-bubble .order-emoji { font-size: 1.1rem; line-height: 1; }
   .customer-pay-badge {
-    position: absolute;
-    top: -18px;
-    right: -6px;
-    background: #ffd54f;
-    color: #3a2418;
-    font-size: 0.62rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 8px;
-    border: 2px solid #3a2418;
-    z-index: 3;
+    position: absolute; top: -16px; right: -4px;
+    background: #ffd54f; color: #3a2418;
+    font-size: 0.55rem; font-weight: 700;
+    padding: 1px 5px; border-radius: 8px;
+    border: 2px solid #3a2418; z-index: 3;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    transition: background 0.3s;
   }
   .customer-pay-badge.mid { background: #f0a84c; }
   .customer-pay-badge.low { background: #e57373; color: white; }
-
-  .customer-patience { width: 70%; height: 5px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow: hidden; margin-top: 4px; border: 1px solid #3a2418; }
+  .customer-patience { width: 70%; height: 5px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow: hidden; margin-top: 3px; border: 1px solid #3a2418; }
   .customer-patience-fill { height: 100%; background: #6b8b4a; transition: width 0.3s linear, background 0.5s; }
   .customer-patience-fill.warn { background: #e5a53c; }
   .customer-patience-fill.crit { background: #c9302c; }
@@ -161,12 +170,18 @@
   .workstation { position: absolute; bottom: 0; left: 0; right: 0; z-index: 15; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
   .workstation-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .station-label { font-size: 0.7rem; font-weight: 700; color: #ffd54f; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; background: rgba(58, 36, 24, 0.7); padding: 4px 10px; border-radius: 10px; }
-  .recipe-book-btn {
+  .header-btns { display: flex; gap: 6px; }
+  .recipe-book-btn, .shop-btn {
     background: #ffd54f; color: #3a2418; border: 3px solid #3a2418; border-radius: 8px;
-    padding: 6px 12px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.7rem;
+    padding: 6px 10px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.68rem;
     cursor: pointer; box-shadow: 0 3px 0 #3a2418; transition: all 0.1s;
   }
-  .recipe-book-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #3a2418; }
+  .recipe-book-btn:active, .shop-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #3a2418; }
+  .shop-btn { background: #8fb87d; color: #fff; }
+  .shop-btn .notif {
+    display: inline-block; background: #c9302c; color: #fff;
+    border-radius: 8px; padding: 0 4px; font-size: 0.55rem; margin-left: 2px;
+  }
 
   .tray { background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%); border: 3px solid #3a2418; border-radius: 10px; padding: 8px 12px; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); position: relative; overflow: hidden; flex-wrap: wrap; }
   .tray-empty { color: #a88870; font-size: 0.78rem; font-style: italic; text-align: center; width: 100%; }
@@ -180,18 +195,23 @@
 
   .ingredients { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 3px; justify-content: center; flex-wrap: wrap; }
   .ingredients::-webkit-scrollbar { display: none; }
-  .ingredient-btn { flex-shrink: 0; width: 66px; height: 68px; background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%); border: 3px solid #3a2418; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3); transition: all 0.08s; position: relative; overflow: hidden; padding: 4px; }
+  .ingredient-btn { flex-shrink: 0; width: 62px; height: 64px; background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%); border: 3px solid #3a2418; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3); transition: all 0.08s; position: relative; overflow: hidden; padding: 4px; }
   .ingredient-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #3a2418, 0 3px 6px rgba(0,0,0,0.4); }
-  .ingredient-btn .ing-emoji { font-size: 1.8rem; line-height: 1; }
-  .ingredient-btn .ing-label { font-size: 0.52rem; font-weight: 700; color: #3a2418; margin-top: 2px; text-align: center; line-height: 1; }
+  .ingredient-btn .ing-emoji { font-size: 1.7rem; line-height: 1; }
+  .ingredient-btn .ing-label { font-size: 0.5rem; font-weight: 700; color: #3a2418; margin-top: 2px; text-align: center; line-height: 1; }
 
-  /* RECIPE BOOK */
-  .recipe-book { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; padding: 20px; overflow-y: auto; }
-  .recipe-book.show { display: block; }
-  .recipe-book-inner { background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 14px; padding: 20px 16px; max-width: 500px; margin: 0 auto; color: #3a2418; box-shadow: 0 10px 0 #5c3a24; }
-  .recipe-book h2 { text-align: center; font-size: 1.3rem; color: #8b5a3e; margin-bottom: 4px; }
-  .recipe-book .rb-sub { text-align: center; font-size: 0.8rem; color: #a88870; margin-bottom: 16px; }
-  .recipe-section-title { font-size: 0.85rem; font-weight: 700; color: #8b5a3e; border-bottom: 2px dashed #c9a890; padding-bottom: 4px; margin: 12px 0 8px; display: flex; align-items: center; gap: 6px; }
+  /* RECIPE BOOK / SHOP MODALS */
+  .modal-book { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; padding: 20px; overflow-y: auto; }
+  .modal-book.show { display: block; }
+  .modal-book-inner { background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 14px; padding: 20px 16px; max-width: 500px; margin: 0 auto; color: #3a2418; box-shadow: 0 10px 0 #5c3a24; }
+  .modal-book h2 { text-align: center; font-size: 1.3rem; color: #8b5a3e; margin-bottom: 4px; }
+  .modal-book .rb-sub { text-align: center; font-size: 0.8rem; color: #a88870; margin-bottom: 16px; }
+  .modal-book .coins-display {
+    text-align: center; font-size: 1.1rem; color: #8b5a3e; font-weight: 700;
+    background: #f4d9c8; padding: 8px 14px; border-radius: 10px;
+    margin-bottom: 16px; border: 3px solid #8b5a3e;
+  }
+  .recipe-section-title { font-size: 0.85rem; font-weight: 700; color: #8b5a3e; border-bottom: 2px dashed #c9a890; padding-bottom: 4px; margin: 12px 0 8px; }
   .recipe-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .recipe-card { background: #fffdf9; border: 3px solid #c9a890; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
   .recipe-card .rc-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
@@ -201,10 +221,33 @@
   .recipe-card .rc-step { background: #f4d9c8; border: 2px solid #8b5a3e; border-radius: 6px; padding: 2px 6px; font-size: 0.75rem; font-weight: 700; color: #3a2418; display: flex; align-items: center; gap: 3px; }
   .recipe-card .rc-arrow { color: #a88870; font-weight: 700; font-size: 0.8rem; }
   .recipe-card .rc-points { font-size: 0.7rem; font-weight: 700; color: #6b8b4a; background: rgba(107, 139, 74, 0.15); padding: 2px 6px; border-radius: 6px; margin-left: 4px; }
-  .recipe-close { width: 100%; padding: 14px; margin-top: 16px; background: #8b5a3e; color: white; border: none; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 0 #5c3a24; }
-  .recipe-close:active { transform: translateY(3px); box-shadow: 0 1px 0 #5c3a24; }
+  .modal-close { width: 100%; padding: 14px; margin-top: 16px; background: #8b5a3e; color: white; border: none; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 0 #5c3a24; }
+  .modal-close:active { transform: translateY(3px); box-shadow: 0 1px 0 #5c3a24; }
 
-  /* DRAG GHOST */
+  /* SHOP */
+  .shop-item {
+    display: flex; align-items: center; gap: 10px;
+    background: #fffdf9; border: 3px solid #c9a890;
+    border-radius: 10px; padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .shop-item.owned { background: #e8f5dc; border-color: #8fb87d; }
+  .shop-item.locked { opacity: 0.55; filter: grayscale(0.5); }
+  .shop-item .si-emoji { font-size: 2rem; flex-shrink: 0; }
+  .shop-item .si-info { flex: 1; min-width: 0; }
+  .shop-item .si-name { font-weight: 700; font-size: 0.9rem; color: #3a2418; margin-bottom: 2px; }
+  .shop-item .si-desc { font-size: 0.7rem; color: #a88870; }
+  .shop-item .si-buy {
+    background: #8b5a3e; color: #fff; border: none;
+    padding: 8px 12px; border-radius: 8px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.78rem;
+    cursor: pointer; box-shadow: 0 3px 0 #5c3a24; white-space: nowrap;
+  }
+  .shop-item .si-buy:active { transform: translateY(2px); box-shadow: 0 1px 0 #5c3a24; }
+  .shop-item .si-buy.disabled { background: #a88870; cursor: not-allowed; opacity: 0.6; box-shadow: 0 3px 0 #7a5a3e; }
+  .shop-item .si-owned { color: #6b8b4a; font-weight: 700; font-size: 0.8rem; }
+
+  /* DRAG */
   .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; font-size: 2.4rem; line-height: 1; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); transform: translate(-50%, -50%) scale(1.15); }
   .drag-ghost .ghost-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); background: #ffd54f; color: #3a2418; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; white-space: nowrap; }
   .customer.drag-over .customer-body { transform: scale(1.15); filter: drop-shadow(0 0 20px rgba(255, 213, 79, 0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
@@ -254,12 +297,24 @@
   .stat-box .stat-label { font-size: 0.6rem; color: #a88870; margin-bottom: 4px; font-weight: 700; letter-spacing: 0.5px; }
   .stat-box .stat-value { font-size: 1.2rem; color: #ffd54f; font-weight: 700; }
   .levels-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 500px; width: 100%; margin: 0 auto; padding-bottom: 30px; }
-  .level-card { background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 12px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; color: #3a2418; box-shadow: 0 4px 0 #5c3a24; }
+  .level-card { background: #fdf6ee; border: 4px solid #8b5a3e; border-radius: 12px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; color: #3a2418; box-shadow: 0 4px 0 #5c3a24; position: relative; }
   .level-card:active { transform: translateY(2px); box-shadow: 0 2px 0 #5c3a24; }
-  .level-card.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.5); }
+  .level-card.locked { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.5); }
   .level-card.locked:active { transform: none; box-shadow: 0 4px 0 #5c3a24; }
+  .level-card.requires-purchase {
+    border-color: #e5a53c;
+    animation: reqPulse 2s infinite;
+  }
+  @keyframes reqPulse {
+    0%, 100% { box-shadow: 0 4px 0 #5c3a24; }
+    50% { box-shadow: 0 4px 0 #5c3a24, 0 0 0 4px rgba(229, 165, 60, 0.5); }
+  }
   .level-number { font-size: 0.65rem; color: #8b5a3e; margin-bottom: 4px; font-weight: 700; }
   .level-name { font-weight: 700; font-size: 0.95rem; color: #3a2418; margin-bottom: 8px; min-height: 22px; }
+  .level-lock-icon {
+    position: absolute; top: 6px; right: 8px;
+    font-size: 1rem;
+  }
   .level-stars { display: flex; gap: 3px; font-size: 1.05rem; }
   .level-stars .star-icon { opacity: 0.2; filter: grayscale(1); }
   .level-stars .star-icon.earned { opacity: 1; filter: none; }
@@ -267,22 +322,31 @@
   .back-to-login { text-align: center; padding: 20px 0; }
   .back-btn { background: #4a2e1c; border: 3px solid #8b5a3e; color: #f5ead8; padding: 12px 24px; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 3px 0 #2a1a10; }
   .back-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2a1a10; }
+  .shop-level-btn {
+    display: block; margin: 0 auto 12px;
+    background: #8fb87d; border: 3px solid #5c7c3c; color: white;
+    padding: 10px 20px; border-radius: 8px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; box-shadow: 0 4px 0 #5c7c3c;
+  }
+  .shop-level-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #5c7c3c; }
 
   @media (max-width: 500px) {
     .login-card h1 { font-size: 1.4rem; }
     .level-title { font-size: 0.78rem; }
-    .customer-body { font-size: 2.6rem; }
-    .customer-bubble { top: -55px; font-size: 1rem; padding: 3px 6px; }
-    .customer-bubble .order-emoji { font-size: 1.1rem; }
-    .ingredient-btn { width: 58px; height: 60px; }
-    .ingredient-btn .ing-emoji { font-size: 1.5rem; }
-    .ingredient-btn .ing-label { font-size: 0.48rem; }
+    .customer-body { font-size: 2.2rem; }
+    .customer-bubble { top: -50px; font-size: 0.9rem; padding: 3px 5px; min-width: 42px; }
+    .customer-bubble .order-emoji { font-size: 1rem; }
+    .ingredient-btn { width: 54px; height: 56px; }
+    .ingredient-btn .ing-emoji { font-size: 1.4rem; }
+    .ingredient-btn .ing-label { font-size: 0.44rem; }
     .modal-card h2 { font-size: 1.1rem; }
     .select-header h1 { font-size: 1.15rem; }
     .stat-box { padding: 10px 12px; min-width: 80px; }
     .stat-box .stat-value { font-size: 1rem; }
     .tray-item { font-size: 1.6rem; }
     .workstation { padding: 6px 6px 8px; }
+    .recipe-book-btn, .shop-btn { font-size: 0.62rem; padding: 5px 8px; }
   }
 </style>
 </head>
@@ -343,6 +407,8 @@
       </div>
     </div>
 
+    <button class="shop-level-btn" id="openShopBtn">🛒 OPEN SHOP</button>
+
     <div class="levels-grid" id="levelsGrid"></div>
 
     <div class="back-to-login">
@@ -395,7 +461,9 @@
       <div class="workstation">
         <div class="workstation-header">
           <div class="station-label" id="stationLabel">☕ COFFEE STATION</div>
-          <button class="recipe-book-btn" id="recipeBookBtn">📖 RECIPE BOOK</button>
+          <div class="header-btns">
+            <button class="recipe-book-btn" id="recipeBookBtn">📖 RECIPES</button>
+          </div>
         </div>
         <div class="tray" id="tray">
           <div class="tray-empty">Tap ingredients below to start making something ☕</div>
@@ -407,12 +475,23 @@
   </div>
 
   <!-- RECIPE BOOK -->
-  <div class="recipe-book" id="recipeBook">
-    <div class="recipe-book-inner">
+  <div class="modal-book" id="recipeBook">
+    <div class="modal-book-inner">
       <h2>📖 Recipe Book</h2>
       <p class="rb-sub">Tap ingredients in this exact order</p>
       <div id="recipeBookContent"></div>
-      <button class="recipe-close" id="recipeCloseBtn">CLOSE</button>
+      <button class="modal-close" id="recipeCloseBtn">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- SHOP -->
+  <div class="modal-book" id="shopModal">
+    <div class="modal-book-inner">
+      <h2>🛒 Ingredient Shop</h2>
+      <p class="rb-sub">Buy new ingredients to unlock new recipes!</p>
+      <div class="coins-display">💰 <span id="shopCoins">0</span> coins</div>
+      <div id="shopContent"></div>
+      <button class="modal-close" id="shopCloseBtn">CLOSE</button>
     </div>
   </div>
 
@@ -426,7 +505,7 @@
         <div class="star" data-idx="1">⭐</div>
         <div class="star" data-idx="2">⭐</div>
       </div>
-      <div class="modal-score">COINS: <span class="highlight" id="modalScore">0</span></div>
+      <div class="modal-score">COINS EARNED: <span class="highlight" id="modalScore">0</span></div>
       <div class="modal-score">SERVED: <span class="highlight" id="modalServed">0</span></div>
       <div class="modal-score">LOST: <span class="highlight" id="modalLost">0</span></div>
       <div class="modal-actions">
@@ -440,7 +519,7 @@
   <div class="modal-bg" id="levelFailedModal">
     <div class="modal-card">
       <h2>CLOSING TIME</h2>
-      <p class="modal-sub" id="failedSub">Too many unhappy customers</p>
+      <p class="modal-sub" id="failedSub">Not enough coins earned</p>
       <div class="modal-score">COINS: <span class="highlight" id="failedScore">0</span></div>
       <div class="modal-score">SERVED: <span class="highlight" id="failedServed">0</span></div>
       <div class="modal-score">LOST: <span class="highlight" id="failedLost">0</span></div>
@@ -514,15 +593,16 @@ const SoundFX = {
   pour() { this.tone(300, 0.15, 'sine', 0.05); },
   brew() { this.tone(220, 0.3, 'sine', 0.05); this.tone(280, 0.4, 'sine', 0.04, 0.2); },
   ice() { this.tone(1200, 0.05, 'square', 0.05); this.tone(1400, 0.05, 'square', 0.04, 0.05); },
-  correct() {
-    [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.09, i * 0.06));
-  },
+  correct() { [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.09, i * 0.06)); },
   wrong() { this.tone(180, 0.3, 'sawtooth', 0.1); },
   customerEnter() { this.tone(520, 0.15, 'sine', 0.05); },
   customerLeave() { this.tone(220, 0.4, 'sawtooth', 0.08); },
   star() { [523, 659, 783, 1046].forEach((f, i) => this.tone(f, 0.22, 'triangle', 0.1, i * 0.15)); },
   fail() { this.tone(160, 0.6, 'sawtooth', 0.12); },
-  coin() { this.tone(1046, 0.08, 'square', 0.06); this.tone(1568, 0.1, 'square', 0.05, 0.06); }
+  coin() { this.tone(1046, 0.08, 'square', 0.06); this.tone(1568, 0.1, 'square', 0.05, 0.06); },
+  purchase() {
+    [660, 880, 1100, 1320].forEach((f, i) => this.tone(f, 0.15, 'triangle', 0.1, i * 0.08));
+  }
 };
 
 /* ============================================================ */
@@ -562,46 +642,71 @@ function getRecipeStation(recipeId) {
 /* INGREDIENTS                                                   */
 /* ============================================================ */
 const INGREDIENTS = {
-  ice:    { emoji: '🧊', label: 'Ice',    station: 'koy', step: 'ice' },
-  brew:   { emoji: '☕', label: 'Brew',   station: 'koy', step: 'brew' },
-  milk:   { emoji: '🥛', label: 'Milk',   station: 'koy', step: 'milk' },
-  choco:  { emoji: '🍫', label: 'Choco',  station: 'koy', step: 'choco' },
-  caramel:{ emoji: '🍯', label: 'Caramel',station: 'koy', step: 'caramel' },
-  matcha: { emoji: '🍵', label: 'Matcha', station: 'koy', step: 'matcha' },
-  warmCroissant: { emoji: '🥐', label: 'Croissant', station: 'metz', step: 'warmCroissant' },
-  warmMuffin:    { emoji: '🧁', label: 'Muffin',    station: 'metz', step: 'warmMuffin' },
-  warmCookie:    { emoji: '🍪', label: 'Cookie',    station: 'metz', step: 'warmCookie' },
-  bread:  { emoji: '🍞', label: 'Bread',   station: 'metz', step: 'bread' },
-  cheese: { emoji: '🧀', label: 'Cheese',  station: 'metz', step: 'cheese' },
-  tomato: { emoji: '🍅', label: 'Tomato',  station: 'metz', step: 'tomato' }
+  brew:   { emoji: '☕', label: 'Brew',   station: 'koy', step: 'brew', cost: 0, desc: 'Basic coffee brew' },
+  milk:   { emoji: '🥛', label: 'Milk',   station: 'koy', step: 'milk', cost: 0, desc: 'Steamed milk' },
+  ice:    { emoji: '🧊', label: 'Ice',    station: 'koy', step: 'ice', cost: 30, desc: 'For iced coffees' },
+  choco:  { emoji: '🍫', label: 'Choco',  station: 'koy', step: 'choco', cost: 60, desc: 'Chocolate syrup' },
+  caramel:{ emoji: '🍯', label: 'Caramel',station: 'koy', step: 'caramel', cost: 90, desc: 'Sweet caramel drizzle' },
+  matcha: { emoji: '🍵', label: 'Matcha', station: 'koy', step: 'matcha', cost: 120, desc: 'Japanese green tea' },
+
+  warmCroissant: { emoji: '🥐', label: 'Croissant', station: 'metz', step: 'warmCroissant', cost: 0, desc: 'Fresh croissant' },
+  warmCookie:    { emoji: '🍪', label: 'Cookie',    station: 'metz', step: 'warmCookie', cost: 0, desc: 'Chocolate chip cookie' },
+  warmMuffin:    { emoji: '🧁', label: 'Muffin',    station: 'metz', step: 'warmMuffin', cost: 0, desc: 'Blueberry muffin' },
+  bread:  { emoji: '🍞', label: 'Bread',   station: 'metz', step: 'bread', cost: 20, desc: 'Fresh sliced bread' },
+  cheese: { emoji: '🧀', label: 'Cheese',  station: 'metz', step: 'cheese', cost: 40, desc: 'Melty cheddar' },
+  tomato: { emoji: '🍅', label: 'Tomato',  station: 'metz', step: 'tomato', cost: 60, desc: 'Sliced tomato' }
 };
 
 /* ============================================================ */
-/* LEVELS - patience now much more generous                     */
+/* RECIPE REQUIREMENTS                                           */
 /* ============================================================ */
-// patience = seconds until payout starts dropping (they never leave)
+// Each recipe has required ingredients. When an ingredient isn't unlocked,
+// that recipe can't be ordered.
+const RECIPE_REQUIREMENTS = {
+  espresso: ['brew'],
+  americano: ['brew'],
+  latte: ['brew', 'milk'],
+  cappuccino: ['brew', 'milk'],
+  mocha: ['brew', 'milk', 'choco'],
+  caramelMacchiato: ['brew', 'milk', 'caramel'],
+  matchaLatte: ['matcha', 'milk'],
+  icedLatte: ['ice', 'brew', 'milk'],
+  icedAmericano: ['ice', 'brew'],
+  icedMocha: ['ice', 'brew', 'milk', 'choco'],
+  croissant: ['warmCroissant'],
+  cookie: ['warmCookie'],
+  muffin: ['warmMuffin'],
+  sandwich: ['bread', 'cheese', 'tomato'],
+  toastie: ['bread', 'cheese'],
+  bagel: ['bread']
+};
+
+/* ============================================================ */
+/* LEVELS                                                        */
+/* ============================================================ */
+// Each level: which recipes can show up, plus wave pattern
+// waveSize: [min, max] customers per spawn
+// waveCount: how many waves in this level
 const LEVELS = [
-  { id: 1, name: 'Opening Day', duration: 90, spawnEvery: 6500, patience: 120,
+  { id: 1, name: 'Opening Day', duration: 90, waveEvery: 8000, waveSize: [1, 1], patience: 100,
     recipes: ['espresso', 'croissant', 'cookie'], starThresholds: [40, 80, 130] },
-  { id: 2, name: 'Morning Rush', duration: 100, spawnEvery: 5500, patience: 120,
-    recipes: ['espresso', 'latte', 'croissant', 'muffin'], starThresholds: [70, 130, 200] },
-  { id: 3, name: 'Coffee Break', duration: 110, spawnEvery: 5000, patience: 110,
-    recipes: ['latte', 'cappuccino', 'croissant', 'muffin', 'cookie'], starThresholds: [110, 190, 280] },
-  { id: 4, name: 'Lunch Hour', duration: 120, spawnEvery: 4500, patience: 110,
-    recipes: ['latte', 'cappuccino', 'sandwich', 'toastie', 'muffin'], starThresholds: [150, 260, 380] },
-  { id: 5, name: 'Iced Afternoon', duration: 130, spawnEvery: 4200, patience: 100,
+  { id: 2, name: 'Morning Rush', duration: 100, waveEvery: 7000, waveSize: [1, 2], patience: 90,
+    recipes: ['espresso', 'latte', 'croissant', 'cookie'], starThresholds: [70, 130, 200] },
+  { id: 3, name: 'Coffee Break', duration: 110, waveEvery: 6500, waveSize: [1, 2], patience: 85,
+    recipes: ['espresso', 'latte', 'cappuccino', 'croissant', 'muffin', 'cookie'], starThresholds: [110, 190, 280] },
+  { id: 4, name: 'Lunch Hour', duration: 120, waveEvery: 6000, waveSize: [2, 3], patience: 80,
+    recipes: ['latte', 'cappuccino', 'sandwich', 'toastie', 'muffin', 'cookie'], starThresholds: [150, 260, 380] },
+  { id: 5, name: 'Iced Afternoon', duration: 130, waveEvery: 5500, waveSize: [2, 3], patience: 75,
     recipes: ['mocha', 'icedLatte', 'matchaLatte', 'toastie', 'bagel', 'cookie'], starThresholds: [190, 320, 460] },
-  { id: 6, name: 'Happy Hour', duration: 130, spawnEvery: 3800, patience: 100,
+  { id: 6, name: 'Happy Hour', duration: 130, waveEvery: 5000, waveSize: [2, 3], patience: 70,
     recipes: ['mocha', 'caramelMacchiato', 'icedLatte', 'icedAmericano', 'sandwich', 'croissant'], starThresholds: [230, 390, 550] },
-  { id: 7, name: 'Evening Crowd', duration: 140, spawnEvery: 3400, patience: 90,
-    recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'toastie', 'muffin', 'cookie']),
-    starThresholds: [280, 460, 650] },
-  { id: 8, name: 'Date Night', duration: 150, spawnEvery: 3200, patience: 90,
-    recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'bagel', 'croissant', 'muffin']),
-    starThresholds: [330, 540, 760] },
-  { id: 9, name: 'Grand Rush', duration: 150, spawnEvery: 2800, patience: 80,
+  { id: 7, name: 'Evening Crowd', duration: 140, waveEvery: 4600, waveSize: [2, 4], patience: 65,
+    recipes: ['mocha', 'icedMocha', 'caramelMacchiato', 'matchaLatte', 'sandwich', 'toastie', 'muffin', 'cookie'], starThresholds: [280, 460, 650] },
+  { id: 8, name: 'Date Night', duration: 150, waveEvery: 4200, waveSize: [3, 4], patience: 60,
+    recipes: ['mocha', 'icedMocha', 'caramelMacchiato', 'matchaLatte', 'sandwich', 'bagel', 'croissant', 'muffin'], starThresholds: [330, 540, 760] },
+  { id: 9, name: 'Grand Rush', duration: 150, waveEvery: 3800, waveSize: [3, 5], patience: 55,
     recipes: Object.keys(ALL_RECIPES), starThresholds: [390, 630, 890] },
-  { id: 10, name: 'Grand Opening', duration: 180, spawnEvery: 2400, patience: 80,
+  { id: 10, name: 'Grand Opening', duration: 180, waveEvery: 3200, waveSize: [4, 5], patience: 50,
     recipes: Object.keys(ALL_RECIPES), starThresholds: [460, 730, 1030] }
 ];
 
@@ -616,7 +721,13 @@ let myPeerId = null;
 
 const peerState = { peer: null, conn: null, connected: false, pendingMsgs: [] };
 
-let progression = { unlockedLevels: 1, bestScores: {}, bestStars: {}, totalCoins: 0 };
+let progression = {
+  unlockedLevels: 1,
+  bestScores: {},
+  bestStars: {},
+  totalCoins: 0,
+  ownedIngredients: ['brew', 'milk', 'warmCroissant', 'warmCookie', 'warmMuffin']
+};
 
 const game = {
   levelId: 1, level: null, running: false, timeRemaining: 0,
@@ -779,6 +890,97 @@ $('hostId').addEventListener('click', () => {
 });
 
 /* ============================================================ */
+/* SHOP                                                          */
+/* ============================================================ */
+$('openShopBtn').addEventListener('click', () => {
+  renderShop();
+  $('shopModal').classList.add('show');
+});
+$('shopCloseBtn').addEventListener('click', () => {
+  $('shopModal').classList.remove('show');
+});
+
+function renderShop() {
+  $('shopCoins').textContent = progression.totalCoins || 0;
+  const cont = $('shopContent');
+  cont.innerHTML = '';
+
+  // Coffee ingredients
+  const sec1 = document.createElement('div');
+  sec1.className = 'recipe-section-title';
+  sec1.textContent = '☕ Coffee Ingredients (Koy)';
+  cont.appendChild(sec1);
+  ['ice', 'choco', 'caramel', 'matcha'].forEach(id => {
+    cont.appendChild(renderShopItem(id));
+  });
+
+  // Food ingredients
+  const sec2 = document.createElement('div');
+  sec2.className = 'recipe-section-title';
+  sec2.textContent = '🥐 Food Ingredients (Metz)';
+  cont.appendChild(sec2);
+  ['bread', 'cheese', 'tomato'].forEach(id => {
+    cont.appendChild(renderShopItem(id));
+  });
+}
+
+function renderShopItem(ingId) {
+  const ing = INGREDIENTS[ingId];
+  const owned = progression.ownedIngredients.includes(ingId);
+  const cost = ing.cost;
+  const canAfford = (progression.totalCoins || 0) >= cost;
+
+  const item = document.createElement('div');
+  item.className = 'shop-item' + (owned ? ' owned' : '');
+
+  if (owned) {
+    item.innerHTML = `
+      <div class="si-emoji">${ing.emoji}</div>
+      <div class="si-info">
+        <div class="si-name">${ing.label}</div>
+        <div class="si-desc">${ing.desc}</div>
+      </div>
+      <div class="si-owned">✓ Owned</div>
+    `;
+  } else {
+    item.innerHTML = `
+      <div class="si-emoji">${ing.emoji}</div>
+      <div class="si-info">
+        <div class="si-name">${ing.label}</div>
+        <div class="si-desc">${ing.desc}</div>
+      </div>
+      <button class="si-buy ${canAfford ? '' : 'disabled'}" data-ing="${ingId}">
+        ${cost}💰
+      </button>
+    `;
+    const btn = item.querySelector('.si-buy');
+    if (canAfford) {
+      btn.addEventListener('click', () => buyIngredient(ingId));
+    }
+  }
+  return item;
+}
+
+async function buyIngredient(ingId) {
+  const ing = INGREDIENTS[ingId];
+  if (!ing) return;
+  if (progression.ownedIngredients.includes(ingId)) return;
+  if ((progression.totalCoins || 0) < ing.cost) {
+    showToast('Not enough coins!');
+    SoundFX.wrong();
+    return;
+  }
+  progression.totalCoins -= ing.cost;
+  progression.ownedIngredients.push(ingId);
+  await saveProgression();
+  SoundFX.purchase();
+  showToast('Unlocked ' + ing.label + '! 🎉');
+  renderShop();
+  renderIngredients();
+  updateProgressionUI();
+}
+
+/* ============================================================ */
 /* LEVEL SELECT                                                  */
 /* ============================================================ */
 function showLevelSelect() {
@@ -797,9 +999,18 @@ function renderLevels() {
     const unlocked = (idx + 1) <= progression.unlockedLevels;
     const stars = progression.bestStars[lvl.id] || 0;
     const best = progression.bestScores[lvl.id] || 0;
+
+    // Check if the level can actually be played with current ingredients
+    const missingRecipes = lvl.recipes.filter(rid => {
+      const reqs = RECIPE_REQUIREMENTS[rid];
+      return reqs.some(ing => !progression.ownedIngredients.includes(ing));
+    });
+    const requiresPurchase = missingRecipes.length > 0;
+
     const card = document.createElement('div');
-    card.className = 'level-card' + (unlocked ? '' : ' locked');
+    card.className = 'level-card' + (unlocked ? '' : ' locked') + (unlocked && requiresPurchase ? ' requires-purchase' : '');
     card.innerHTML = `
+      ${requiresPurchase ? '<div class="level-lock-icon">🛒</div>' : ''}
       <div class="level-number">LEVEL ${lvl.id}</div>
       <div class="level-name">${lvl.name}</div>
       <div class="level-stars">
@@ -809,7 +1020,17 @@ function renderLevels() {
       </div>
       <div class="level-best">${best > 0 ? 'Best: ' + best : 'Not played'}</div>
     `;
-    if (unlocked) card.addEventListener('click', () => startLevel(lvl.id));
+    if (unlocked) {
+      card.addEventListener('click', () => {
+        if (requiresPurchase) {
+          showToast('Buy ingredients first! Missing: ' + missingRecipes.slice(0, 2).join(', '));
+          renderShop();
+          $('shopModal').classList.add('show');
+          return;
+        }
+        startLevel(lvl.id);
+      });
+    }
     grid.appendChild(card);
   });
 }
@@ -823,6 +1044,7 @@ async function loadProgression() {
       progression.bestScores = data.bestScores || {};
       progression.bestStars = data.bestStars || {};
       progression.totalCoins = data.totalCoins || 0;
+      progression.ownedIngredients = data.ownedIngredients || ['brew', 'milk', 'warmCroissant', 'warmCookie', 'warmMuffin'];
     }
     updateProgressionUI();
   } catch(e) { console.error(e); }
@@ -858,10 +1080,16 @@ $('recipeCloseBtn').addEventListener('click', () => {
 function renderRecipeBook() {
   const cont = $('recipeBookContent');
   cont.innerHTML = '';
-  const availableRecipes = game.level ? game.level.recipes : Object.keys(ALL_RECIPES);
 
-  const coffeeList = availableRecipes.filter(r => COFFEE_RECIPES[r]);
-  const foodList = availableRecipes.filter(r => FOOD_RECIPES[r]);
+  // Only show recipes we have ingredients for AND that are in the current level
+  const levelRecipes = game.level ? game.level.recipes : Object.keys(ALL_RECIPES);
+  const craftableRecipes = levelRecipes.filter(rid => {
+    const reqs = RECIPE_REQUIREMENTS[rid] || [];
+    return reqs.every(ing => progression.ownedIngredients.includes(ing));
+  });
+
+  const coffeeList = craftableRecipes.filter(r => COFFEE_RECIPES[r]);
+  const foodList = craftableRecipes.filter(r => FOOD_RECIPES[r]);
 
   if (coffeeList.length > 0) {
     const sec = document.createElement('div');
@@ -870,9 +1098,7 @@ function renderRecipeBook() {
     cont.appendChild(sec);
     const grid = document.createElement('div');
     grid.className = 'recipe-grid';
-    coffeeList.forEach(rid => {
-      grid.appendChild(renderRecipeCard(COFFEE_RECIPES[rid]));
-    });
+    coffeeList.forEach(rid => grid.appendChild(renderRecipeCard(COFFEE_RECIPES[rid])));
     cont.appendChild(grid);
   }
 
@@ -883,10 +1109,12 @@ function renderRecipeBook() {
     cont.appendChild(sec);
     const grid = document.createElement('div');
     grid.className = 'recipe-grid';
-    foodList.forEach(rid => {
-      grid.appendChild(renderRecipeCard(FOOD_RECIPES[rid]));
-    });
+    foodList.forEach(rid => grid.appendChild(renderRecipeCard(FOOD_RECIPES[rid])));
     cont.appendChild(grid);
+  }
+
+  if (coffeeList.length === 0 && foodList.length === 0) {
+    cont.innerHTML = '<p style="text-align:center;color:#a88870;font-size:0.9rem;padding:20px;">Buy ingredients in the Shop to unlock recipes!</p>';
   }
 }
 
@@ -952,31 +1180,27 @@ function startLevel(levelId, fromRemote = false) {
     if (game.timeRemaining <= 0) endLevel();
   }, 1000);
 
+  // WAVES: spawn groups of customers
   if (isHost) {
     game.spawnInterval = setInterval(() => {
       if (!game.running) return;
-      spawnCustomer();
-    }, level.spawnEvery);
-    setTimeout(spawnCustomer, 700);
+      spawnWave();
+    }, level.waveEvery);
+    setTimeout(spawnWave, 500);
   }
 
-  // Patience ticker — updates the visual bar and the pay multiplier
-  // Customers NEVER leave from patience. They just pay less.
+  // Patience ticker
   game.patienceInterval = setInterval(() => {
     if (!game.running) return;
     const now = Date.now();
-    let needsUpdate = false;
     game.customers.forEach(c => {
       const elapsed = (now - c.enteredAt) / 1000;
-      // patienceLeft is 1.0 at start, decreasing to 0 when elapsed >= patienceMax
       const pct = Math.max(0, 1 - elapsed / c.patienceMax);
-      // Below 0 means they've waited past patience. Track that separately for pay reduction.
       const overshoot = Math.max(0, (elapsed - c.patienceMax) / c.patienceMax);
       c.patienceLeft = pct;
       c.overshoot = overshoot;
-      needsUpdate = true;
     });
-    if (needsUpdate) updatePatienceBars();
+    updatePatienceBars();
   }, 500);
 
   showToast('Level ' + levelId + ' · ' + level.name);
@@ -996,47 +1220,56 @@ function updateSkyTint(levelId) {
 /* ============================================================ */
 /* CUSTOMERS                                                     */
 /* ============================================================ */
-function spawnCustomer() {
+function getCraftableRecipes() {
+  // Only recipes we have ingredients for AND that are in the current level
+  return game.level.recipes.filter(rid => {
+    const reqs = RECIPE_REQUIREMENTS[rid] || [];
+    return reqs.every(ing => progression.ownedIngredients.includes(ing));
+  });
+}
+
+function spawnWave() {
   if (!game.running) return;
-  const available = game.level.recipes;
-  const recipeId = available[Math.floor(Math.random() * available.length)];
-  const customer = {
-    id: 'c_' + game.nextCustomerId++,
-    recipeId,
-    patienceMax: game.level.patience,
-    patienceLeft: 1,
-    overshoot: 0,
-    enteredAt: Date.now()
-  };
-  game.customers.push(customer);
-  // Cap at 4 concurrent customers. When the 5th would arrive, the OLDEST one
-  // pays out at their current reduced rate and leaves (they've been waiting longest).
-  if (game.customers.length > 4) {
+  const craftable = getCraftableRecipes();
+  if (craftable.length === 0) {
+    // Fallback to espresso-only if somehow nothing craftable
+    return;
+  }
+  const [minSize, maxSize] = game.level.waveSize;
+  const waveSize = Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize;
+
+  for (let i = 0; i < waveSize; i++) {
+    const recipeId = craftable[Math.floor(Math.random() * craftable.length)];
+    const customer = {
+      id: 'c_' + game.nextCustomerId++,
+      recipeId,
+      patienceMax: game.level.patience,
+      patienceLeft: 1,
+      overshoot: 0,
+      enteredAt: Date.now()
+    };
+    game.customers.push(customer);
+    if (!soloMode) sendPeer({ type: 'customerSpawn', customer });
+  }
+
+  // Cap at 5 concurrent customers max, oldest ones get served automatically
+  while (game.customers.length > 5) {
     const oldest = game.customers.shift();
     const leftoverPay = calculatePay(oldest);
     game.score += leftoverPay;
     game.served += 1;
     updateHUD();
-    if (leftoverPay > 0) {
-      floatScore('+' + leftoverPay + ' 💰', '#8fd87d');
-    }
-    if (!soloMode) {
-      sendPeer({ type: 'customerServed', customerId: oldest.id, points: leftoverPay });
-    }
+    if (leftoverPay > 0) floatScore('+' + leftoverPay + ' 💰', '#8fd87d');
+    if (!soloMode) sendPeer({ type: 'customerServed', customerId: oldest.id, points: leftoverPay });
   }
+
   renderCustomers();
-  SoundFX.customerEnter();
-  if (!soloMode) sendPeer({ type: 'customerSpawn', customer });
+  for (let i = 0; i < waveSize; i++) setTimeout(() => SoundFX.customerEnter(), i * 80);
 }
 
 function addCustomerFromData(customer) {
   if (game.customers.some(c => c.id === customer.id)) return;
-  game.customers.push({
-    ...customer,
-    patienceLeft: 1,
-    overshoot: 0,
-    enteredAt: Date.now()
-  });
+  game.customers.push({ ...customer, patienceLeft: 1, overshoot: 0, enteredAt: Date.now() });
   renderCustomers();
   SoundFX.customerEnter();
 }
@@ -1051,14 +1284,10 @@ function calculatePay(customer) {
   if (!recipe) return 0;
   const base = recipe.points;
 
-  // Within patience window: full pay + tip based on how fast
   if (customer.patienceLeft > 0) {
     const tipBonus = Math.round(base * customer.patienceLeft * 0.5);
     return base + tipBonus;
   }
-
-  // Past patience: pay drops over time. At 100% overshoot = 50% pay.
-  // At 200% overshoot = 25%. At 300% overshoot = 12.5%. Etc.
   const overshoot = customer.overshoot || 0;
   const multiplier = Math.max(0.1, Math.pow(0.5, overshoot));
   return Math.max(1, Math.round(base * multiplier));
@@ -1068,7 +1297,7 @@ function getPayPercentage(customer) {
   const recipe = ALL_RECIPES[customer.recipeId];
   const base = recipe.points;
   const currentPay = calculatePay(customer);
-  const maxPay = base + Math.round(base * 1 * 0.5); // max possible (served instantly)
+  const maxPay = base + Math.round(base * 1 * 0.5);
   return Math.min(100, Math.round((currentPay / maxPay) * 100));
 }
 
@@ -1143,7 +1372,9 @@ function renderIngredients() {
   const cont = $('ingredients');
   cont.innerHTML = '';
   const station = getMyStation();
-  const available = Object.entries(INGREDIENTS).filter(([id, ing]) => ing.station === station);
+  const available = Object.entries(INGREDIENTS).filter(([id, ing]) =>
+    ing.station === station && progression.ownedIngredients.includes(id)
+  );
 
   available.forEach(([ingId, ing]) => {
     const btn = document.createElement('button');
@@ -1164,6 +1395,7 @@ function addIngredient(ingId) {
   const station = getMyStation();
   const ing = INGREDIENTS[ingId];
   if (!ing) return;
+  if (!progression.ownedIngredients.includes(ingId)) return;
 
   const tray = game.tray[station] || [];
   if (tray.length >= 6) {
@@ -1190,6 +1422,10 @@ function updateMatchedRecipe(station) {
   const recipePool = station === 'koy' ? COFFEE_RECIPES : FOOD_RECIPES;
   let matched = null;
   for (const [id, r] of Object.entries(recipePool)) {
+    // Must have the required ingredients owned
+    const reqs = RECIPE_REQUIREMENTS[id] || [];
+    if (!reqs.every(ing => progression.ownedIngredients.includes(ing))) continue;
+
     if (r.steps.length !== tray.length) continue;
     const rSteps = [...r.steps].sort();
     const tSteps = tray.map(t => INGREDIENTS[t].step).sort();
@@ -1383,9 +1619,7 @@ function attemptServe(customer) {
   }
 
   if (matchedRecipe === customer.recipeId) {
-    // Calculate pay based on how long they waited
     const points = calculatePay(customer);
-
     game.tray[station] = [];
     game.trayRecipe[station] = null;
     removeCustomer(customer.id);
@@ -1394,7 +1628,6 @@ function attemptServe(customer) {
     updateHUD();
     renderTray();
 
-    // Positive feedback color based on tip
     const recipe = ALL_RECIPES[customer.recipeId];
     const maxPay = recipe.points + Math.round(recipe.points * 0.5);
     const pct = points / maxPay;
@@ -1475,7 +1708,7 @@ function endLevel() {
   if (game.spawnInterval) clearInterval(game.spawnInterval);
   if (game.patienceInterval) clearInterval(game.patienceInterval);
 
-  // Auto-pay any customers still waiting (they leave peacefully with reduced pay)
+  // Auto-pay remaining customers
   game.customers.forEach(c => {
     const points = calculatePay(c);
     game.score += points;
@@ -1508,6 +1741,8 @@ function handleLevelComplete(data) {
   if (stars > (progression.bestStars[game.levelId] || 0)) progression.bestStars[game.levelId] = stars;
   if (score > (progression.bestScores[game.levelId] || 0)) progression.bestScores[game.levelId] = score;
   if (game.levelId >= progression.unlockedLevels && stars > 0) progression.unlockedLevels = Math.min(LEVELS.length, game.levelId + 1);
+
+  // Earn coins based on score
   progression.totalCoins = (progression.totalCoins || 0) + score;
   saveProgression();
 
