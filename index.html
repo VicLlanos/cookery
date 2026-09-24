@@ -17,9 +17,6 @@
       touch-action: none;
     }
 
-    /* ============================================================ */
-    /* APP LAYOUT                                                    */
-    /* ============================================================ */
     #app {
       position: fixed;
       inset: 0;
@@ -28,9 +25,7 @@
       overflow: hidden;
     }
 
-    /* ============================================================ */
-    /* LOGIN SCREEN                                                  */
-    /* ============================================================ */
+    /* LOGIN */
     #loginScreen {
       position: absolute;
       inset: 0;
@@ -149,9 +144,7 @@
       margin-top: 12px;
     }
 
-    /* ============================================================ */
-    /* GAME VIEW                                                     */
-    /* ============================================================ */
+    /* GAME VIEW */
     #gameView {
       display: none;
       flex-direction: column;
@@ -159,7 +152,6 @@
       background: #2a1f1a;
     }
 
-    /* ---------- TOP HUD ---------- */
     .hud {
       display: flex;
       align-items: center;
@@ -260,11 +252,6 @@
       50% { box-shadow: 0 0 0 6px rgba(201,48,44,0); }
     }
     .order-ticket .order-emoji { font-size: 0.95rem; line-height: 1; }
-    .order-ticket .order-timer {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.4rem;
-      color: #8b6f5e;
-    }
     .order-ticket .order-timer-bar {
       position: absolute;
       bottom: 0; left: 0;
@@ -299,7 +286,6 @@
       50% { opacity: 0.7; }
     }
 
-    /* ---------- GAME STAGE ---------- */
     .stage-wrap {
       flex: 1;
       position: relative;
@@ -318,7 +304,6 @@
       max-height: 100%;
     }
 
-    /* ---------- ONSCREEN CONTROLS ---------- */
     .controls-layer {
       position: absolute;
       inset: 0;
@@ -335,7 +320,6 @@
       pointer-events: auto;
       touch-action: none;
     }
-    .joystick-zone.right { left: auto; right: 15px; }
 
     .joystick-base {
       position: absolute;
@@ -380,7 +364,6 @@
     }
     .action-btn-round:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(107, 79, 62, 0.9); }
 
-    /* ---------- PROMPT / MESSAGES ---------- */
     .center-toast {
       position: absolute;
       top: 40%;
@@ -407,22 +390,6 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
-    .player-tag {
-      position: absolute;
-      top: -22px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.5rem;
-      color: #fff;
-      background: rgba(0,0,0,0.6);
-      padding: 3px 6px;
-      border-radius: 3px;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    /* ---------- LEVEL COMPLETE MODAL ---------- */
     .modal-bg {
       position: fixed;
       inset: 0;
@@ -534,7 +501,6 @@
     .modal-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4f3e; }
     .modal-btn.secondary { background: #a89080; box-shadow: 0 4px 0 #8b6f5e; }
 
-    /* ---------- PAUSE MENU ---------- */
     #pauseMenu {
       position: fixed;
       inset: 0;
@@ -547,7 +513,6 @@
     }
     #pauseMenu.show { display: flex; }
 
-    /* ---------- TOASTS ---------- */
     .toast {
       position: fixed;
       top: 80px;
@@ -568,7 +533,6 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ---------- LEVEL SELECT ---------- */
     #levelSelect {
       position: fixed;
       inset: 0;
@@ -705,7 +669,6 @@
     }
     .back-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2a1f1a; }
 
-    /* ---------- WAITING ROOM ---------- */
     #waitingRoom {
       position: fixed;
       inset: 0;
@@ -733,10 +696,8 @@
       margin-bottom: 20px;
     }
 
-    /* ---------- MOBILE DETECTION ---------- */
     .mobile-only { display: none; }
     body.touch-mode .mobile-only { display: flex; }
-    body.touch-mode .desktop-hint { display: none; }
 
     @media (max-width: 500px) {
       .login-card h1 { font-size: 0.85rem; }
@@ -750,14 +711,13 @@
 
   <div id="app">
 
-    <!-- ==================== LOGIN ==================== -->
     <div id="loginScreen">
       <div class="login-card">
         <div class="login-emoji" id="loginEmoji">🍳</div>
         <h1>OUR KITCHEN</h1>
         <p class="subtitle">A co-op cooking adventure for Koy & Metz</p>
 
-        <div class="role-pick" style="display:flex; gap:8px; margin-bottom:12px;">
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
           <button class="login-btn secondary role-btn" data-role="koy" style="flex:1; margin:0;">🌿 Koy</button>
           <button class="login-btn secondary role-btn" data-role="metz" style="flex:1; margin:0;">🌸 Metz</button>
         </div>
@@ -780,7 +740,6 @@
       </div>
     </div>
 
-    <!-- ==================== WAITING ROOM ==================== -->
     <div id="waitingRoom">
       <div class="waiting-emoji" id="waitingEmoji">⏳</div>
       <div class="waiting-text" id="waitingText">Waiting for your partner...</div>
@@ -790,7 +749,6 @@
       </div>
     </div>
 
-    <!-- ==================== LEVEL SELECT ==================== -->
     <div id="levelSelect">
       <div class="select-header">
         <h1>🍳 OUR KITCHEN</h1>
@@ -815,10 +773,8 @@
       </div>
     </div>
 
-    <!-- ==================== GAME VIEW ==================== -->
     <div id="gameView">
 
-      <!-- HUD -->
       <div class="hud">
         <div class="hud-left">
           <button class="hud-btn" id="pauseBtn">⏸</button>
@@ -836,12 +792,10 @@
         </div>
       </div>
 
-      <!-- Stage -->
       <div class="stage-wrap" id="stageWrap">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
       </div>
 
-      <!-- Controls layer (mobile) -->
       <div class="controls-layer">
         <div class="joystick-zone mobile-only" id="joystickZone">
           <div class="joystick-base"></div>
@@ -853,7 +807,6 @@
       <div class="center-toast" id="centerToast"></div>
     </div>
 
-    <!-- ==================== MODALS ==================== -->
     <div class="modal-bg" id="levelCompleteModal">
       <div class="modal-card">
         <h2 id="completeTitle">LEVEL COMPLETE!</h2>
@@ -899,7 +852,6 @@
       </div>
     </div>
 
-    <!-- Pause Menu -->
     <div id="pauseMenu">
       <div class="modal-card">
         <h2>PAUSED</h2>
@@ -915,14 +867,13 @@
 
   </div>
 
-  <!-- Libraries -->
   <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
   /* ============================================================ */
-  /* FIREBASE - progression persistence                            */
+  /* FIREBASE                                                      */
   /* ============================================================ */
   const firebaseConfig = {
     apiKey: "AIzaSyCpxlMZiAcJwI2RuNTJ14jSaHhV-nBcW7A",
@@ -937,7 +888,7 @@
   const db = firebase.database();
 
   /* ============================================================ */
-  /* AUDIO (synthesized, no external files)                        */
+  /* AUDIO                                                         */
   /* ============================================================ */
   const SoundFX = {
     ctx: null,
@@ -963,9 +914,6 @@
     drop() { this.tone(440, 0.08, 'square', 0.05); },
     chop() { this.tone(220, 0.06, 'triangle', 0.08); },
     cook() { this.tone(330, 0.15, 'sine', 0.06); },
-    serve() {
-      [523.25, 659.25, 783.99].forEach((f, i) => this.tone(f, 0.15, 'triangle', 0.08, i * 0.06));
-    },
     orderNew() { this.tone(660, 0.12, 'sine', 0.06); },
     orderComplete() {
       [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.08, i * 0.05));
@@ -979,7 +927,7 @@
   };
 
   /* ============================================================ */
-  /* RECIPES & INGREDIENTS                                         */
+  /* INGREDIENTS & RECIPES                                         */
   /* ============================================================ */
   const INGREDIENTS = {
     lettuce: { emoji: '🥬', color: '#7db85c', name: 'Lettuce' },
@@ -994,78 +942,48 @@
     rice: { emoji: '🍚', color: '#fdf6ee', name: 'Rice' },
     fish: { emoji: '🐟', color: '#6da8c9', name: 'Fish' },
     flour: { emoji: '🌾', color: '#d4b896', name: 'Flour' },
-    sugar: { emoji: '🍬', color: '#f0a8c9', name: 'Sugar' },
-    egg_yolk: { emoji: '🥚', color: '#f0c840', name: 'Egg Yolk' }
+    sugar: { emoji: '🍬', color: '#f0a8c9', name: 'Sugar' }
   };
-
-  // Recipes: sequence of steps. Each step is either:
-  //  { type: 'chop', from: 'lettuce', to: 'lettuce_chopped' }
-  //  { type: 'cook', from: 'patty', to: 'patty_cooked' }
-  //  { type: 'combine', ingredients: [...] } — everything on plate
-  // We simplify: each recipe is a chain of transformations + plate assembly.
 
   const RECIPES = {
     salad: {
       name: 'Salad',
       emoji: '🥗',
-      steps: [
-        { station: 'chop', input: 'lettuce', output: 'lettuce_chopped' },
-        { station: 'plate', combine: ['lettuce_chopped', 'tomato'] }
-      ],
+      needs: ['lettuce_chopped', 'tomato'],
       points: 10
     },
     burger: {
       name: 'Burger',
       emoji: '🍔',
-      steps: [
-        { station: 'cook', input: 'patty', output: 'patty_cooked' },
-        { station: 'plate', combine: ['bun', 'patty_cooked'] }
-      ],
+      needs: ['bun', 'patty_cooked'],
       points: 15
     },
     pizza: {
       name: 'Pizza',
       emoji: '🍕',
-      steps: [
-        { station: 'chop', input: 'tomato', output: 'tomato_chopped' },
-        { station: 'combine', input: ['dough', 'sauce'], output: 'pizza_base' },
-        { station: 'cook', input: 'pizza_base', output: 'pizza_cooked' },
-        { station: 'plate', combine: ['pizza_cooked'] }
-      ],
+      needs: ['pizza_cooked'],
       points: 20
     },
     ramen: {
       name: 'Ramen',
       emoji: '🍜',
-      steps: [
-        { station: 'chop', input: 'egg', output: 'egg_chopped' },
-        { station: 'cook', input: 'noodles', output: 'noodles_cooked' },
-        { station: 'plate', combine: ['noodles_cooked', 'egg_chopped'] }
-      ],
+      needs: ['noodles_cooked', 'egg_chopped'],
       points: 18
     },
     sushi: {
       name: 'Sushi',
       emoji: '🍣',
-      steps: [
-        { station: 'chop', input: 'fish', output: 'fish_sliced' },
-        { station: 'plate', combine: ['rice', 'fish_sliced'] }
-      ],
+      needs: ['rice', 'fish_sliced'],
       points: 18
     },
     cake: {
       name: 'Cake',
       emoji: '🍰',
-      steps: [
-        { station: 'combine', input: ['flour', 'sugar', 'egg'], output: 'cake_batter' },
-        { station: 'cook', input: 'cake_batter', output: 'cake_baked' },
-        { station: 'plate', combine: ['cake_baked'] }
-      ],
+      needs: ['cake_baked'],
       points: 25
     }
   };
 
-  // Derived ingredient info for transformed items
   const TRANSFORMED = {
     lettuce_chopped: { emoji: '🥬', color: '#5c9c3c', name: 'Chopped Lettuce' },
     tomato_chopped: { emoji: '🍅', color: '#a02020', name: 'Chopped Tomato' },
@@ -1086,159 +1004,9 @@
   }
 
   /* ============================================================ */
-  /* LEVELS                                                        */
+  /* GRID BUILDERS - FIXED                                         */
   /* ============================================================ */
-  // Grid-based kitchen. Each cell has a type:
-  //  'floor' — walkable
-  //  'crate:lettuce' — ingredient crate
-  //  'chop' — cutting board
-  //  'stove' — cook station
-  //  'plate' — plate dispenser
-  //  'serve' — serving window
-  //  'block' — wall
-  //  'bin' — trash
-  // Each level: 16 x 12 grid (scaled to canvas)
-
-  const LEVELS = [
-    {
-      id: 1, name: 'First Day',
-      duration: 90, // seconds
-      grid: makeGrid(['lettuce'], ['salad']),
-      starThresholds: [30, 60, 90]
-    },
-    {
-      id: 2, name: 'Getting Warm',
-      duration: 100,
-      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['lettuce', 'bun', 'patty'], ['burger']),
-      starThresholds: [50, 90, 130]
-    },
-    {
-      id: 3, name: 'Full Menu',
-      duration: 120,
-      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza']),
-      starThresholds: [70, 130, 190]
-    },
-    {
-      id: 4, name: 'Split Kitchen',
-      duration: 120,
-      grid: splitKitchen(['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
-      starThresholds: [80, 150, 220]
-    },
-    {
-      id: 5, name: 'Ramen Rush',
-      duration: 130,
-      grid: makeGrid(['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
-      starThresholds: [100, 180, 260]
-    },
-    {
-      id: 6, name: 'Shifting Floors',
-      duration: 140,
-      chaotic: 'shifting',
-      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['lettuce', 'tomato'], ['salad']),
-      starThresholds: [120, 210, 300]
-    },
-    {
-      id: 7, name: 'Sushi Night',
-      duration: 140,
-      grid: makeGrid(['rice', 'fish'], ['sushi'], ['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger']),
-      starThresholds: [130, 230, 330]
-    },
-    {
-      id: 8, name: 'Cake Emergency',
-      duration: 150,
-      chaotic: 'shifting',
-      grid: makeGrid(['flour', 'sugar', 'egg'], ['cake'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
-      starThresholds: [150, 260, 380]
-    },
-    {
-      id: 9, name: 'Chaos Kitchen',
-      duration: 150,
-      chaotic: 'rotating',
-      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
-      starThresholds: [170, 300, 430]
-    },
-    {
-      id: 10, name: 'Final Service',
-      duration: 180,
-      chaotic: 'rotating',
-      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['noodles', 'egg'], ['ramen'], ['rice', 'fish'], ['sushi'], ['flour', 'sugar', 'egg'], ['cake']),
-      starThresholds: [220, 380, 550]
-    }
-  ];
-
-  // Build a standard 16x12 kitchen grid with given groups of recipes
   function makeGrid(...recipeGroups) {
-    // 16 wide, 12 tall. Layout:
-    // Row 0: top wall with crates and serve window
-    // Rows 1-2: walkable walkway
-    // Row 3: counters (chop, stove, plate, etc)
-    // Rows 4-5: main walkway
-    // Rows 6-7: more counters
-    // Rows 8-9: bottom walkway
-    // Row 10-11: bottom wall with crates
-
-    const W = 16, H = 12;
-    const grid = [];
-    for (let y = 0; y < H; y++) {
-      const row = [];
-      for (let x = 0; x < W; x++) {
-        row.push('floor');
-      }
-      grid.push(row);
-    }
-
-    // Top wall
-    for (let x = 0; x < W; x++) grid[0][x] = 'block';
-
-    // Serving window in the top middle
-    grid[0][7] = 'serve';
-    grid[0][8] = 'serve';
-
-    // Bottom wall
-    for (let x = 0; x < W; x++) grid[H-1][x] = 'block';
-
-    // Left and right walls
-    for (let y = 0; y < H; y++) {
-      grid[y][0] = 'block';
-      grid[y][W-1] = 'block';
-    }
-
-    // Central counters — split the kitchen with stations
-    // Row 4 (y=4) mid counters
-    for (let x = 2; x < W - 2; x++) grid[4][x] = 'counter';
-    // Row 7 (y=7) mid counters
-    for (let x = 2; x < W - 2; x++) grid[7][x] = 'counter';
-
-    // Place chop, stove, plate on these counters
-    // Alternating along the middle counters
-    let chopCount = 2;
-    let stoveCount = 2;
-    grid[4][3] = 'chop';
-    grid[4][6] = 'stove';
-    grid[4][9] = 'chop';
-    grid[4][12] = 'stove';
-
-    grid[7][3] = 'plate';
-    grid[7][6] = 'plate';
-    grid[7][9] = 'bin'; // trash
-    grid[7][12] = 'plate';
-
-    // Crates along the bottom row inside the wall (walkable from above)
-    const crates = [];
-    recipeGroups.forEach(group => group[0].forEach(ing => crates.push(ing)));
-    // unique crates
-    const uniqueCrates = [...new Set(crates)];
-    const crateCount = uniqueCrates.length;
-    for (let i = 0; i < crateCount; i++) {
-      const x = Math.floor((i + 1) * (W - 2) / (crateCount + 1)) + 1;
-      grid[10][x] = 'crate:' + uniqueCrates[i];
-    }
-
-    return grid;
-  }
-
-  function splitKitchen(groupA, recipesA, groupB, recipesB) {
-    // Split kitchen: left half is one setup, right half is another
     const W = 16, H = 12;
     const grid = [];
     for (let y = 0; y < H; y++) {
@@ -1247,45 +1015,82 @@
       grid.push(row);
     }
 
-    // Walls
     for (let x = 0; x < W; x++) { grid[0][x] = 'block'; grid[H-1][x] = 'block'; }
     for (let y = 0; y < H; y++) { grid[y][0] = 'block'; grid[y][W-1] = 'block'; }
 
-    // Divider wall in the middle with a gap
+    grid[0][7] = 'serve';
+    grid[0][8] = 'serve';
+
+    for (let x = 2; x < W - 2; x++) { grid[4][x] = 'counter'; grid[7][x] = 'counter'; }
+
+    grid[4][3] = 'chop';
+    grid[4][6] = 'stove';
+    grid[4][9] = 'chop';
+    grid[4][12] = 'stove';
+
+    grid[7][3] = 'plate';
+    grid[7][6] = 'plate';
+    grid[7][9] = 'bin';
+    grid[7][12] = 'plate';
+
+    // Extract unique ingredients (first element of each pair)
+    const ingredientSet = new Set();
+    recipeGroups.forEach(pair => {
+      if (Array.isArray(pair) && Array.isArray(pair[0])) {
+        pair[0].forEach(ing => ingredientSet.add(ing));
+      }
+    });
+    const uniqueIngredients = Array.from(ingredientSet);
+
+    if (uniqueIngredients.length > 0) {
+      uniqueIngredients.forEach((ing, i) => {
+        const x = Math.floor((i + 1) * (W - 2) / (uniqueIngredients.length + 1)) + 1;
+        grid[10][x] = 'crate:' + ing;
+      });
+    }
+
+    return grid;
+  }
+
+  function splitKitchen(groupA, recipesA, groupB, recipesB) {
+    const W = 16, H = 12;
+    const grid = [];
+    for (let y = 0; y < H; y++) {
+      const row = [];
+      for (let x = 0; x < W; x++) row.push('floor');
+      grid.push(row);
+    }
+
+    for (let x = 0; x < W; x++) { grid[0][x] = 'block'; grid[H-1][x] = 'block'; }
+    for (let y = 0; y < H; y++) { grid[y][0] = 'block'; grid[y][W-1] = 'block'; }
+
     for (let y = 1; y < H-1; y++) {
       if (y !== 5 && y !== 6) grid[y][7] = 'block';
     }
 
-    // Serve windows (both halves)
     grid[0][3] = 'serve';
     grid[0][12] = 'serve';
 
-    // Counters
-    for (let x = 2; x < 7; x++) grid[4][x] = 'counter';
-    for (let x = 9; x < 14; x++) grid[4][x] = 'counter';
-    for (let x = 2; x < 7; x++) grid[7][x] = 'counter';
-    for (let x = 9; x < 14; x++) grid[7][x] = 'counter';
+    for (let x = 2; x < 7; x++) { grid[4][x] = 'counter'; grid[7][x] = 'counter'; }
+    for (let x = 9; x < 14; x++) { grid[4][x] = 'counter'; grid[7][x] = 'counter'; }
 
-    // Stations on left
     grid[4][3] = 'chop';
     grid[4][5] = 'stove';
     grid[7][4] = 'plate';
 
-    // Stations on right
     grid[4][10] = 'chop';
     grid[4][12] = 'stove';
     grid[7][11] = 'plate';
 
-    // Crates on left half
-    const cratesA = [...new Set(groupA)];
-    cratesA.forEach((ing, i) => {
-      const x = Math.floor((i + 1) * 6 / (cratesA.length + 1)) + 1;
+    const leftIngredients = Array.isArray(groupA) ? [...new Set(groupA)] : [];
+    leftIngredients.forEach((ing, i) => {
+      const x = Math.floor((i + 1) * 6 / (leftIngredients.length + 1)) + 1;
       grid[10][x] = 'crate:' + ing;
     });
-    // Crates on right half
-    const cratesB = [...new Set(groupB)];
-    cratesB.forEach((ing, i) => {
-      const x = Math.floor((i + 1) * 6 / (cratesB.length + 1)) + 8;
+
+    const rightIngredients = Array.isArray(groupB) ? [...new Set(groupB)] : [];
+    rightIngredients.forEach((ing, i) => {
+      const x = Math.floor((i + 1) * 6 / (rightIngredients.length + 1)) + 8;
       grid[10][x] = 'crate:' + ing;
     });
 
@@ -1293,12 +1098,46 @@
   }
 
   /* ============================================================ */
+  /* LEVELS                                                        */
+  /* ============================================================ */
+  const LEVELS = [
+    { id: 1, name: 'First Day', duration: 90,
+      grid: makeGrid(['lettuce', 'tomato'], ['salad']),
+      starThresholds: [20, 40, 60] },
+    { id: 2, name: 'Getting Warm', duration: 100,
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger']),
+      starThresholds: [30, 60, 90] },
+    { id: 3, name: 'Full Menu', duration: 120,
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza']),
+      starThresholds: [50, 90, 130] },
+    { id: 4, name: 'Split Kitchen', duration: 120,
+      grid: splitKitchen(['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [50, 100, 150] },
+    { id: 5, name: 'Ramen Rush', duration: 130,
+      grid: makeGrid(['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [70, 130, 190] },
+    { id: 6, name: 'Shifting Floors', duration: 140, chaotic: 'shifting',
+      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['lettuce', 'tomato'], ['salad']),
+      starThresholds: [80, 150, 220] },
+    { id: 7, name: 'Sushi Night', duration: 140,
+      grid: makeGrid(['rice', 'fish'], ['sushi'], ['noodles', 'egg'], ['ramen'], ['bun', 'patty'], ['burger']),
+      starThresholds: [90, 170, 250] },
+    { id: 8, name: 'Cake Emergency', duration: 150, chaotic: 'shifting',
+      grid: makeGrid(['flour', 'sugar', 'egg'], ['cake'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
+      starThresholds: [100, 190, 280] },
+    { id: 9, name: 'Chaos Kitchen', duration: 150, chaotic: 'rotating',
+      grid: makeGrid(['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['rice', 'fish'], ['sushi']),
+      starThresholds: [120, 220, 320] },
+    { id: 10, name: 'Final Service', duration: 180, chaotic: 'rotating',
+      grid: makeGrid(['lettuce', 'tomato'], ['salad'], ['bun', 'patty'], ['burger'], ['dough', 'sauce', 'cheese'], ['pizza'], ['noodles', 'egg'], ['ramen'], ['rice', 'fish'], ['sushi'], ['flour', 'sugar', 'egg'], ['cake']),
+      starThresholds: [150, 280, 400] }
+  ];
+
+  /* ============================================================ */
   /* GAME STATE                                                    */
   /* ============================================================ */
   let me = 'koy';
-  let partnerName = 'Metz';
   let myPeerId = null;
-  let remotePeerId = null;
   let isHost = false;
 
   const peerState = {
@@ -1308,7 +1147,6 @@
     pendingMsgs: []
   };
 
-  // Persistent progression (synced via Firebase)
   let progression = {
     unlockedLevels: 1,
     bestScores: {},
@@ -1316,7 +1154,6 @@
     totalScore: 0
   };
 
-  // Active game state (per session, synced via PeerJS)
   const game = {
     levelId: 1,
     level: null,
@@ -1325,41 +1162,34 @@
     offsetX: 0,
     offsetY: 0,
     players: {
-      koy: { x: 1, y: 1, vx: 0, vy: 0, facing: 'down', carrying: null, moving: false, animFrame: 0 },
-      metz: { x: 14, y: 10, vx: 0, vy: 0, facing: 'up', carrying: null, moving: false, animFrame: 0 }
+      koy: { x: 2, y: 2, facing: 'down', carrying: null, moving: false, animFrame: 0 },
+      metz: { x: 13, y: 9, facing: 'up', carrying: null, moving: false, animFrame: 0 }
     },
-    stations: {}, // key "x,y" -> { type, item, progress, cooking, etc }
-    orders: [],   // [{ id, recipe, emoji, timeCreated, duration }]
+    stations: {},
+    orders: [],
     score: 0,
     served: 0,
     failed: 0,
     timeRemaining: 0,
     timerInterval: null,
     orderInterval: null,
-    spawnInterval: null,
+    chaosInterval: null,
     running: false,
-    completed: false,
-    failedLevel: false,
     chaotic: null,
-    chaosTimer: 0
+    chaosTick: 0
   };
 
-  // Input
   const input = {
     keys: {},
-    joystick: { active: false, dx: 0, dy: 0, touchId: null },
-    actionPressed: false
+    joystick: { active: false, dx: 0, dy: 0, touchId: null }
   };
 
-  /* ============================================================ */
-  /* DOM REFERENCES                                                */
-  /* ============================================================ */
   const $ = id => document.getElementById(id);
   const canvas = $('gameCanvas');
   const ctx = canvas.getContext('2d');
 
   /* ============================================================ */
-  /* TOAST                                                         */
+  /* TOASTS                                                        */
   /* ============================================================ */
   let toastT;
   function showToast(msg) {
@@ -1378,7 +1208,7 @@
   }
 
   /* ============================================================ */
-  /* LOGIN - role pick                                             */
+  /* ROLE PICK                                                     */
   /* ============================================================ */
   let selectedRole = null;
   document.querySelectorAll('.role-btn').forEach(btn => {
@@ -1391,12 +1221,11 @@
       btn.style.boxShadow = '0 4px 0 #6b4f3e';
       selectedRole = btn.dataset.role;
       $('loginEmoji').textContent = selectedRole === 'koy' ? '🌿' : '🌸';
-      $('loginEmoji').textContent = selectedRole === 'koy' ? '🌿' : '🌸';
     });
   });
 
   /* ============================================================ */
-  /* PEER JS - CONNECTION                                          */
+  /* PEER                                                          */
   /* ============================================================ */
   function initPeer() {
     const id = 'kitchen-' + Math.random().toString(36).substring(2, 8);
@@ -1424,7 +1253,7 @@
     peerState.peer.on('error', (err) => {
       console.error('Peer error:', err);
       if (err.type === 'peer-unavailable') {
-        showToast('Partner not found. Check the ID.');
+        showToast('Partner not found. Check ID.');
       }
     });
   }
@@ -1433,12 +1262,9 @@
     peerState.conn = conn;
     conn.on('open', () => {
       peerState.connected = true;
-      remotePeerId = conn.peer;
       showToast('Connected! 💫');
-      // Flush pending
       peerState.pendingMsgs.forEach(m => conn.send(m));
       peerState.pendingMsgs = [];
-      // Move both into waiting room then level select
       $('loginScreen').style.display = 'none';
       $('waitingRoom').classList.add('show');
       $('waitingEmoji').textContent = '🎉';
@@ -1449,14 +1275,11 @@
       }, 800);
     });
 
-    conn.on('data', (data) => {
-      handlePeerMessage(data);
-    });
+    conn.on('data', (data) => handlePeerMessage(data));
 
     conn.on('close', () => {
       peerState.connected = false;
       showToast('Partner disconnected 😢');
-      // Return to level select quietly
       if (game.running) quitToLevels();
     });
   }
@@ -1506,22 +1329,34 @@
         updateOrderStrip();
         break;
       case 'levelComplete':
-        if (!isHost) {
-          handleLevelComplete(msg);
-        }
+        if (!isHost) handleLevelComplete(msg);
         break;
       case 'levelFailed':
-        if (!isHost) {
-          handleLevelFailed();
-        }
+        if (!isHost) handleLevelFailed();
         break;
       case 'startLevel':
-        if (!isHost) {
-          startLevel(msg.levelId, true);
-        }
+        if (!isHost) startLevel(msg.levelId, true);
         break;
       case 'quit':
         if (game.running) quitToLevels();
+        break;
+      case 'gridSync':
+        game.grid = msg.grid;
+        game.stations = msg.stations;
+        break;
+      case 'serveRequest':
+        if (isHost && game.running) {
+          const matching = game.orders.find(o => o.recipeId === msg.dish);
+          if (matching) {
+            game.orders = game.orders.filter(o => o.id !== matching.id);
+            game.score += matching.points;
+            game.served += 1;
+            sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
+            SoundFX.orderComplete();
+            updateOrderStrip();
+            updateHUD();
+          }
+        }
         break;
     }
   }
@@ -1627,9 +1462,7 @@
   }
 
   $('backToLoginBtn').addEventListener('click', () => {
-    if (peerState.connected) {
-      sendPeer({ type: 'quit' });
-    }
+    if (peerState.connected) sendPeer({ type: 'quit' });
     location.reload();
   });
 
@@ -1640,16 +1473,10 @@
     const level = LEVELS.find(l => l.id === levelId);
     if (!level) return;
 
-    // Send to remote if we're host
-    if (!fromRemote && !isHost) {
-      sendPeer({ type: 'startLevel', levelId });
-    }
-    if (!fromRemote && isHost) {
+    if (!fromRemote && peerState.connected) {
       sendPeer({ type: 'startLevel', levelId });
     }
 
-    // If host uses progression check
-    // Build game state
     game.levelId = levelId;
     game.level = level;
     game.grid = level.grid.map(row => row.slice());
@@ -1660,14 +1487,11 @@
     game.failed = 0;
     game.timeRemaining = level.duration;
     game.running = true;
-    game.completed = false;
-    game.failedLevel = false;
     game.chaotic = level.chaotic || null;
-    game.chaosTimer = 0;
+    game.chaosTick = 0;
 
-    // Reset players - place them in starting positions based on floor tiles
-    game.players.koy = { x: 2, y: 2, vx: 0, vy: 0, facing: 'down', carrying: null, moving: false, animFrame: 0 };
-    game.players.metz = { x: 13, y: 9, vx: 0, vy: 0, facing: 'up', carrying: null, moving: false, animFrame: 0 };
+    game.players.koy = { x: 2, y: 2, facing: 'down', carrying: null, moving: false, animFrame: 0 };
+    game.players.metz = { x: 13, y: 9, facing: 'up', carrying: null, moving: false, animFrame: 0 };
 
     // Build stations from grid
     for (let y = 0; y < game.grid.length; y++) {
@@ -1676,29 +1500,22 @@
         const key = x + ',' + y;
         if (cell === 'chop') game.stations[key] = { type: 'chop', item: null, progress: 0 };
         else if (cell === 'stove') game.stations[key] = { type: 'stove', item: null, progress: 0 };
-        else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null, isPlateDispenser: true };
+        else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null };
         else if (cell === 'serve') game.stations[key] = { type: 'serve' };
         else if (cell === 'bin') game.stations[key] = { type: 'bin' };
         else if (cell.startsWith('crate:')) game.stations[key] = { type: 'crate', ingredient: cell.split(':')[1] };
       }
     }
 
-    // Show game view
     $('levelSelect').classList.remove('show');
     $('gameView').style.display = 'flex';
     $('hudLevelName').textContent = 'Level ' + levelId + ' · ' + level.name;
 
-    // Resize canvas to fit
     resizeCanvas();
-
-    // Start loops
     startGameLoops();
 
-    // Show intro
     showCenterToast('Level ' + levelId + '<br>' + level.name, 1800);
-    SoundFX.orderComplete();
 
-    // Host runs the order spawner + timer
     if (isHost) {
       game.orderInterval = setInterval(hostSpawnOrder, 4500);
       setTimeout(hostSpawnOrder, 800);
@@ -1714,44 +1531,35 @@
       if (!game.running) return;
       game.timeRemaining -= 1;
       updateHUD();
-
-      if (game.timeRemaining <= 0) {
-        endLevel(false);
-      }
+      if (game.timeRemaining <= 0) endLevel(false);
     }, 1000);
 
-    if (game.spawnInterval) clearInterval(game.spawnInterval);
-    game.spawnInterval = setInterval(() => {
+    if (game.chaosInterval) clearInterval(game.chaosInterval);
+    game.chaosInterval = setInterval(() => {
       if (!game.running) return;
-      game.chaosTimer++;
-      if (game.chaotic === 'shifting' && game.chaosTimer % 15 === 0) {
-        shiftCounters();
-      } else if (game.chaotic === 'rotating' && game.chaosTimer % 12 === 0) {
-        rotateStations();
-      }
+      game.chaosTick++;
+      if (game.chaotic === 'shifting' && game.chaosTick % 15 === 0 && isHost) shiftCounters();
+      else if (game.chaotic === 'rotating' && game.chaosTick % 12 === 0 && isHost) rotateStations();
     }, 1000);
   }
 
   function shiftCounters() {
-    // Swap some counter tiles around to disorient players
-    if (!isHost) return;
-    const counterPositions = [];
+    const positions = [];
     for (let y = 0; y < game.grid.length; y++) {
       for (let x = 0; x < game.grid[y].length; x++) {
-        if (game.grid[y][x] === 'counter' || game.grid[y][x] === 'chop' || game.grid[y][x] === 'stove') {
-          counterPositions.push({ x, y, cell: game.grid[y][x] });
+        const c = game.grid[y][x];
+        if (c === 'counter' || c === 'chop' || c === 'stove') {
+          positions.push({ x, y, cell: c });
         }
       }
     }
-    if (counterPositions.length < 4) return;
-    // Pick 2 random and swap their station type
-    const a = counterPositions[Math.floor(Math.random() * counterPositions.length)];
-    const b = counterPositions[Math.floor(Math.random() * counterPositions.length)];
-    if (a === b) return;
+    if (positions.length < 4) return;
+    const a = positions[Math.floor(Math.random() * positions.length)];
+    const b = positions[Math.floor(Math.random() * positions.length)];
+    if (a.x === b.x && a.y === b.y) return;
     const cellA = a.cell, cellB = b.cell;
     game.grid[a.y][a.x] = cellB;
     game.grid[b.y][b.x] = cellA;
-    // Rebuild stations for those two cells
     rebuildStation(a.x, a.y);
     rebuildStation(b.x, b.y);
     syncFullGrid();
@@ -1759,9 +1567,6 @@
   }
 
   function rotateStations() {
-    // Rotate serving window position
-    if (!isHost) return;
-    // Find serve tiles and shift them right by 1
     const serveTiles = [];
     for (let y = 0; y < game.grid.length; y++) {
       for (let x = 0; x < game.grid[y].length; x++) {
@@ -1769,21 +1574,16 @@
       }
     }
     if (serveTiles.length === 0) return;
-    // Clear old
     serveTiles.forEach(t => {
       game.grid[t.y][t.x] = 'block';
       delete game.stations[t.x + ',' + t.y];
     });
-    // Place new serves with a shift
-    serveTiles.forEach((t, i) => {
-      const nx = (t.x + 2) % game.grid[0].length;
-      // Ensure it's on wall row (y=0)
-      if (newx_valid(nx)) {
-        game.grid[0][nx] = 'serve';
-        game.stations[nx + ',0'] = { type: 'serve' };
-      }
+    serveTiles.forEach(t => {
+      let nx = (t.x + 2) % game.grid[0].length;
+      if (nx <= 0 || nx >= game.grid[0].length - 1) nx = 5;
+      game.grid[0][nx] = 'serve';
+      game.stations[nx + ',0'] = { type: 'serve' };
     });
-    function newx_valid(nx) { return nx > 0 && nx < game.grid[0].length - 1; }
     syncFullGrid();
     showCenterToast('🔀 Order window moved!', 1200);
   }
@@ -1794,7 +1594,7 @@
     if (cell === 'chop') game.stations[key] = { type: 'chop', item: null, progress: 0 };
     else if (cell === 'stove') game.stations[key] = { type: 'stove', item: null, progress: 0 };
     else if (cell === 'counter') game.stations[key] = { type: 'counter' };
-    else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null, isPlateDispenser: true };
+    else if (cell === 'plate') game.stations[key] = { type: 'plate', item: null };
     else if (cell === 'serve') game.stations[key] = { type: 'serve' };
     else delete game.stations[key];
   }
@@ -1808,7 +1608,6 @@
   /* ============================================================ */
   function hostSpawnOrder() {
     if (!game.running || !isHost) return;
-    // Pick a recipe that's included in this level
     const recipesInLevel = getRecipesInLevel();
     if (recipesInLevel.length === 0) return;
     const recipeId = recipesInLevel[Math.floor(Math.random() * recipesInLevel.length)];
@@ -1819,14 +1618,13 @@
       emoji: recipe.emoji,
       name: recipe.name,
       timeCreated: Date.now(),
-      duration: 40000 + Math.random() * 20000, // 40-60 seconds
+      duration: 45000 + Math.random() * 20000,
       points: recipe.points
     };
     game.orders.push(order);
     sendPeer({ type: 'orderSpawn', order });
     SoundFX.orderNew();
     updateOrderStrip();
-    // Cap at 6 concurrent orders
     if (game.orders.length > 6) {
       const oldest = game.orders[0];
       game.orders.shift();
@@ -1837,7 +1635,6 @@
   }
 
   function getRecipesInLevel() {
-    // Check which crates exist in this level
     const crates = new Set();
     for (let y = 0; y < game.grid.length; y++) {
       for (let x = 0; x < game.grid[y].length; x++) {
@@ -1847,39 +1644,38 @@
         }
       }
     }
-    // Which recipes can be made with these ingredients?
     const recipes = [];
     for (const [id, r] of Object.entries(RECIPES)) {
-      const needed = new Set();
-      r.steps.forEach(s => {
-        if (s.input && typeof s.input === 'string') needed.add(s.input);
-        if (s.combine) s.combine.forEach(c => {
-          // Check if it's a transformed item or raw
-          if (INGREDIENTS[c]) needed.add(c);
-          else {
-            // Find raw ingredient that transforms into it
-            for (const step of r.steps) {
-              if (step.output === c && step.input) needed.add(step.input);
-            }
-          }
-        });
-        if (s.input && Array.isArray(s.input)) s.input.forEach(i => needed.add(i));
-      });
+      // Check if we have the needed ingredients for this recipe
       let canMake = true;
-      needed.forEach(n => { if (!crates.has(n)) canMake = false; });
+      // Simple check: each recipe's needs must be producible from available crates
+      // salad needs lettuce_chopped (chop lettuce) and tomato (crate tomato)
+      // Very simple: check if any two of the primary ingredients are available
+      const allIngredients = Object.keys(INGREDIENTS);
+      r.needs.forEach(n => {
+        // Check if n is a raw ingredient we have
+        if (INGREDIENTS[n] && crates.has(n)) return;
+        // Check if n is transformed from a raw ingredient we have
+        const transformed = n;
+        let found = false;
+        for (const raw of allIngredients) {
+          if (chopTransform(raw) === transformed && crates.has(raw)) { found = true; break; }
+          if (cookTransform(raw) === transformed && crates.has(raw)) { found = true; break; }
+        }
+        if (!found) canMake = false;
+      });
       if (canMake) recipes.push(id);
     }
-    // If no recipe found, return salad fallback
     return recipes.length > 0 ? recipes : ['salad'];
   }
 
   /* ============================================================ */
-  /* MAIN GAME LOOP                                                */
+  /* MAIN LOOP                                                     */
   /* ============================================================ */
   let lastFrame = 0;
   function gameLoop(ts) {
     requestAnimationFrame(gameLoop);
-    if (!game.running && !$('gameView').style.display === 'flex') return;
+    if (!game.running && $('gameView').style.display !== 'flex') return;
     if (!game.level) return;
 
     const dt = Math.min((ts - lastFrame) / 1000, 0.05);
@@ -1888,12 +1684,10 @@
     updatePlayers(dt);
     updateStations(dt);
     updateOrders();
-
     render();
   }
 
   function updatePlayers(dt) {
-    // Local player input
     const local = game.players[me];
     if (!local) return;
 
@@ -1908,41 +1702,29 @@
       if (input.keys['ArrowDown'] || input.keys['s'] || input.keys['S']) dy += 1;
     }
 
-    // Normalize diagonal
     if (dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
 
-    const speed = 4.5; // tiles per second
-    const moveX = dx * speed * dt;
-    const moveY = dy * speed * dt;
+    const speed = 4.5;
+    const newX = local.x + dx * speed * dt;
+    const newY = local.y + dy * speed * dt;
 
-    // Try to move
-    const newX = local.x + moveX;
-    const newY = local.y + moveY;
-
-    // Collision check — allow walking on floor, crates, stations (not blocks)
-    // Player occupies a small circle around (x, y)
     const radius = 0.35;
-
     if (canWalkTo(newX, local.y, radius)) local.x = newX;
     if (canWalkTo(local.x, newY, radius)) local.y = newY;
 
-    // Clamp to grid
     local.x = Math.max(1, Math.min(game.grid[0].length - 2, local.x));
     local.y = Math.max(1, Math.min(game.grid.length - 2, local.y));
 
-    // Update facing and animation
     if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
       if (Math.abs(dx) > Math.abs(dy)) local.facing = dx > 0 ? 'right' : 'left';
       else local.facing = dy > 0 ? 'down' : 'up';
       local.moving = true;
       local.animFrame += dt * 8;
-      if (Math.floor(local.animFrame) !== Math.floor(local.animFrame - dt * 8)) SoundFX.walk();
     } else {
       local.moving = false;
       local.animFrame = 0;
     }
 
-    // Send position to partner (throttled)
     if (peerState.connected) {
       const now = Date.now();
       if (!updatePlayers.lastSend || now - updatePlayers.lastSend > 60) {
@@ -1960,7 +1742,6 @@
   }
 
   function canWalkTo(x, y, radius) {
-    // Check a few points around the target
     const points = [
       [x, y],
       [x - radius, y],
@@ -1972,37 +1753,30 @@
       const cx = Math.floor(px);
       const cy = Math.floor(py);
       if (cy < 0 || cy >= game.grid.length || cx < 0 || cx >= game.grid[0].length) return false;
-      const cell = game.grid[cy][cx];
-      if (cell === 'block') return false;
+      if (game.grid[cy][cx] === 'block') return false;
     }
     return true;
   }
 
   function updateStations(dt) {
-    // Update cooking progress
+    let dirty = [];
     for (const key of Object.keys(game.stations)) {
       const st = game.stations[key];
       if (st.type === 'stove' && st.item && st.cooking) {
         st.progress = (st.progress || 0) + dt;
-        if (st.progress >= 3) { // 3 seconds to cook
-          // Transform item
+        if (st.progress >= 3) {
           const next = cookTransform(st.item);
           if (next) {
             st.item = next;
             st.progress = 0;
             st.cooking = false;
             SoundFX.cook();
-            sendPeer({ type: 'stationUpdate', key, data: st });
           } else {
-            // Burnt!
             st.item = 'burnt';
             st.cooking = false;
             SoundFX.orderFailed();
-            sendPeer({ type: 'stationUpdate', key, data: st });
           }
-        } else if (st.progress % 0.5 < dt) {
-          // Sound tick
-          sendPeer({ type: 'stationUpdate', key, data: st });
+          dirty.push(key);
         }
       }
       if (st.type === 'chop' && st.item && st.chopping) {
@@ -2014,10 +1788,15 @@
             st.progress = 0;
             st.chopping = false;
             SoundFX.chop();
-            sendPeer({ type: 'stationUpdate', key, data: st });
           }
+          dirty.push(key);
         }
       }
+    }
+    if (isHost && dirty.length > 0) {
+      dirty.forEach(key => {
+        sendPeer({ type: 'stationUpdate', key, data: game.stations[key] });
+      });
     }
   }
 
@@ -2041,7 +1820,6 @@
   }
 
   function updateOrders() {
-    // Remove expired orders
     const now = Date.now();
     let changed = false;
     for (let i = game.orders.length - 1; i >= 0; i--) {
@@ -2069,84 +1847,70 @@
     const player = game.players[me];
     if (!player) return;
 
-    // Find the closest interactable station
-    // Priority: the station the player is facing (in front of them)
     const facing = player.facing;
-    let targetX = Math.floor(player.x);
-    let targetY = Math.floor(player.y);
+    const px = Math.floor(player.x);
+    const py = Math.floor(player.y);
+
+    // Priority: the tile the player is facing
+    let targetX = px, targetY = py;
     if (facing === 'up') targetY -= 1;
     if (facing === 'down') targetY += 1;
     if (facing === 'left') targetX -= 1;
     if (facing === 'right') targetX += 1;
 
-    // Fallback: check adjacent tiles
-    const checkOrder = [[targetX, targetY]];
-    const allAdj = [[targetX, targetY], [Math.floor(player.x) - 1, Math.floor(player.y)], [Math.floor(player.x) + 1, Math.floor(player.y)], [Math.floor(player.x), Math.floor(player.y) - 1], [Math.floor(player.x), Math.floor(player.y) + 1]];
-    for (const [ax, ay] of allAdj) {
-      const cell = game.grid[ay] && game.grid[ay][ax];
-      if (cell && cell !== 'block' && cell !== 'floor' && cell !== 'counter') {
-        checkOrder.push([ax, ay]);
-      }
-    }
+    const candidates = [
+      [targetX, targetY],
+      [px - 1, py],
+      [px + 1, py],
+      [px, py - 1],
+      [px, py + 1]
+    ];
 
-    let station = null, stationKey = null;
-    for (const [tx, ty] of checkOrder) {
+    let stationKey = null, station = null;
+    for (const [tx, ty] of candidates) {
       const key = tx + ',' + ty;
       if (game.stations[key]) {
-        station = game.stations[key];
         stationKey = key;
+        station = game.stations[key];
         break;
       }
     }
 
     if (!station) {
-      // Try dropping on empty counter or floor
+      // Drop item on the floor
+      if (player.carrying) {
+        player.carrying = null;
+        SoundFX.drop();
+        sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
+      }
       return;
     }
 
-    // Handle based on station type
-    const cell = game.grid[tyFor(stationKey)] && game.grid[tyFor(stationKey)][txFor(stationKey)];
     switch (station.type) {
       case 'crate': {
         if (!player.carrying) {
           player.carrying = station.ingredient;
           SoundFX.pickup();
-          sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: false, carrying: player.carrying });
-        } else if (player.carrying === station.ingredient) {
-          // Already have one — do nothing
-        } else {
-          // Swap? No — just ignore
         }
         break;
       }
       case 'chop': {
         if (!station.item && player.carrying) {
-          // Place
           station.item = player.carrying;
           player.carrying = null;
           station.progress = 0;
           SoundFX.drop();
         } else if (station.item && !player.carrying) {
           if (!station.chopping && chopTransform(station.item)) {
-            // Start chopping
             station.chopping = true;
             station.progress = 0;
             SoundFX.chop();
-          } else if (station.item) {
-            // Pick up (chopping or not)
-            if (!station.chopping) {
-              player.carrying = station.item;
-              station.item = null;
-              station.progress = 0;
-              SoundFX.pickup();
-            }
+          } else if (!station.chopping) {
+            player.carrying = station.item;
+            station.item = null;
+            station.progress = 0;
+            SoundFX.pickup();
           }
-        } else if (station.item && player.carrying && station.item !== player.carrying) {
-          // Swap
-          const temp = player.carrying;
-          player.carrying = station.item;
-          station.item = temp;
-          SoundFX.pickup();
         }
         break;
       }
@@ -2167,14 +1931,19 @@
         break;
       }
       case 'plate': {
-        // Plate dispenser gives you a plate
         if (!player.carrying) {
           player.carrying = 'plate';
           SoundFX.pickup();
-        } else {
-          // Drop item on plate = assemble
-          // If station has no item and we have a plate, drop plate
-          // Simplified: just rotate. Actually we need plate-holding logic.
+        } else if (player.carrying === 'plate' && station.item) {
+          // Deliver item onto plate
+          player.carrying = station.item;
+          station.item = null;
+          SoundFX.pickup();
+        } else if (player.carrying !== 'plate' && !station.item) {
+          // Place item on plate
+          station.item = player.carrying;
+          player.carrying = null;
+          SoundFX.drop();
         }
         break;
       }
@@ -2183,10 +1952,8 @@
           // Is it a finished dish?
           const dish = findDishFor(player.carrying);
           if (dish) {
-            // Find matching order
             const matching = game.orders.find(o => o.recipeId === dish);
             if (matching) {
-              // Complete!
               if (isHost) {
                 game.orders = game.orders.filter(o => o.id !== matching.id);
                 game.score += matching.points;
@@ -2196,20 +1963,18 @@
                 updateOrderStrip();
                 updateHUD();
               } else {
-                // Non-host sends action to host
                 sendPeer({ type: 'serveRequest', dish: dish, role: me });
               }
               player.carrying = null;
               showCenterToast('DISH SERVED! +' + matching.points, 900);
             } else {
-              // No matching order — penalty
               player.carrying = null;
               SoundFX.orderFailed();
               showCenterToast('No order for that!', 900);
             }
           } else {
-            // Not a dish — drop it back
             player.carrying = null;
+            SoundFX.drop();
           }
         }
         break;
@@ -2223,21 +1988,18 @@
       }
     }
 
-    // Sync station
     if (stationKey) {
       sendPeer({ type: 'stationUpdate', key: stationKey, data: station });
     }
-    // Sync player carrying
     sendPeer({ type: 'position', role: me, x: player.x, y: player.y, facing: player.facing, moving: player.moving, carrying: player.carrying });
   }
 
-  function txFor(key) { return parseInt(key.split(',')[0]); }
-  function tyFor(key) { return parseInt(key.split(',')[1]); }
-
   function findDishFor(item) {
-    // Check if item is a completed recipe dish (its plate representation)
-    // We represent dishes as 'dish_<recipeId>'
     if (typeof item === 'string' && item.startsWith('dish_')) return item.replace('dish_', '');
+    // Also check if item matches a recipe's final needs (very simple matching)
+    for (const [id, r] of Object.entries(RECIPES)) {
+      if (r.needs.length === 1 && r.needs[0] === item) return id;
+    }
     return null;
   }
 
@@ -2245,23 +2007,20 @@
   /* RENDER                                                        */
   /* ============================================================ */
   function render() {
-    if (!game.level) return;
+    if (!game.level || !game.grid) return;
     const W = canvas.width;
     const H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
     const cols = game.grid[0].length;
     const rows = game.grid.length;
-    const cellW = W / cols;
-    const cellH = H / rows;
-    const cell = Math.min(cellW, cellH);
+    const cell = Math.min(W / cols, H / rows);
     const offX = (W - cell * cols) / 2;
     const offY = (H - cell * rows) / 2;
     game.cellSize = cell;
     game.offsetX = offX;
     game.offsetY = offY;
 
-    // Floor
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         const px = offX + x * cell;
@@ -2271,15 +2030,12 @@
         if (c === 'block') {
           ctx.fillStyle = '#3a2a20';
           ctx.fillRect(px, py, cell, cell);
-          // brick pattern
           ctx.fillStyle = '#2a1f1a';
           ctx.fillRect(px, py, cell, cell * 0.08);
           ctx.fillRect(px, py + cell * 0.5, cell, cell * 0.08);
         } else {
-          // Floor
           ctx.fillStyle = (x + y) % 2 === 0 ? '#5c4438' : '#4e3a2e';
           ctx.fillRect(px, py, cell, cell);
-          // Tile grid
           ctx.strokeStyle = 'rgba(0,0,0,0.15)';
           ctx.lineWidth = 1;
           ctx.strokeRect(px + 0.5, py + 0.5, cell - 1, cell - 1);
@@ -2287,7 +2043,6 @@
       }
     }
 
-    // Stations
     for (const key of Object.keys(game.stations)) {
       const [xs, ys] = key.split(',');
       const x = parseInt(xs), y = parseInt(ys);
@@ -2297,8 +2052,6 @@
       drawStation(st, px, py, cell);
     }
 
-    // Orders time bars — draw timers in a subtle way
-    // Players
     for (const role of ['koy', 'metz']) {
       const p = game.players[role];
       if (p) drawPlayer(p, offX + p.x * cell, offY + p.y * cell, cell, role);
@@ -2319,7 +2072,7 @@
         ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
         ctx.fillStyle = '#3a2a20';
         ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
-        ctx.font = (cell * 0.55) + 'px serif';
+        ctx.font = Math.floor(cell * 0.55) + 'px serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
@@ -2330,7 +2083,6 @@
         ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
         ctx.fillStyle = '#8b6f5e';
         ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
-        // Knife mark
         ctx.strokeStyle = '#6b4f3e';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -2339,12 +2091,11 @@
         ctx.stroke();
         if (st.item) {
           const info = getItemInfo(st.item);
-          ctx.font = (cell * 0.55) + 'px serif';
+          ctx.font = Math.floor(cell * 0.55) + 'px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
           if (st.chopping) {
-            // Progress ring
             const pct = Math.min(1, st.progress / 1.5);
             ctx.strokeStyle = '#8fb87d';
             ctx.lineWidth = 3;
@@ -2360,7 +2111,6 @@
         ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
         ctx.fillStyle = '#2a1f1a';
         ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
-        // Flame
         if (st.cooking && st.item) {
           const flameSize = cell * 0.15 + Math.sin(Date.now() / 100) * 3;
           ctx.fillStyle = '#f0a84c';
@@ -2374,7 +2124,7 @@
         }
         if (st.item) {
           const info = getItemInfo(st.item);
-          ctx.font = (cell * 0.55) + 'px serif';
+          ctx.font = Math.floor(cell * 0.55) + 'px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
@@ -2399,7 +2149,7 @@
         ctx.stroke();
         if (st.item) {
           const info = getItemInfo(st.item);
-          ctx.font = (cell * 0.5) + 'px serif';
+          ctx.font = Math.floor(cell * 0.5) + 'px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(info.emoji, px + cell / 2, py + cell / 2);
@@ -2411,7 +2161,7 @@
         ctx.fillRect(px + 2, py + 2, cell - 4, cell - 4);
         ctx.fillStyle = '#d4b896';
         ctx.fillRect(px + 4, py + 4, cell - 8, cell - 8);
-        ctx.font = (cell * 0.55) + 'px serif';
+        ctx.font = Math.floor(cell * 0.55) + 'px serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🍽️', px + cell / 2, py + cell / 2);
@@ -2424,7 +2174,7 @@
         ctx.beginPath();
         ctx.arc(px + cell / 2, py + cell / 2, cell * 0.3, 0, Math.PI * 2);
         ctx.fill();
-        ctx.font = (cell * 0.4) + 'px serif';
+        ctx.font = Math.floor(cell * 0.4) + 'px serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🗑️', px + cell / 2, py + cell / 2);
@@ -2438,49 +2188,43 @@
     const cy = py + cell / 2;
     const size = cell * 0.42;
 
-    // Shadow
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     ctx.beginPath();
     ctx.ellipse(cx, cy + cell * 0.3, size * 0.7, size * 0.3, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Bobbing while moving
     const bob = p.moving ? Math.abs(Math.sin(p.animFrame)) * cell * 0.05 : Math.sin(Date.now() / 400 + (role === 'koy' ? 0 : 1.5)) * cell * 0.02;
     const bodyY = cy - bob;
 
-    // Legs (animated when moving)
     const legOffset = p.moving ? Math.sin(p.animFrame * 2) * cell * 0.08 : 0;
     ctx.fillStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
     ctx.fillRect(cx - size * 0.5 + legOffset, bodyY + size * 0.6, size * 0.35, size * 0.4);
     ctx.fillRect(cx + size * 0.15 - legOffset, bodyY + size * 0.6, size * 0.35, size * 0.4);
 
-    // Body (chef uniform)
     ctx.fillStyle = '#fdf6ee';
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size, size * 0.3) : ctx.rect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size);
+    if (ctx.roundRect) ctx.roundRect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size, size * 0.3);
+    else ctx.rect(cx - size * 0.6, bodyY - size * 0.2, size * 1.2, size);
     ctx.fill();
     ctx.strokeStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Head
     ctx.fillStyle = role === 'koy' ? '#f0c896' : '#f8d8a8';
     ctx.beginPath();
     ctx.arc(cx, bodyY - size * 0.35, size * 0.55, 0, Math.PI * 2);
     ctx.fill();
 
-    // Chef hat
     ctx.fillStyle = '#fdf6ee';
     ctx.beginPath();
     ctx.arc(cx, bodyY - size * 0.85, size * 0.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = '#c9b0a0';
     ctx.stroke();
-    // Hat band
+
     ctx.fillStyle = role === 'koy' ? '#4a6b8a' : '#a85c7a';
     ctx.fillRect(cx - size * 0.5, bodyY - size * 0.55, size, size * 0.15);
 
-    // Eyes (facing direction)
     const eyeOffset = { up: -size * 0.15, down: size * 0.15, left: -size * 0.15, right: size * 0.15 };
     const eo = eyeOffset[p.facing] || 0;
     ctx.fillStyle = '#3a2e28';
@@ -2492,25 +2236,23 @@
       ctx.fillRect(cx + eyeSpacing - size * 0.04, bodyY - size * 0.4 + eo * 0.3, size * 0.08, size * 0.12);
     }
 
-    // Carrying item
     if (p.carrying) {
       const info = getItemInfo(p.carrying);
-      ctx.font = (cell * 0.5) + 'px serif';
+      ctx.font = Math.floor(cell * 0.5) + 'px serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(info.emoji, cx, bodyY - size * 1.1);
     }
 
-    // Player name tag
     ctx.fillStyle = role === me ? '#ffd54f' : '#a8d4e8';
-    ctx.font = 'bold ' + Math.max(10, cell * 0.25) + 'px Fredoka, sans-serif';
+    ctx.font = 'bold ' + Math.max(10, Math.floor(cell * 0.25)) + 'px Fredoka, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(role === 'koy' ? 'Koy' : 'Metz', cx, cy - cell * 0.55);
   }
 
   /* ============================================================ */
-  /* HUD UPDATES                                                   */
+  /* HUD                                                           */
   /* ============================================================ */
   function updateHUD() {
     $('hudScore').textContent = game.score;
@@ -2541,15 +2283,12 @@
     });
   }
 
-  // Continuous update of order strip visuals
   setInterval(() => {
-    if (game.running) {
-      updateOrderStrip();
-    }
+    if (game.running) updateOrderStrip();
   }, 500);
 
   /* ============================================================ */
-  /* INPUT HANDLERS                                                */
+  /* INPUT                                                         */
   /* ============================================================ */
   document.addEventListener('keydown', (e) => {
     input.keys[e.key] = true;
@@ -2557,13 +2296,10 @@
       e.preventDefault();
       tryAction();
     }
-    if (e.key === 'p' || e.key === 'P') {
-      togglePause();
-    }
+    if (e.key === 'p' || e.key === 'P') togglePause();
   });
   document.addEventListener('keyup', (e) => { input.keys[e.key] = false; });
 
-  // Joystick
   const joystickZone = $('joystickZone');
   const joystickKnob = $('joystickKnob');
   if (joystickZone) {
@@ -2617,14 +2353,12 @@
     joystickKnob.style.transform = `translate(${dx}px, ${dy}px)`;
   }
 
-  // Action button
   const actionBtn = $('actionBtnRound');
   if (actionBtn) {
     actionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); tryAction(); }, { passive: false });
     actionBtn.addEventListener('click', (e) => { e.preventDefault(); tryAction(); });
   }
 
-  // Detect touch mode
   if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
     document.body.classList.add('touch-mode');
   }
@@ -2637,18 +2371,14 @@
     game.running = false;
     if (game.timerInterval) clearInterval(game.timerInterval);
     if (game.orderInterval) clearInterval(game.orderInterval);
-    if (game.spawnInterval) clearInterval(game.spawnInterval);
+    if (game.chaosInterval) clearInterval(game.chaosInterval);
 
     if (success) {
       handleLevelComplete({ score: game.score, served: game.served });
-      if (isHost) {
-        sendPeer({ type: 'levelComplete', score: game.score, served: game.served });
-      }
+      if (isHost) sendPeer({ type: 'levelComplete', score: game.score, served: game.served });
     } else {
       handleLevelFailed();
-      if (isHost) {
-        sendPeer({ type: 'levelFailed' });
-      }
+      if (isHost) sendPeer({ type: 'levelFailed' });
     }
   }
 
@@ -2660,7 +2390,6 @@
     if (score >= thresholds[1]) stars = 2;
     if (score >= thresholds[2]) stars = 3;
 
-    // Save progression
     if (stars > (progression.bestStars[game.levelId] || 0)) {
       progression.bestStars[game.levelId] = stars;
     }
@@ -2673,7 +2402,6 @@
     progression.totalScore = (progression.totalScore || 0) + score;
     saveProgression();
 
-    // Show modal
     $('modalScore').textContent = score;
     $('modalServed').textContent = game.served;
     const starsRow = $('starsRow');
@@ -2732,7 +2460,7 @@
     game.running = false;
     if (game.timerInterval) clearInterval(game.timerInterval);
     if (game.orderInterval) clearInterval(game.orderInterval);
-    if (game.spawnInterval) clearInterval(game.spawnInterval);
+    if (game.chaosInterval) clearInterval(game.chaosInterval);
     $('gameView').style.display = 'none';
     $('levelSelect').classList.add('show');
     if (isHost) sendPeer({ type: 'quit' });
@@ -2785,41 +2513,9 @@
   window.addEventListener('resize', resizeCanvas);
 
   /* ============================================================ */
-  /* PEER MESSAGE ROUTER (extend existing)                         */
-  /* ============================================================ */
-  const origHandle = handlePeerMessage;
-  handlePeerMessage = function(msg) {
-    switch (msg.type) {
-      case 'gridSync':
-        game.grid = msg.grid;
-        game.stations = msg.stations;
-        break;
-      case 'serveRequest':
-        // Host validates serve request
-        if (isHost && game.running) {
-          // Simplified: trust and complete
-          const matching = game.orders.find(o => o.recipeId === msg.dish);
-          if (matching) {
-            game.orders = game.orders.filter(o => o.id !== matching.id);
-            game.score += matching.points;
-            game.served += 1;
-            sendPeer({ type: 'orderComplete', orderId: matching.id, points: matching.points });
-            SoundFX.orderComplete();
-            updateOrderStrip();
-            updateHUD();
-          }
-        }
-        break;
-      default:
-        origHandle(msg);
-    }
-  };
-
-  /* ============================================================ */
-  /* INIT                                                          */
+  /* BOOT                                                          */
   /* ============================================================ */
   requestAnimationFrame(gameLoop);
-  // Auto load progression on start
   loadProgression();
 
   </script>
