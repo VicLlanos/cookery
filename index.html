@@ -14,6 +14,7 @@
     background: #1a1008;
     color: #f5ead8;
     touch-action: none;
+    overscroll-behavior: none;
   }
 
   #app {
@@ -49,7 +50,6 @@
     line-height: 1.2;
     margin-bottom: 6px;
     font-weight: 700;
-    letter-spacing: 0.5px;
   }
   .login-card .subtitle {
     font-size: 0.88rem;
@@ -61,7 +61,6 @@
     margin-bottom: 8px;
     animation: bob 2.4s ease-in-out infinite;
     display: inline-block;
-    filter: drop-shadow(0 6px 6px rgba(0,0,0,0.15));
   }
   @keyframes bob {
     0%, 100% { transform: translateY(0) rotate(-3deg); }
@@ -157,7 +156,7 @@
   }
 
   /* ============================================================ */
-  /* GAME VIEW - FIRST PERSON                                      */
+  /* GAME VIEW                                                     */
   /* ============================================================ */
   #gameView {
     display: none;
@@ -171,13 +170,13 @@
   .hud {
     position: absolute;
     top: 0; left: 0; right: 0;
-    z-index: 20;
+    z-index: 30;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
     gap: 8px;
-    background: linear-gradient(180deg, rgba(20,10,5,0.95) 0%, rgba(20,10,5,0.75) 70%, transparent 100%);
+    background: linear-gradient(180deg, rgba(20,10,5,0.95) 0%, rgba(20,10,5,0.7) 70%, transparent 100%);
     pointer-events: none;
   }
   .hud > * { pointer-events: auto; }
@@ -201,7 +200,6 @@
     font-size: 0.75rem; font-weight: 700;
     cursor: pointer;
     transition: all 0.1s;
-    white-space: nowrap;
   }
   .hud-btn:active { transform: translateY(1px); background: #6b4429; }
   .hud-stat {
@@ -248,11 +246,11 @@
   /* STATION TABS (for solo) */
   .station-tabs {
     position: absolute;
-    top: 60px; left: 50%;
+    top: 58px; left: 50%;
     transform: translateX(-50%);
     display: none;
     gap: 6px;
-    z-index: 15;
+    z-index: 25;
   }
   .station-tabs.show { display: flex; }
   .station-tab {
@@ -274,7 +272,7 @@
   }
 
   /* ============================================================ */
-  /* FIRST-PERSON SCENE                                            */
+  /* SCENE                                                         */
   /* ============================================================ */
   .scene {
     flex: 1;
@@ -283,58 +281,83 @@
     background: #1a1008;
   }
 
-  /* The coffee shop interior - perspective view */
   .coffee-shop {
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg,
       #f4e4d4 0%,
       #e8d4c0 35%,
-      #d4b89a 60%,
-      #8b6a4c 85%,
-      #5c3a24 100%);
+      #d4b89a 55%,
+      #a08060 75%,
+      #6a4a30 100%);
     overflow: hidden;
   }
-
-  /* Wall paneling */
   .coffee-shop::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 55%;
+    height: 50%;
     background:
       linear-gradient(90deg,
-        rgba(139, 90, 62, 0.25) 0px,
-        rgba(139, 90, 62, 0.25) 2px,
+        rgba(139, 90, 62, 0.18) 0px,
+        rgba(139, 90, 62, 0.18) 2px,
         transparent 2px,
-        transparent 60px);
-    background-size: 60px 100%;
+        transparent 80px);
+    background-size: 80px 100%;
+    pointer-events: none;
   }
-
-  /* Warm glow from ceiling lights */
   .coffee-shop::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 60%;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255, 220, 140, 0.4) 0%, transparent 70%);
+    height: 70%;
+    background: radial-gradient(ellipse at 50% 10%, rgba(255, 220, 140, 0.35) 0%, transparent 65%);
     pointer-events: none;
   }
 
-  /* Window showing street */
+  /* Ceiling with hanging lights */
+  .ceiling {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8%;
+    background: linear-gradient(180deg, #4a2e1c 0%, #6a4a30 100%);
+    border-bottom: 3px solid #3a2418;
+    z-index: 2;
+  }
+  .ceiling-lamp {
+    position: absolute;
+    top: 100%;
+    width: 4px;
+    height: 20px;
+    background: #3a2418;
+    transform: translateX(-50%);
+  }
+  .ceiling-lamp::after {
+    content: '';
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: 30px; height: 14px;
+    background: linear-gradient(180deg, #8b5a3e 0%, #5c3a24 100%);
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 8px 25px rgba(255, 220, 140, 0.5);
+  }
+
+  /* Window */
   .shop-window {
     position: absolute;
-    top: 8%;
+    top: 12%;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%;
-    max-width: 600px;
-    height: 35%;
+    width: 60%;
+    max-width: 500px;
+    height: 32%;
     border: 8px solid #5c3a24;
-    border-radius: 8px;
+    border-radius: 6px;
     background: linear-gradient(180deg, #a8c8e0 0%, #c8d8e8 60%, #b8a898 100%);
     box-shadow: inset 0 0 40px rgba(0,0,0,0.3);
     overflow: hidden;
+    z-index: 3;
   }
   .shop-window::before {
     content: '';
@@ -357,12 +380,11 @@
     top: 6px; right: 10px;
     font-size: 0.7rem; font-weight: 700;
     color: #5c3a24;
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.85);
     padding: 3px 8px;
     border-radius: 10px;
-    z-index: 2;
+    z-index: 4;
   }
-  /* Day/night sky tint */
   .sky-tint {
     position: absolute;
     inset: 0;
@@ -370,80 +392,71 @@
     pointer-events: none;
   }
   .sky-tint.morning { background: linear-gradient(180deg, rgba(255,200,150,0.4), transparent); }
-  .sky-tint.lunch { background: linear-gradient(180deg, rgba(255,230,180,0.3), transparent); }
-  .sky-tint.evening { background: linear-gradient(180deg, rgba(255,150,100,0.35), transparent); }
-  .sky-tint.night { background: linear-gradient(180deg, rgba(40,60,120,0.5), transparent); }
+  .sky-tint.lunch { background: linear-gradient(180deg, rgba(255,230,180,0.25), transparent); }
+  .sky-tint.evening { background: linear-gradient(180deg, rgba(255,150,100,0.4), transparent); }
+  .sky-tint.night { background: linear-gradient(180deg, rgba(40,60,120,0.6), transparent); }
 
-  /* Ambient floating dust */
-  .dust-mote {
-    position: absolute;
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: rgba(255, 240, 200, 0.7);
-    pointer-events: none;
-    animation: dustFloat 8s ease-in-out infinite;
-  }
-  @keyframes dustFloat {
-    0% { transform: translate(0, 0); opacity: 0; }
-    15% { opacity: 0.7; }
-    50% { transform: translate(20px, -40px); }
-    85% { opacity: 0.4; }
-    100% { transform: translate(-10px, -80px); opacity: 0; }
-  }
-
-  /* Counter in front of the player (bottom of screen) */
+  /* Counter (player's desk - at the bottom, closer to viewer) */
   .counter {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 40%;
+    height: 42%;
     background: linear-gradient(180deg,
-      #8b5a3e 0%,
-      #7a4a2e 12%,
-      #d4a880 12%,
-      #e8c8a0 14%,
-      #c9a880 14%,
-      #b89070 60%,
-      #a07858 60%,
+      #5c3a24 0%,
+      #4a2e1c 6%,
+      #d4a880 6%,
+      #e8c8a0 10%,
+      #c9a880 10%,
+      #b89070 55%,
+      #a07858 55%,
       #8b6a4c 100%);
-    border-top: 4px solid #5c3a24;
-    z-index: 5;
+    border-top: 4px solid #3a2418;
+    z-index: 10;
   }
-  /* Counter wood grain */
   .counter::before {
     content: '';
     position: absolute;
-    top: 14%; left: 0; right: 0;
-    height: 46%;
+    top: 10%; left: 0; right: 0;
+    height: 45%;
     background:
       repeating-linear-gradient(90deg,
-        transparent 0px, transparent 40px,
-        rgba(90, 60, 40, 0.12) 40px, rgba(90, 60, 40, 0.12) 42px);
+        transparent 0px, transparent 60px,
+        rgba(90, 60, 40, 0.15) 60px, rgba(90, 60, 40, 0.15) 62px);
+  }
+  /* Reflection on counter */
+  .counter::after {
+    content: '';
+    position: absolute;
+    top: 10%; left: 0; right: 0;
+    height: 20%;
+    background: linear-gradient(180deg, rgba(255, 240, 200, 0.15) 0%, transparent 100%);
   }
 
-  /* Customers area - they stand BEHIND the counter, visible above it */
+  /* Customers area (between window and counter) */
   .customers-area {
     position: absolute;
-    bottom: 40%;
+    bottom: 42%;
     left: 0; right: 0;
-    height: 35%;
-    z-index: 6;
+    height: 38%;
+    z-index: 8;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-    padding: 0 12px 8px;
+    padding: 0 12px 12px;
     pointer-events: none;
   }
 
   .customer {
     position: relative;
     flex-shrink: 0;
-    width: 84px;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: transform 0.3s ease, opacity 0.4s ease;
     pointer-events: auto;
-    cursor: pointer;
+    cursor: grab;
+    touch-action: none;
+    max-width: 90px;
   }
   .customer.entering {
     animation: customerEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -473,24 +486,23 @@
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     transition: transform 0.2s;
   }
-  .customer:active .customer-body { transform: scale(0.92); }
 
-  /* Speech/order bubble */
+  /* Order bubble */
   .customer-bubble {
     position: absolute;
-    top: -56px;
+    top: -62px;
     left: 50%;
     transform: translateX(-50%);
     background: #fdf6ee;
-    border: 3px solid #5c3a24;
+    border: 3px solid #3a2418;
     border-radius: 14px;
-    padding: 6px 10px;
-    min-width: 52px;
+    padding: 4px 8px;
+    min-width: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    font-size: 1.2rem;
+    gap: 3px;
+    font-size: 1.1rem;
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     white-space: nowrap;
     z-index: 2;
@@ -504,14 +516,30 @@
     width: 0; height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 10px solid #5c3a24;
+    border-top: 10px solid #3a2418;
+  }
+  .customer-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #fdf6ee;
+    z-index: 1;
   }
   .customer-bubble .order-emoji {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     line-height: 1;
   }
+  .customer-bubble .order-cups {
+    display: flex;
+    gap: 2px;
+  }
 
-  /* Customer patience bar */
+  /* Patience bar */
   .customer-patience {
     width: 70%;
     height: 5px;
@@ -519,7 +547,7 @@
     border-radius: 3px;
     overflow: hidden;
     margin-top: 4px;
-    border: 1px solid #5c3a24;
+    border: 1px solid #3a2418;
   }
   .customer-patience-fill {
     height: 100%;
@@ -537,51 +565,98 @@
   }
 
   /* ============================================================ */
-  /* WORKSTATION (bottom - interactive area)                       */
+  /* WORKSTATION                                                   */
   /* ============================================================ */
   .workstation {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    z-index: 10;
-    padding: 8px 10px 12px;
+    z-index: 15;
+    padding: 8px 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
 
-  /* Tray showing what you're making */
-  .tray {
-    background: rgba(253, 246, 238, 0.95);
-    border: 3px solid #5c3a24;
+  .workstation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .station-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffd54f;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    letter-spacing: 1px;
+    background: rgba(58, 36, 24, 0.7);
+    padding: 4px 10px;
     border-radius: 10px;
-    padding: 6px 10px;
-    min-height: 42px;
+  }
+  .hint {
+    font-size: 0.65rem;
+    color: #c9a890;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  }
+
+  /* Tray showing current item being made */
+  .tray {
+    background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%);
+    border: 3px solid #3a2418;
+    border-radius: 10px;
+    padding: 8px 12px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    flex-wrap: wrap;
+  }
+  .tray-empty {
+    color: #a88870;
+    font-size: 0.78rem;
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+  }
+  .tray-content {
     display: flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     position: relative;
-    overflow-x: auto;
-    scrollbar-width: none;
+    cursor: grab;
+    touch-action: none;
+    padding: 2px 8px;
+    border-radius: 8px;
+    transition: transform 0.15s;
   }
-  .tray::-webkit-scrollbar { display: none; }
-  .tray-empty {
-    color: #a88870;
-    font-size: 0.8rem;
-    font-style: italic;
-    width: 100%;
-    text-align: center;
+  .tray-content:active { transform: scale(0.95); }
+  .tray-content.drag-ready {
+    cursor: grab;
+    background: rgba(139, 90, 62, 0.1);
   }
   .tray-item {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     line-height: 1;
     animation: trayPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    flex-shrink: 0;
   }
   @keyframes trayPop {
     0% { transform: scale(0); }
     60% { transform: scale(1.3); }
     100% { transform: scale(1); }
+  }
+  .tray-drink-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #3a2418;
+    background: rgba(255, 213, 79, 0.6);
+    padding: 2px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
   }
   .tray-clear {
     position: absolute;
@@ -589,27 +664,45 @@
     background: #c9302c;
     color: white;
     border: none;
-    width: 24px; height: 24px;
+    width: 26px; height: 26px;
     border-radius: 50%;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 2;
   }
   .tray-clear:active { transform: scale(0.9); }
 
-  /* Station label */
-  .station-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #ffd54f;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    text-align: center;
-    letter-spacing: 1px;
-    padding-bottom: 2px;
+  /* Drink progress */
+  .drink-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .drink-steps {
+    display: flex;
+    gap: 4px;
+  }
+  .drink-step {
+    width: 22px; height: 8px;
+    background: rgba(0,0,0,0.15);
+    border: 2px solid #3a2418;
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .drink-step.filled {
+    background: #8b5a3e;
+    animation: stepFill 0.3s ease-out;
+  }
+  @keyframes stepFill {
+    0% { transform: scaleY(0.3); }
+    70% { transform: scaleY(1.4); }
+    100% { transform: scaleY(1); }
   }
 
   /* Ingredient row */
@@ -619,15 +712,17 @@
     overflow-x: auto;
     scrollbar-width: none;
     padding-bottom: 3px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
   .ingredients::-webkit-scrollbar { display: none; }
 
   .ingredient-btn {
     flex-shrink: 0;
-    width: 62px;
-    height: 62px;
+    width: 66px;
+    height: 68px;
     background: linear-gradient(180deg, #fdf6ee 0%, #f0e0d0 100%);
-    border: 3px solid #5c3a24;
+    border: 3px solid #3a2418;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -638,20 +733,21 @@
     transition: all 0.08s;
     position: relative;
     overflow: hidden;
+    padding: 4px;
   }
   .ingredient-btn:active {
     transform: translateY(3px);
     box-shadow: 0 1px 0 #3a2418, 0 3px 6px rgba(0,0,0,0.4);
   }
   .ingredient-btn .ing-emoji {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     line-height: 1;
   }
   .ingredient-btn .ing-label {
-    font-size: 0.55rem;
+    font-size: 0.52rem;
     font-weight: 700;
-    color: #5c3a24;
-    margin-top: 1px;
+    color: #3a2418;
+    margin-top: 2px;
     text-align: center;
     line-height: 1;
   }
@@ -660,16 +756,105 @@
     filter: grayscale(0.7);
     cursor: not-allowed;
   }
-  .ingredient-btn.cooldown::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    animation: cooldownFill 1s linear forwards;
+  .ingredient-btn.locked:active {
+    transform: none;
+    box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3);
   }
-  @keyframes cooldownFill {
-    0% { clip-path: inset(0 0 0 0); }
-    100% { clip-path: inset(100% 0 0 0); }
+  .ingredient-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .ingredient-btn.needed {
+    border-color: #ffd54f;
+    box-shadow: 0 4px 0 #3a2418, 0 6px 10px rgba(0,0,0,0.3), 0 0 0 3px rgba(255, 213, 79, 0.4);
+  }
+  .ingredient-btn .ing-qty {
+    position: absolute;
+    top: -3px; right: -3px;
+    background: #8b5a3e;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fdf6ee;
+  }
+
+  /* ============================================================ */
+  /* DRAGGING ELEMENT                                              */
+  /* ============================================================ */
+  .drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 2.4rem;
+    line-height: 1;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+    transform: translate(-50%, -50%) scale(1.15);
+    transition: transform 0.1s;
+  }
+  .drag-ghost .ghost-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffd54f;
+    color: #3a2418;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .customer.drag-over .customer-body {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 20px rgba(255, 213, 79, 0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  }
+  .customer.drag-over .customer-bubble {
+    border-color: #8fb87d;
+    box-shadow: 0 0 20px rgba(143, 184, 125, 0.7);
+  }
+  .customer.drag-over.matching .customer-bubble {
+    background: #e8f5dc;
+  }
+  .customer.drag-over.non-matching .customer-bubble {
+    background: #f5dcdc;
+    border-color: #c9302c;
+  }
+
+  /* Floating score popups */
+  .float-score {
+    position: fixed;
+    pointer-events: none;
+    font-weight: 700;
+    font-size: 1.5rem;
+    z-index: 9000;
+    animation: floatScore 1.3s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  }
+  .float-score.positive { color: #8fd87d; }
+  .float-score.negative { color: #e57373; }
+  @keyframes floatScore {
+    0% { opacity: 1; transform: translateY(0) scale(0.6); }
+    30% { transform: translateY(-20px) scale(1.3); }
+    100% { opacity: 0; transform: translateY(-90px) scale(1); }
+  }
+
+  /* Sparkle */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.3rem;
+    z-index: 9000;
+    animation: sparkleFly 0.9s ease-out forwards;
+  }
+  @keyframes sparkleFly {
+    0% { opacity: 1; transform: scale(0.5) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -60px)) scale(1.4) rotate(var(--sr, 180deg)); }
   }
 
   /* ============================================================ */
@@ -685,13 +870,8 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    animation: fadeIn 0.3s;
   }
   .modal-bg.show { display: flex; }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
   .modal-card {
     background: #fdf6ee;
     border: 4px solid #8b5a3e;
@@ -729,8 +909,8 @@
   .star {
     font-size: 2.6rem;
     opacity: 0.22;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     filter: grayscale(1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .star.filled {
     opacity: 1;
@@ -778,7 +958,6 @@
   .modal-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #5c3a24; }
   .modal-btn.secondary { background: #a88870; box-shadow: 0 4px 0 #8b5a3e; }
 
-  /* Pause menu */
   #pauseMenu {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.9);
@@ -790,7 +969,6 @@
   }
   #pauseMenu.show { display: flex; }
 
-  /* Toast */
   .toast {
     position: fixed;
     top: 80px;
@@ -803,7 +981,7 @@
     font-weight: 700;
     font-size: 0.85rem;
     border-radius: 8px;
-    z-index: 300;
+    z-index: 9000;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     max-width: 90vw;
     text-align: center;
@@ -912,7 +1090,6 @@
     color: #8b5a3e;
     margin-bottom: 4px;
     font-weight: 700;
-    letter-spacing: 0.5px;
   }
   .level-name {
     font-weight: 700;
@@ -926,14 +1103,8 @@
     gap: 3px;
     font-size: 1.05rem;
   }
-  .level-stars .star-icon {
-    opacity: 0.2;
-    filter: grayscale(1);
-  }
-  .level-stars .star-icon.earned {
-    opacity: 1;
-    filter: none;
-  }
+  .level-stars .star-icon { opacity: 0.2; filter: grayscale(1); }
+  .level-stars .star-icon.earned { opacity: 1; filter: none; }
   .level-best {
     font-size: 0.72rem;
     color: #a88870;
@@ -959,86 +1130,32 @@
   }
   .back-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2a1a10; }
 
-  /* Floating score popups */
-  .float-score {
-    position: fixed;
-    pointer-events: none;
-    font-weight: 700;
-    font-size: 1.4rem;
-    z-index: 500;
-    animation: floatScore 1.2s ease-out forwards;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-  }
-  .float-score.positive { color: #8fd87d; }
-  .float-score.negative { color: #e57373; }
-  .float-score.coin { color: #ffd54f; }
-  @keyframes floatScore {
-    0% { opacity: 1; transform: translateY(0) scale(0.6); }
-    30% { transform: translateY(-20px) scale(1.2); }
-    100% { opacity: 0; transform: translateY(-80px) scale(1); }
-  }
-
-  /* Sparkle burst on correct serve */
-  .sparkle {
-    position: fixed;
-    pointer-events: none;
-    font-size: 1.2rem;
-    z-index: 500;
-    animation: sparkleFly 0.8s ease-out forwards;
-  }
-  @keyframes sparkleFly {
-    0% { opacity: 1; transform: scale(0.5) rotate(0deg); }
-    100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -50px)) scale(1.4) rotate(var(--sr, 180deg)); }
-  }
-
-  /* Player indicator hand/cursor */
-  .player-cursor {
-    position: absolute;
-    pointer-events: none;
-    font-size: 1.6rem;
-    z-index: 25;
-    transition: all 0.15s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-  }
-  .player-cursor.koy-cursor::before { content: '🌿'; }
-  .player-cursor.metz-cursor::before { content: '🌸'; }
-
-  /* Two player HUD */
-  .player-tag {
-    position: absolute;
-    bottom: 12px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 12px;
-    color: white;
-    z-index: 30;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  }
-  .player-tag.koy { left: 12px; background: rgba(74, 107, 138, 0.85); }
-  .player-tag.metz { right: 12px; background: rgba(168, 92, 122, 0.85); }
-
-  /* Responsive */
+  /* ============================================================ */
+  /* RESPONSIVE                                                    */
+  /* ============================================================ */
   @media (max-width: 500px) {
     .login-card h1 { font-size: 1.4rem; }
     .level-title { font-size: 0.78rem; }
     .customer-body { font-size: 2.6rem; }
-    .customer { width: 72px; }
-    .ingredient-btn { width: 56px; height: 56px; }
+    .customer-bubble { top: -55px; font-size: 1rem; padding: 3px 6px; }
+    .customer-bubble .order-emoji { font-size: 1.1rem; }
+    .ingredient-btn { width: 58px; height: 60px; }
     .ingredient-btn .ing-emoji { font-size: 1.5rem; }
-    .ingredient-btn .ing-label { font-size: 0.5rem; }
+    .ingredient-btn .ing-label { font-size: 0.48rem; }
     .modal-card h2 { font-size: 1.1rem; }
     .select-header h1 { font-size: 1.15rem; }
     .stat-box { padding: 10px 12px; min-width: 80px; }
     .stat-box .stat-value { font-size: 1rem; }
+    .tray-item { font-size: 1.6rem; }
+    .workstation { padding: 6px 6px 8px; }
   }
 
   @media (max-height: 700px) {
     .customer-body { font-size: 2.4rem; }
-    .customer-bubble { top: -48px; padding: 4px 8px; }
-    .workstation { padding: 6px 8px 10px; }
-    .ingredient-btn { width: 54px; height: 54px; }
+    .customer-bubble { top: -50px; }
+    .ingredient-btn { width: 56px; height: 58px; }
     .ingredient-btn .ing-emoji { font-size: 1.4rem; }
+    .tray { min-height: 44px; padding: 6px 10px; }
   }
 </style>
 </head>
@@ -1054,8 +1171,8 @@
       <p class="subtitle">Koy & Metz — Baristas in Love</p>
 
       <div class="role-pick">
-        <button class="role-btn" data-role="koy">🌿 Koy</button>
-        <button class="role-btn" data-role="metz">🌸 Metz</button>
+        <button class="role-btn" data-role="koy">🌿 Koy (Coffee)</button>
+        <button class="role-btn" data-role="metz">🌸 Metz (Food)</button>
       </div>
 
       <button class="login-btn" id="hostBtn">🏠 HOST CO-OP</button>
@@ -1074,8 +1191,8 @@
       <button class="login-btn solo" id="soloBtn">👤 PLAY SOLO (Practice)</button>
 
       <p class="login-hint">
-        <strong>Co-op:</strong> Koy works coffee, Metz works food.<br>
-        <strong>Solo:</strong> Switch between both stations.
+        <strong>Co-op:</strong> Koy brews coffee, Metz makes food.<br>
+        <strong>Solo:</strong> Switch stations with the tabs.
       </p>
     </div>
   </div>
@@ -1109,7 +1226,6 @@
   <!-- GAME VIEW -->
   <div id="gameView">
 
-    <!-- HUD -->
     <div class="hud">
       <div class="hud-left">
         <button class="hud-btn" id="pauseBtn">⏸</button>
@@ -1127,32 +1243,35 @@
       </div>
     </div>
 
-    <!-- Station tabs (for solo mode) -->
     <div class="station-tabs" id="stationTabs">
       <div class="station-tab active" data-station="koy">☕ Coffee</div>
       <div class="station-tab" data-station="metz">🥐 Food</div>
     </div>
 
-    <!-- Scene -->
     <div class="scene">
       <div class="coffee-shop" id="coffeeShop">
+        <div class="ceiling">
+          <div class="ceiling-lamp" style="left: 20%;"></div>
+          <div class="ceiling-lamp" style="left: 50%;"></div>
+          <div class="ceiling-lamp" style="left: 80%;"></div>
+        </div>
         <div class="sky-tint" id="skyTint"></div>
         <div class="shop-window">
           <div class="window-time-badge" id="windowTimeBadge">🌅 Morning</div>
         </div>
       </div>
 
-      <!-- Customers -->
       <div class="customers-area" id="customersArea"></div>
 
-      <!-- Counter -->
       <div class="counter"></div>
 
-      <!-- Workstation -->
       <div class="workstation">
-        <div class="station-label" id="stationLabel">☕ COFFEE STATION</div>
+        <div class="workstation-header">
+          <div class="station-label" id="stationLabel">☕ COFFEE STATION</div>
+          <div class="hint" id="workstationHint">Tap ingredients, then drag to customer</div>
+        </div>
         <div class="tray" id="tray">
-          <div class="tray-empty">Tap ingredients to start</div>
+          <div class="tray-empty">Tap ingredients to start making something</div>
         </div>
         <div class="ingredients" id="ingredients"></div>
       </div>
@@ -1160,10 +1279,10 @@
 
   </div>
 
-  <!-- LEVEL COMPLETE MODAL -->
+  <!-- LEVEL COMPLETE -->
   <div class="modal-bg" id="levelCompleteModal">
     <div class="modal-card">
-      <h2 id="completeTitle">LEVEL COMPLETE!</h2>
+      <h2 id="completeTitle">SHOP CLOSED!</h2>
       <p class="modal-sub" id="completeSub">Beautiful service today ☕</p>
       <div class="stars-row" id="starsRow">
         <div class="star" data-idx="0">⭐</div>
@@ -1172,7 +1291,7 @@
       </div>
       <div class="modal-score">COINS: <span class="highlight" id="modalScore">0</span></div>
       <div class="modal-score">SERVED: <span class="highlight" id="modalServed">0</span></div>
-      <div class="modal-score" id="modalLostLine">LOST: <span class="highlight" id="modalLost">0</span></div>
+      <div class="modal-score">LOST: <span class="highlight" id="modalLost">0</span></div>
       <div class="modal-actions">
         <button class="modal-btn" id="nextLevelBtn">NEXT LEVEL →</button>
         <button class="modal-btn secondary" id="replayBtn">PLAY AGAIN</button>
@@ -1181,10 +1300,9 @@
     </div>
   </div>
 
-  <!-- LEVEL FAILED MODAL -->
   <div class="modal-bg" id="levelFailedModal">
     <div class="modal-card">
-      <h2>CLOSING TIME!</h2>
+      <h2>CLOSING TIME</h2>
       <p class="modal-sub" id="failedSub">Too many unhappy customers</p>
       <div class="modal-score">COINS: <span class="highlight" id="failedScore">0</span></div>
       <div class="modal-score">SERVED: <span class="highlight" id="failedServed">0</span></div>
@@ -1196,7 +1314,6 @@
     </div>
   </div>
 
-  <!-- PAUSE -->
   <div id="pauseMenu">
     <div class="modal-card">
       <h2>PAUSED</h2>
@@ -1227,7 +1344,7 @@ const firebaseConfig = {
   projectId: "mochigotchi",
   storageBucket: "mochigotchi.firebasestorage.app",
   messagingSenderId: "441429859962",
-  appId: "1:441429429962:web:d0a5e1af080bb394a725c3"
+  appId: "1:441429859962:web:d0a5e1af080bb394a725c3"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -1256,7 +1373,10 @@ const SoundFX = {
     osc.start(t); osc.stop(t + duration);
   },
   tap() { this.tone(600, 0.06, 'square', 0.05); },
-  add() { this.tone(800, 0.08, 'sine', 0.06); },
+  pour() { this.tone(300, 0.15, 'sine', 0.05); },
+  brew() { this.tone(220, 0.3, 'sine', 0.05); this.tone(280, 0.4, 'sine', 0.04, 0.2); },
+  ice() { this.tone(1200, 0.05, 'square', 0.05); this.tone(1400, 0.05, 'square', 0.04, 0.05); },
+  steam() { this.tone(400, 0.4, 'sine', 0.03); },
   correct() {
     [660, 880, 1100].forEach((f, i) => this.tone(f, 0.12, 'triangle', 0.09, i * 0.06));
   },
@@ -1271,81 +1391,88 @@ const SoundFX = {
 };
 
 /* ============================================================ */
-/* INGREDIENTS & RECIPES                                         */
+/* RECIPES (Coffee & Food)                                       */
 /* ============================================================ */
-// Each ingredient is either directly served OR processed (e.g., espresso → latte)
+// Coffee recipes: each has an ordered list of steps
+// Steps: 'ice', 'brew', 'milk', 'choco', 'caramel', 'matcha', 'cream', 'serve'
+const COFFEE_RECIPES = {
+  espresso:  { name: 'Espresso',   emoji: '☕', steps: ['brew'], points: 8 },
+  americano: { name: 'Americano',  emoji: '🫖', steps: ['brew', 'brew'], points: 10 },
+  latte:     { name: 'Latte',      emoji: '🥛', steps: ['brew', 'milk'], points: 14 },
+  cappuccino:{ name: 'Cappuccino', emoji: '🍶', steps: ['brew', 'milk', 'milk'], points: 16 },
+  mocha:     { name: 'Mocha',      emoji: '🍫', steps: ['brew', 'choco', 'milk'], points: 20 },
+  caramelMacchiato: { name: 'Caramel Macchiato', emoji: '🍮', steps: ['brew', 'milk', 'caramel'], points: 22 },
+  matchaLatte: { name: 'Matcha Latte', emoji: '🍵', steps: ['matcha', 'milk'], points: 18 },
+  icedLatte: { name: 'Iced Latte', emoji: '🧊', steps: ['ice', 'brew', 'milk'], points: 18 },
+  icedAmericano: { name: 'Iced Americano', emoji: '🥶', steps: ['ice', 'brew', 'brew'], points: 15 },
+  icedMocha: { name: 'Iced Mocha', emoji: '🍧', steps: ['ice', 'brew', 'choco', 'milk'], points: 22 }
+};
+
+// Food recipes (pastries & simple)
+const FOOD_RECIPES = {
+  croissant: { name: 'Croissant', emoji: '🥐', steps: ['warmCroissant'], points: 8 },
+  muffin:    { name: 'Muffin',    emoji: '🧁', steps: ['warmMuffin'], points: 8 },
+  cookie:    { name: 'Cookie',    emoji: '🍪', steps: ['warmCookie'], points: 6 },
+  sandwich:  { name: 'Sandwich',  emoji: '🥪', steps: ['bread', 'cheese', 'tomato'], points: 16 },
+  toastie:   { name: 'Toastie',   emoji: '🧇', steps: ['bread', 'cheese'], points: 12 },
+  bagel:     { name: 'Bagel',     emoji: '🥯', steps: ['bread'], points: 8 }
+};
+
+const ALL_RECIPES = { ...COFFEE_RECIPES, ...FOOD_RECIPES };
+
+// Which station owns which recipe
+function getRecipeStation(recipeId) {
+  if (COFFEE_RECIPES[recipeId]) return 'koy';
+  if (FOOD_RECIPES[recipeId]) return 'metz';
+  return 'koy';
+}
+
+/* ============================================================ */
+/* INGREDIENTS BY STATION                                        */
+/* ============================================================ */
 const INGREDIENTS = {
   // Coffee station
-  espresso: { emoji: '☕', label: 'Espresso', station: 'koy' },
-  milk:     { emoji: '🥛', label: 'Milk',     station: 'koy' },
-  choco:    { emoji: '🍫', label: 'Choco',    station: 'koy' },
-  caramel:  { emoji: '🍯', label: 'Caramel',  station: 'koy' },
-  matcha:   { emoji: '🍵', label: 'Matcha',   station: 'koy' },
+  ice:    { emoji: '🧊', label: 'Ice',    station: 'koy', action: 'add', step: 'ice' },
+  brew:   { emoji: '☕', label: 'Brew',   station: 'koy', action: 'add', step: 'brew' },
+  milk:   { emoji: '🥛', label: 'Milk',   station: 'koy', action: 'add', step: 'milk' },
+  choco:  { emoji: '🍫', label: 'Choco',  station: 'koy', action: 'add', step: 'choco' },
+  caramel:{ emoji: '🍯', label: 'Caramel',station: 'koy', action: 'add', step: 'caramel' },
+  matcha: { emoji: '🍵', label: 'Matcha', station: 'koy', action: 'add', step: 'matcha' },
   // Food station
-  croissant:{ emoji: '🥐', label: 'Croissant',station: 'metz' },
-  muffin:   { emoji: '🧁', label: 'Muffin',   station: 'metz' },
-  bread:    { emoji: '🍞', label: 'Bread',    station: 'metz' },
-  cheese:   { emoji: '🧀', label: 'Cheese',   station: 'metz' },
-  tomato:   { emoji: '🍅', label: 'Tomato',   station: 'metz' },
-  cookie:   { emoji: '🍪', label: 'Cookie',   station: 'metz' }
+  warmCroissant: { emoji: '🥐', label: 'Croissant', station: 'metz', action: 'add', step: 'warmCroissant' },
+  warmMuffin:    { emoji: '🧁', label: 'Muffin',    station: 'metz', action: 'add', step: 'warmMuffin' },
+  warmCookie:    { emoji: '🍪', label: 'Cookie',    station: 'metz', action: 'add', step: 'warmCookie' },
+  bread:  { emoji: '🍞', label: 'Bread',   station: 'metz', action: 'add', step: 'bread' },
+  cheese: { emoji: '🧀', label: 'Cheese',  station: 'metz', action: 'add', step: 'cheese' },
+  tomato: { emoji: '🍅', label: 'Tomato',  station: 'metz', action: 'add', step: 'tomato' }
 };
-
-// Recipes = list of ingredient IDs in order
-const RECIPES = {
-  espresso:  { name: 'Espresso',  emoji: '☕', ingredients: ['espresso'], points: 8, station: 'koy' },
-  latte:     { name: 'Latte',     emoji: '🥛', ingredients: ['espresso', 'milk'], points: 14, station: 'koy' },
-  cappuccino:{ name: 'Cappuccino',emoji: '🍶', ingredients: ['espresso', 'milk', 'choco'], points: 18, station: 'koy' },
-  mocha:     { name: 'Mocha',     emoji: '🍫', ingredients: ['espresso', 'milk', 'choco', 'caramel'], points: 22, station: 'koy' },
-  matchaLatte:{name: 'Matcha Latte', emoji: '🍵', ingredients: ['matcha', 'milk'], points: 16, station: 'koy' },
-
-  croissant: { name: 'Croissant', emoji: '🥐', ingredients: ['croissant'], points: 8, station: 'metz' },
-  muffin:    { name: 'Muffin',    emoji: '🧁', ingredients: ['muffin'],    points: 8, station: 'metz' },
-  cookies:   { name: 'Cookies',   emoji: '🍪', ingredients: ['cookie'],    points: 8, station: 'metz' },
-  sandwich:  { name: 'Sandwich',  emoji: '🥪', ingredients: ['bread', 'cheese', 'tomato'], points: 16, station: 'metz' },
-  toastie:   { name: 'Toastie',   emoji: '🧀', ingredients: ['bread', 'cheese'], points: 12, station: 'metz' },
-  breakfast: { name: 'Breakfast', emoji: '🍳', ingredients: ['bread', 'cheese', 'tomato', 'cookie'], points: 24, station: 'metz' }
-};
-
-// Match tray contents to a recipe
-function matchRecipe(tray) {
-  if (!tray || tray.length === 0) return null;
-  const sorted = [...tray].sort();
-  for (const [id, r] of Object.entries(RECIPES)) {
-    const rSorted = [...r.ingredients].sort();
-    if (rSorted.length === sorted.length && rSorted.every((v, i) => v === sorted[i])) {
-      return id;
-    }
-  }
-  return null;
-}
 
 /* ============================================================ */
 /* LEVELS                                                        */
 /* ============================================================ */
-// Each level has: duration, spawn rate, patience, recipes pool
 const LEVELS = [
-  { id: 1, name: 'Opening Day', duration: 90, spawnEvery: 6500, patience: 45,
-    recipes: ['espresso', 'croissant', 'cookies'], starThresholds: [40, 80, 130] },
-  { id: 2, name: 'Morning Rush', duration: 100, spawnEvery: 5500, patience: 42,
+  { id: 1, name: 'Opening Day', duration: 90, spawnEvery: 6500, patience: 50,
+    recipes: ['espresso', 'croissant', 'cookie'], starThresholds: [40, 80, 130] },
+  { id: 2, name: 'Morning Rush', duration: 100, spawnEvery: 5500, patience: 45,
     recipes: ['espresso', 'latte', 'croissant', 'muffin'], starThresholds: [70, 130, 200] },
-  { id: 3, name: 'Coffee Break', duration: 110, spawnEvery: 5000, patience: 40,
-    recipes: ['latte', 'cappuccino', 'croissant', 'muffin', 'cookies'], starThresholds: [100, 190, 280] },
-  { id: 4, name: 'Lunch Hour', duration: 120, spawnEvery: 4500, patience: 38,
-    recipes: ['latte', 'cappuccino', 'sandwich', 'toastie', 'muffin'], starThresholds: [140, 250, 370] },
-  { id: 5, name: 'Afternoon Calm', duration: 130, spawnEvery: 4200, patience: 36,
-    recipes: ['mocha', 'matchaLatte', 'sandwich', 'toastie', 'cookies'], starThresholds: [180, 310, 440] },
-  { id: 6, name: 'Happy Hour', duration: 130, spawnEvery: 3800, patience: 34,
-    recipes: ['mocha', 'matchaLatte', 'cappuccino', 'sandwich', 'breakfast'], starThresholds: [220, 380, 540] },
-  { id: 7, name: 'Evening Crowd', duration: 140, spawnEvery: 3400, patience: 32,
-    recipes: ['espresso', 'latte', 'mocha', 'matchaLatte', 'sandwich', 'toastie', 'muffin', 'cookies'],
-    starThresholds: [270, 450, 640] },
-  { id: 8, name: 'Date Night', duration: 150, spawnEvery: 3200, patience: 30,
-    recipes: ['latte', 'cappuccino', 'mocha', 'matchaLatte', 'breakfast', 'sandwich', 'croissant', 'muffin'],
-    starThresholds: [320, 530, 750] },
-  { id: 9, name: 'Grand Rush', duration: 150, spawnEvery: 2800, patience: 28,
-    recipes: Object.keys(RECIPES), starThresholds: [380, 620, 880] },
-  { id: 10, name: 'Grand Opening', duration: 180, spawnEvery: 2400, patience: 26,
-    recipes: Object.keys(RECIPES), starThresholds: [450, 720, 1020] }
+  { id: 3, name: 'Coffee Break', duration: 110, spawnEvery: 5000, patience: 42,
+    recipes: ['latte', 'cappuccino', 'croissant', 'muffin', 'cookie'], starThresholds: [110, 190, 280] },
+  { id: 4, name: 'Lunch Hour', duration: 120, spawnEvery: 4500, patience: 40,
+    recipes: ['latte', 'cappuccino', 'sandwich', 'toastie', 'muffin'], starThresholds: [150, 260, 380] },
+  { id: 5, name: 'Iced Afternoon', duration: 130, spawnEvery: 4200, patience: 38,
+    recipes: ['mocha', 'icedLatte', 'matchaLatte', 'toastie', 'bagel', 'cookie'], starThresholds: [190, 320, 460] },
+  { id: 6, name: 'Happy Hour', duration: 130, spawnEvery: 3800, patience: 36,
+    recipes: ['mocha', 'caramelMacchiato', 'icedLatte', 'icedAmericano', 'sandwich', 'croissant'], starThresholds: [230, 390, 550] },
+  { id: 7, name: 'Evening Crowd', duration: 140, spawnEvery: 3400, patience: 34,
+    recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'toastie', 'muffin', 'cookie']),
+    starThresholds: [280, 460, 650] },
+  { id: 8, name: 'Date Night', duration: 150, spawnEvery: 3200, patience: 32,
+    recipes: Object.keys(COFFEE_RECIPES).concat(['sandwich', 'bagel', 'croissant', 'muffin']),
+    starThresholds: [330, 540, 760] },
+  { id: 9, name: 'Grand Rush', duration: 150, spawnEvery: 2800, patience: 30,
+    recipes: Object.keys(ALL_RECIPES), starThresholds: [390, 630, 890] },
+  { id: 10, name: 'Grand Opening', duration: 180, spawnEvery: 2400, patience: 28,
+    recipes: Object.keys(ALL_RECIPES), starThresholds: [460, 730, 1030] }
 ];
 
 /* ============================================================ */
@@ -1354,15 +1481,10 @@ const LEVELS = [
 let me = 'koy';
 let soloMode = false;
 let isHost = false;
-let currentStation = 'koy'; // For solo mode: which station is active
+let currentStation = 'koy';
 let myPeerId = null;
 
-const peerState = {
-  peer: null,
-  conn: null,
-  connected: false,
-  pendingMsgs: []
-};
+const peerState = { peer: null, conn: null, connected: false, pendingMsgs: [] };
 
 let progression = {
   unlockedLevels: 1,
@@ -1379,8 +1501,9 @@ const game = {
   score: 0,
   served: 0,
   lost: 0,
-  customers: [], // { id, recipeId, patienceMax, patienceLeft, createdAt, entered }
-  tray: { koy: [], metz: [] }, // two trays in co-op; in solo shared
+  customers: [],
+  tray: { koy: [], metz: [] },
+  trayRecipe: { koy: null, metz: null }, // matched recipe id
   timerInterval: null,
   spawnInterval: null,
   patienceInterval: null,
@@ -1398,7 +1521,7 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove('show'), 2400);
+  toastT = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 /* ============================================================ */
@@ -1429,9 +1552,7 @@ function initPeer() {
       ]
     }
   });
-  peerState.peer.on('open', () => {
-    $('hostId').textContent = id;
-  });
+  peerState.peer.on('open', () => { $('hostId').textContent = id; });
   peerState.peer.on('connection', (conn) => {
     setupConnection(conn);
     isHost = true;
@@ -1473,21 +1594,24 @@ function handlePeerMessage(msg) {
   switch (msg.type) {
     case 'trayUpdate':
       game.tray[msg.role] = msg.tray;
-      renderTray();
+      game.trayRecipe[msg.role] = msg.recipe;
+      if (getMyStation() !== msg.role || soloMode) {
+        // It's the partner's tray; still track but don't render locally
+      }
       break;
     case 'customerSpawn':
-      addCustomerFromData(msg.customer, true);
+      addCustomerFromData(msg.customer);
       break;
     case 'customerServed':
-      removeCustomer(msg.customerId, false);
+      removeCustomer(msg.customerId);
       game.score += msg.points;
       game.served += 1;
       updateHUD();
-      floatScore('+' + msg.points, '#8fd87d');
       SoundFX.correct();
+      SoundFX.coin();
       break;
     case 'customerLost':
-      removeCustomer(msg.customerId, false);
+      removeCustomer(msg.customerId);
       game.lost += 1;
       updateHUD();
       SoundFX.customerLeave();
@@ -1580,7 +1704,6 @@ function renderLevels() {
     const unlocked = (idx + 1) <= progression.unlockedLevels;
     const stars = progression.bestStars[lvl.id] || 0;
     const best = progression.bestScores[lvl.id] || 0;
-
     const card = document.createElement('div');
     card.className = 'level-card' + (unlocked ? '' : ' locked');
     card.innerHTML = `
@@ -1648,29 +1771,25 @@ function startLevel(levelId, fromRemote = false) {
   game.lost = 0;
   game.customers = [];
   game.tray = { koy: [], metz: [] };
+  game.trayRecipe = { koy: null, metz: null };
   game.nextCustomerId = 1;
 
   $('levelSelect').classList.remove('show');
   $('gameView').style.display = 'flex';
   $('hudLevelName').textContent = 'Level ' + levelId + ' · ' + level.name + (soloMode ? ' (SOLO)' : '');
 
-  // Show station tabs only in solo
   $('stationTabs').classList.toggle('show', soloMode);
 
-  // Update sky tint based on level number (day cycle feel)
   updateSkyTint(levelId);
-
   renderIngredients();
   renderTray();
   renderCustomers();
   updateHUD();
 
-  // Clear old intervals
   if (game.timerInterval) clearInterval(game.timerInterval);
   if (game.spawnInterval) clearInterval(game.spawnInterval);
   if (game.patienceInterval) clearInterval(game.patienceInterval);
 
-  // Start timer
   game.timerInterval = setInterval(() => {
     if (!game.running) return;
     game.timeRemaining -= 1;
@@ -1678,16 +1797,14 @@ function startLevel(levelId, fromRemote = false) {
     if (game.timeRemaining <= 0) endLevel();
   }, 1000);
 
-  // Start customer spawner (only host spawns, sends to partner)
   if (isHost) {
     game.spawnInterval = setInterval(() => {
       if (!game.running) return;
       spawnCustomer();
     }, level.spawnEvery);
-    setTimeout(spawnCustomer, 800);
+    setTimeout(spawnCustomer, 700);
   }
 
-  // Patience ticker (runs on both clients, but only host triggers losses)
   game.patienceInterval = setInterval(() => {
     if (!game.running) return;
     const now = Date.now();
@@ -1699,8 +1816,11 @@ function startLevel(levelId, fromRemote = false) {
       c.patienceLeft = pct;
       if (pct <= 0) {
         if (isHost) {
-          removeCustomer(c.id, true); // Host triggers loss
-          sendPeer({ type: 'customerLost', customerId: c.id });
+          removeCustomer(c.id);
+          game.lost += 1;
+          updateHUD();
+          SoundFX.customerLeave();
+          if (!soloMode) sendPeer({ type: 'customerLost', customerId: c.id });
         }
         changed = true;
       }
@@ -1738,25 +1858,26 @@ function spawnCustomer() {
     enteredAt: Date.now()
   };
   game.customers.push(customer);
-  if (game.customers.length > 5) {
-    // Too many — drop oldest
+  if (game.customers.length > 4) {
+    // Too many — the oldest customer leaves
     const oldest = game.customers.shift();
     game.lost += 1;
     updateHUD();
+    if (!soloMode) sendPeer({ type: 'customerLost', customerId: oldest.id });
   }
   renderCustomers();
   SoundFX.customerEnter();
   if (!soloMode) sendPeer({ type: 'customerSpawn', customer });
 }
 
-function addCustomerFromData(customer, fromRemote) {
-  if (fromRemote && game.customers.some(c => c.id === customer.id)) return;
+function addCustomerFromData(customer) {
+  if (game.customers.some(c => c.id === customer.id)) return;
   game.customers.push({ ...customer, patienceLeft: 1, enteredAt: Date.now() });
   renderCustomers();
   SoundFX.customerEnter();
 }
 
-function removeCustomer(customerId, triggerLoss) {
+function removeCustomer(customerId) {
   game.customers = game.customers.filter(c => c.id !== customerId);
   renderCustomers();
 }
@@ -1764,22 +1885,18 @@ function removeCustomer(customerId, triggerLoss) {
 function renderCustomers() {
   const area = $('customersArea');
   area.innerHTML = '';
-  const selectedStations = soloMode ? [currentStation] : [me === 'koy' ? 'koy' : 'metz', me === 'koy' ? 'metz' : 'koy'];
-
-  game.customers.forEach((c, idx) => {
-    const recipe = RECIPES[c.recipeId];
+  game.customers.forEach((c) => {
+    const recipe = ALL_RECIPES[c.recipeId];
     const el = document.createElement('div');
     el.className = 'customer entering';
     el.dataset.customerId = c.id;
-
-    // Position customers spread out
-    el.style.transform = `translateX(${(idx - (game.customers.length - 1) / 2) * 20}px)`;
 
     const patiencePct = Math.max(0, c.patienceLeft) * 100;
     let pClass = '';
     if (patiencePct < 25) pClass = 'crit';
     else if (patiencePct < 55) pClass = 'warn';
 
+    // Show the emoji of the recipe on the bubble
     el.innerHTML = `
       <div class="customer-bubble">
         <span class="order-emoji">${recipe.emoji}</span>
@@ -1789,8 +1906,6 @@ function renderCustomers() {
         <div class="customer-patience-fill ${pClass}" style="width:${patiencePct}%"></div>
       </div>
     `;
-
-    el.addEventListener('click', () => tryServeCustomer(c));
     area.appendChild(el);
   });
 }
@@ -1824,76 +1939,122 @@ function renderIngredients() {
   const cont = $('ingredients');
   cont.innerHTML = '';
   const station = getMyStation();
+
   // Filter ingredients by station
-  const available = Object.entries(INGREDIENTS)
-    .filter(([id, ing]) => ing.station === station)
-    .map(([id]) => id);
+  const available = Object.entries(INGREDIENTS).filter(([id, ing]) => ing.station === station);
 
-  // Also filter by what's needed in recipes for this level
-  const levelRecipeSet = new Set();
-  game.level.recipes.forEach(rid => {
-    RECIPES[rid].ingredients.forEach(i => levelRecipeSet.add(i));
-  });
-
-  available.forEach(ingId => {
-    const ing = INGREDIENTS[ingId];
-    const needed = levelRecipeSet.has(ingId);
+  available.forEach(([ingId, ing]) => {
     const btn = document.createElement('button');
-    btn.className = 'ingredient-btn' + (needed ? '' : ' locked');
+    btn.className = 'ingredient-btn';
     btn.dataset.ingredient = ingId;
     btn.innerHTML = `
       <span class="ing-emoji">${ing.emoji}</span>
       <span class="ing-label">${ing.label}</span>
     `;
-    if (needed) btn.addEventListener('click', () => addIngredient(ingId));
+    btn.addEventListener('click', () => addIngredient(ingId));
     cont.appendChild(btn);
   });
 
-  // Update station label
   $('stationLabel').textContent = station === 'koy' ? '☕ COFFEE STATION' : '🥐 FOOD STATION';
 }
 
 function addIngredient(ingId) {
   const station = getMyStation();
+  const ing = INGREDIENTS[ingId];
+  if (!ing) return;
+
   const tray = game.tray[station] || [];
-  if (tray.length >= 5) {
+  if (tray.length >= 6) {
     showToast('Tray is full!');
     SoundFX.wrong();
     return;
   }
+
+  // Play ingredient sound
+  if (ingId === 'ice') SoundFX.ice();
+  else if (ingId === 'brew') SoundFX.brew();
+  else if (ingId === 'milk') SoundFX.pour();
+  else SoundFX.add();
+
   tray.push(ingId);
   game.tray[station] = tray;
-  SoundFX.add();
+  updateMatchedRecipe(station);
+
   renderTray();
-  if (!soloMode) sendPeer({ type: 'trayUpdate', role: station, tray });
+  if (!soloMode) sendPeer({ type: 'trayUpdate', role: station, tray, recipe: game.trayRecipe[station] });
+}
+
+function updateMatchedRecipe(station) {
+  const tray = game.tray[station] || [];
+  const recipePool = station === 'koy' ? COFFEE_RECIPES : FOOD_RECIPES;
+
+  let matched = null;
+  // Find a recipe whose steps match the tray exactly (order-agnostic for robustness)
+  for (const [id, r] of Object.entries(recipePool)) {
+    if (r.steps.length !== tray.length) continue;
+    const rSteps = [...r.steps].sort();
+    const tSteps = tray.map(t => INGREDIENTS[t].step).sort();
+    if (rSteps.length === tSteps.length && rSteps.every((v, i) => v === tSteps[i])) {
+      matched = id;
+      break;
+    }
+  }
+  game.trayRecipe[station] = matched;
 }
 
 function clearTray() {
   const station = getMyStation();
   game.tray[station] = [];
+  game.trayRecipe[station] = null;
   SoundFX.wrong();
   renderTray();
-  if (!soloMode) sendPeer({ type: 'trayUpdate', role: station, tray: [] });
+  if (!soloMode) sendPeer({ type: 'trayUpdate', role: station, tray: [], recipe: null });
 }
 
 function renderTray() {
   const trayEl = $('tray');
   const station = getMyStation();
   const tray = game.tray[station] || [];
+  const matched = game.trayRecipe[station];
   trayEl.innerHTML = '';
 
   if (tray.length === 0) {
-    trayEl.innerHTML = '<div class="tray-empty">Tap ingredients to start</div>';
+    trayEl.innerHTML = '<div class="tray-empty">Tap ingredients below to start making something ☕</div>';
     return;
   }
 
-  tray.forEach(ingId => {
+  const content = document.createElement('div');
+  content.className = 'tray-content drag-ready';
+
+  // Show each ingredient in order
+  tray.forEach((ingId, i) => {
     const ing = INGREDIENTS[ingId];
     const span = document.createElement('span');
     span.className = 'tray-item';
     span.textContent = ing.emoji;
-    trayEl.appendChild(span);
+    span.style.animationDelay = (i * 0.05) + 's';
+    content.appendChild(span);
   });
+
+  // If matched, show a label
+  if (matched) {
+    const label = document.createElement('span');
+    label.className = 'tray-drink-label';
+    label.textContent = '✓ ' + ALL_RECIPES[matched].name;
+    content.appendChild(label);
+  } else {
+    const label = document.createElement('span');
+    label.className = 'tray-drink-label';
+    label.style.background = 'rgba(201, 48, 44, 0.3)';
+    label.style.color = '#fff';
+    label.textContent = 'In progress...';
+    content.appendChild(label);
+  }
+
+  // Drag-to-serve: user drags this content element onto a customer
+  makeTrayDraggable(content);
+
+  trayEl.appendChild(content);
 
   // Clear button
   const clearBtn = document.createElement('button');
@@ -1904,71 +2065,206 @@ function renderTray() {
 }
 
 /* ============================================================ */
+/* DRAG TO SERVE                                                 */
+/* ============================================================ */
+function makeTrayDraggable(el) {
+  let dragging = false;
+  let ghost = null;
+  let offsetX = 0, offsetY = 0;
+  let pointerId = null;
+  let hoveredCustomer = null;
+
+  function startDrag(x, y, id) {
+    dragging = true;
+    pointerId = id;
+    const rect = el.getBoundingClientRect();
+    offsetX = x - (rect.left + rect.width / 2);
+    offsetY = y - (rect.top + rect.height / 2);
+
+    // Create ghost
+    ghost = document.createElement('div');
+    ghost.className = 'drag-ghost';
+    const station = getMyStation();
+    const tray = game.tray[station] || [];
+    const matched = game.trayRecipe[station];
+    // Build ghost visual — show the emoji(s)
+    let emojiHtml = '';
+    tray.forEach(ingId => {
+      emojiHtml += INGREDIENTS[ingId].emoji;
+    });
+    ghost.innerHTML = emojiHtml;
+    if (matched) {
+      const lbl = document.createElement('div');
+      lbl.className = 'ghost-label';
+      lbl.textContent = ALL_RECIPES[matched].name;
+      ghost.appendChild(lbl);
+    }
+    ghost.style.left = x + 'px';
+    ghost.style.top = y + 'px';
+    document.body.appendChild(ghost);
+
+    el.style.opacity = '0.3';
+    SoundFX.tap();
+  }
+
+  function moveDrag(x, y) {
+    if (!dragging || !ghost) return;
+    ghost.style.left = x + 'px';
+    ghost.style.top = y + 'px';
+
+    // Check which customer we're over
+    const customers = document.querySelectorAll('.customer');
+    let newHover = null;
+    customers.forEach(c => {
+      const r = c.getBoundingClientRect();
+      const pad = 20;
+      if (x >= r.left - pad && x <= r.right + pad && y >= r.top - pad && y <= r.bottom + pad) {
+        newHover = c;
+      }
+    });
+
+    if (newHover !== hoveredCustomer) {
+      if (hoveredCustomer) hoveredCustomer.classList.remove('drag-over', 'matching', 'non-matching');
+      hoveredCustomer = newHover;
+      if (hoveredCustomer) {
+        hoveredCustomer.classList.add('drag-over');
+        // Check if matching
+        const cid = hoveredCustomer.dataset.customerId;
+        const customer = game.customers.find(c => c.id === cid);
+        if (customer) {
+          const station = getMyStation();
+          const recipeStation = getRecipeStation(customer.recipeId);
+          const trayMatched = game.trayRecipe[station];
+          if (recipeStation === station && trayMatched === customer.recipeId) {
+            hoveredCustomer.classList.add('matching');
+          } else {
+            hoveredCustomer.classList.add('non-matching');
+          }
+        }
+      }
+    }
+  }
+
+  function endDrag(x, y) {
+    if (!dragging) return;
+    dragging = false;
+    if (ghost) { ghost.remove(); ghost = null; }
+    el.style.opacity = '1';
+    if (hoveredCustomer) {
+      const cid = hoveredCustomer.dataset.customerId;
+      const customer = game.customers.find(c => c.id === cid);
+      hoveredCustomer.classList.remove('drag-over', 'matching', 'non-matching');
+      hoveredCustomer = null;
+      if (customer) {
+        attemptServe(customer);
+      }
+    }
+  }
+
+  // Pointer events (unified mouse + touch)
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button && e.button !== 0) return;
+    e.preventDefault();
+    el.setPointerCapture(e.pointerId);
+    startDrag(e.clientX, e.clientY, e.pointerId);
+  });
+  el.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    e.preventDefault();
+    moveDrag(e.clientX, e.clientY);
+  });
+  el.addEventListener('pointerup', (e) => {
+    if (!dragging) return;
+    e.preventDefault();
+    endDrag(e.clientX, e.clientY);
+  });
+  el.addEventListener('pointercancel', (e) => {
+    if (!dragging) return;
+    endDrag(e.clientX, e.clientY);
+  });
+}
+
+/* ============================================================ */
 /* SERVING                                                       */
 /* ============================================================ */
-function tryServeCustomer(customer) {
+function attemptServe(customer) {
   if (!game.running) return;
   const station = getMyStation();
   const tray = game.tray[station] || [];
-  if (tray.length === 0) return;
+  const matchedRecipe = game.trayRecipe[station];
 
-  const recipe = RECIPES[customer.recipeId];
-  const recipeStation = recipe.station;
-  // Station must match recipe type
-  if (recipeStation !== station) {
-    showToast('Wrong station! ' + (recipeStation === 'koy' ? 'Coffee' : 'Food'));
+  if (tray.length === 0) {
+    showToast('Make something first!');
+    return;
+  }
+
+  const customerRecipeStation = getRecipeStation(customer.recipeId);
+
+  if (customerRecipeStation !== station) {
+    showToast('Wrong station — that\'s for the ' + (customerRecipeStation === 'koy' ? 'coffee' : 'food') + ' barista');
     SoundFX.wrong();
     return;
   }
 
-  const trayRecipeId = matchRecipe(tray);
-  if (trayRecipeId === customer.recipeId) {
-    // Correct!
-    const points = recipe.points + Math.round(recipe.points * customer.patienceLeft * 0.5);
+  if (!matchedRecipe) {
+    showToast('That\'s not a finished drink/food!');
+    SoundFX.wrong();
+    floatScore('Wrong!', '#e57373');
+    return;
+  }
+
+  if (matchedRecipe === customer.recipeId) {
+    // Success!
+    const recipe = ALL_RECIPES[customer.recipeId];
+    const bonus = Math.round(recipe.points * customer.patienceLeft * 0.5);
+    const points = recipe.points + bonus;
+
     game.tray[station] = [];
-    if (isHost) {
-      removeCustomer(customer.id, false);
-      game.score += points;
-      game.served += 1;
-      if (!soloMode) {
-        sendPeer({ type: 'customerServed', customerId: customer.id, points });
-        sendPeer({ type: 'trayUpdate', role: station, tray: [] });
-      }
-      updateHUD();
-      floatScore('+' + points + ' 💰', '#8fd87d');
-    } else {
-      sendPeer({ type: 'trayUpdate', role: station, tray: [] });
-      sendPeer({ type: 'customerServed', customerId: customer.id, points, clientServing: true });
-      // Optimistically remove on client side; host will sync
-      removeCustomer(customer.id, false);
-    }
+    game.trayRecipe[station] = null;
+
+    removeCustomer(customer.id);
+    game.score += points;
+    game.served += 1;
+    updateHUD();
+    renderTray();
+
+    floatScore('+' + points + ' 💰', '#8fd87d');
     SoundFX.correct();
     SoundFX.coin();
+
     // Sparkles
     const custEl = document.querySelector(`[data-customer-id="${customer.id}"]`);
     if (custEl) {
       const rect = custEl.getBoundingClientRect();
-      for (let i = 0; i < 6; i++) spawnSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => spawnSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2), i * 40);
+      }
     }
-    renderTray();
+
+    if (!soloMode) {
+      sendPeer({ type: 'trayUpdate', role: station, tray: [], recipe: null });
+      sendPeer({ type: 'customerServed', customerId: customer.id, points });
+    }
   } else {
-    // Wrong
-    SoundFX.wrong();
+    // Wrong drink for this customer
     showToast('Wrong order!');
+    SoundFX.wrong();
     floatScore('-3', '#e57373');
     game.score = Math.max(0, game.score - 3);
     updateHUD();
+    // Lose patience faster
+    customer.patienceLeft = Math.max(0, customer.patienceLeft - 0.2);
   }
 }
 
 function floatScore(text, color) {
   const el = document.createElement('div');
-  el.className = 'float-score ' + (color === '#8fd87d' ? 'positive' : color === '#e57373' ? 'negative' : 'coin');
+  el.className = 'float-score ' + (color === '#8fd87d' ? 'positive' : 'negative');
   el.textContent = text;
-  el.style.left = (window.innerWidth / 2 - 30) + 'px';
+  el.style.left = (window.innerWidth / 2 - 40) + 'px';
   el.style.top = (window.innerHeight / 2) + 'px';
   document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1300);
+  setTimeout(() => el.remove(), 1400);
 }
 
 function spawnSparkle(x, y) {
@@ -1977,11 +2273,11 @@ function spawnSparkle(x, y) {
   el.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
   el.style.left = x + 'px';
   el.style.top = y + 'px';
-  el.style.setProperty('--sx', (Math.random() - 0.5) * 100 + 'px');
-  el.style.setProperty('--sy', (-30 - Math.random() * 50) + 'px');
+  el.style.setProperty('--sx', (Math.random() - 0.5) * 120 + 'px');
+  el.style.setProperty('--sy', (-40 - Math.random() * 60) + 'px');
   el.style.setProperty('--sr', (Math.random() * 360) + 'deg');
   document.body.appendChild(el);
-  setTimeout(() => el.remove(), 900);
+  setTimeout(() => el.remove(), 1000);
 }
 
 /* ============================================================ */
@@ -2010,7 +2306,6 @@ function endLevel() {
   if (game.spawnInterval) clearInterval(game.spawnInterval);
   if (game.patienceInterval) clearInterval(game.patienceInterval);
 
-  // Determine success: at least 1 star
   const score = game.score;
   const thresholds = game.level.starThresholds;
   const success = score >= thresholds[0];
@@ -2032,15 +2327,9 @@ function handleLevelComplete(data) {
   if (score >= thresholds[1]) stars = 2;
   if (score >= thresholds[2]) stars = 3;
 
-  if (stars > (progression.bestStars[game.levelId] || 0)) {
-    progression.bestStars[game.levelId] = stars;
-  }
-  if (score > (progression.bestScores[game.levelId] || 0)) {
-    progression.bestScores[game.levelId] = score;
-  }
-  if (game.levelId >= progression.unlockedLevels && stars > 0) {
-    progression.unlockedLevels = Math.min(LEVELS.length, game.levelId + 1);
-  }
+  if (stars > (progression.bestStars[game.levelId] || 0)) progression.bestStars[game.levelId] = stars;
+  if (score > (progression.bestScores[game.levelId] || 0)) progression.bestScores[game.levelId] = score;
+  if (game.levelId >= progression.unlockedLevels && stars > 0) progression.unlockedLevels = Math.min(LEVELS.length, game.levelId + 1);
   progression.totalCoins = (progression.totalCoins || 0) + score;
   saveProgression();
 
@@ -2050,14 +2339,12 @@ function handleLevelComplete(data) {
   const starsRow = $('starsRow');
   starsRow.querySelectorAll('.star').forEach((el, idx) => {
     el.classList.remove('filled');
-    if (idx < stars) {
-      setTimeout(() => { el.classList.add('filled'); SoundFX.star(); }, idx * 300 + 400);
-    }
+    if (idx < stars) setTimeout(() => { el.classList.add('filled'); SoundFX.star(); }, idx * 300 + 400);
   });
   const isLast = game.levelId >= LEVELS.length;
   $('nextLevelBtn').style.display = isLast ? 'none' : 'block';
-  $('completeTitle').textContent = isLast ? 'GRAND OPENING! 🎉' : 'CLOSED FOR THE DAY!';
-  $('completeSub').textContent = isLast ? 'You two built a real coffee shop ☕' : 'Beautiful service today ☕';
+  $('completeTitle').textContent = isLast ? 'GRAND OPENING! 🎉' : 'SHOP CLOSED!';
+  $('completeSub').textContent = isLast ? 'You built a real coffee shop ☕' : 'Beautiful service today ☕';
   $('levelCompleteModal').classList.add('show');
   SoundFX.star();
 }
